@@ -7,10 +7,6 @@ let correctCount = 0;
 let questionStartTime = 0;
 let selectedDay = null;
 
-// --- TAMBAHAN VARIABEL TIMER KUIS ---
-let quizTimerInterval = null;
-let quizSecondsElapsed = 0;
-
 // User Stats (EXP & Level)
 let userExp = parseInt(localStorage.getItem('user_exp')) || 0;
 let userLevel = parseInt(localStorage.getItem('user_level')) || 1;
@@ -29,6 +25,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 });
 
+// --- FUNGSI PEMBERSIH TEKS CONTOH KALIMAT ---
+function getCleanBack(rawText) {
+    if (!rawText) return "";
+    return rawText.includes("【Contoh Kalimat】") 
+        ? rawText.split("【Contoh Kalimat】")[0].trim() 
+        : rawText.trim();
+}
+
 // --- SISTEM UNLOCK HARIAN (MULAI TANGGAL 5) ---
 function getMaxUnlockedDay() {
     const now = new Date();
@@ -45,7 +49,6 @@ function populateQuizDayDropdown() {
     const maxUnlocked = getMaxUnlockedDay();
     const days = [...new Set(allQuizData.map(item => item.day))].sort((a, b) => a - b);
     
-    // Ambil daftar hari yang sudah selesai total dan hari yang sedang berlangsung
     const completedDays = JSON.parse(localStorage.getItem('completed_quiz_days')) || [];
     const savedDay = localStorage.getItem('saved_quiz_day');
     const savedSessionIdx = parseInt(localStorage.getItem('saved_session_idx')) || 0;
@@ -98,7 +101,6 @@ function startQuiz() {
     const savedDaySessions = JSON.parse(localStorage.getItem('saved_day_sessions'));
     const savedCorrectCount = parseInt(localStorage.getItem('saved_correct_count'));
 
-    // Jika ada progress tersimpan yang belum selesai untuk hari ini
     if (savedDay && parseInt(savedDay) === selectedDay && savedDaySessions) {
         daySessions = savedDaySessions;
         currentSessionIdx = savedSessionIdx;
@@ -106,7 +108,6 @@ function startQuiz() {
         
         alert(`Melanjutkan progress di Sesi ${currentSessionIdx + 1}!`);
     } else {
-        // Mulai sesi baru (jika mau diulang dari awal)
         daySessions = [];
         let shuffledDayData = shuffleArray([...dayData]);
         const chunkSize = Math.ceil(shuffledDayData.length / 8);
@@ -118,19 +119,11 @@ function startQuiz() {
         currentSessionIdx = 0;
         correctCount = 0;
         
-        // Hapus data paused lama jika ada, tapi biarkan status completed tetap aman
         localStorage.removeItem('saved_quiz_day');
         localStorage.removeItem('saved_session_idx');
         localStorage.removeItem('saved_day_sessions');
         localStorage.removeItem('saved_correct_count');
     }
-
-    // --- MULAI TIMER KUIS DI SINI ---
-    quizSecondsElapsed = 0;
-    clearInterval(quizTimerInterval);
-    quizTimerInterval = setInterval(() => {
-        quizSecondsElapsed++;
-    }, 1000);
 
     document.getElementById('quizSelectionCard').style.display = 'none';
     document.getElementById('quizBreakScreen').style.display = 'none';
@@ -167,18 +160,23 @@ function loadQuizQuestion() {
     const optionsContainer = document.getElementById('quizOptions');
     optionsContainer.innerHTML = '';
 
+    // Bersihkan kunci jawaban benar dari contoh kalimat
+    const cleanCorrectAnswer = getCleanBack(currentQuestion.back);
+
+    // Ambil pilihan salah, lalu bersihkan juga teksnya
     const wrongChoices = allQuizData
         .filter(item => item.back !== currentQuestion.back)
-        .map(item => item.back);
+        .map(item => getCleanBack(item.back));
     
-    const shuffledWrong = shuffleArray(wrongChoices).slice(0, 3);
-    const choices = shuffleArray([currentQuestion.back, ...shuffledWrong]);
+    const uniqueWrongChoices = [...new Set(wrongChoices)];
+    const shuffledWrong = shuffleArray(uniqueWrongChoices).slice(0, 3);
+    const choices = shuffleArray([cleanCorrectAnswer, ...shuffledWrong]);
 
     choices.forEach(choiceText => {
         const btn = document.createElement('button');
         btn.className = 'quiz-option-btn';
-        btn.textContent = choiceText;
-        btn.onclick = () => selectQuizAnswer(btn, choiceText, currentQuestion.back);
+        btn.textContent = choiceText; // Tampil bersih tanpa contoh kalimat
+        btn.onclick = () => selectQuizAnswer(btn, choiceText, cleanCorrectAnswer);
         optionsContainer.appendChild(btn);
     });
 }
@@ -218,7 +216,6 @@ function selectQuizAnswer(buttonElement, selectedAnswer, correctAnswer) {
 function triggerSessionBreak() {
     document.getElementById('quizArea').style.display = 'none';
     
-    // Simpan progress sesi saat rehat
     localStorage.setItem('saved_quiz_day', selectedDay);
     localStorage.setItem('saved_session_idx', currentSessionIdx);
     localStorage.setItem('saved_day_sessions', JSON.stringify(daySessions));
@@ -253,36 +250,12 @@ function goHomeFromBreak() {
 }
 
 function finishQuizCompletion() {
-    // --- HENTIKAN TIMER & CATAT KE KALENDER UTAMA DI SINI ---
-    clearInterval(quizTimerInterval);
-
-    if (quizSecondsElapsed >= 5) {
-        try {
-            const currentUser = localStorage.getItem('jlpt_current_user') || 'DefaultUser';
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            const dateStr = `${year}-${month}-${day}`;
-
-            const storageKey = `study_time_${currentUser}_${dateStr}`;
-            const existingSeconds = parseInt(localStorage.getItem(storageKey)) || 0;
-            const totalSecondsToday = existingSeconds + quizSecondsElapsed;
-
-            localStorage.setItem(storageKey, totalSecondsToday);
-        } catch (error) {
-            console.error("Gagal menyimpan waktu belajar quiz ke kalender:", error);
-        }
-    }
-
-    // Tandai hari ini sebagai hari yang sudah selesai secara permanen
     let completedDays = JSON.parse(localStorage.getItem('completed_quiz_days')) || [];
     if (!completedDays.includes(selectedDay)) {
         completedDays.push(selectedDay);
         localStorage.setItem('completed_quiz_days', JSON.stringify(completedDays));
     }
     
-    // Hapus temporary saved ongoing karena sudah selesai total
     localStorage.removeItem('saved_quiz_day');
     localStorage.removeItem('saved_session_idx');
     localStorage.removeItem('saved_day_sessions');
@@ -301,7 +274,6 @@ function finishQuizCompletion() {
 }
 
 function exitQuiz() {
-    clearInterval(quizTimerInterval); // Bersihkan timer jika keluar di tengah jalan
     document.getElementById('quizArea').style.display = 'none';
     document.getElementById('quizBreakScreen').style.display = 'none';
     document.getElementById('quizSelectionCard').style.display = 'block';
