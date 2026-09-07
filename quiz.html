@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Review - Flashcard JLPT N3</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <div class="header-container">
+            <div class="header-title">
+                <span class="calendar-icon">📝</span>
+                <h1>Quiz Review N3</h1>
+            </div>
+            <a href="index.html" class="quiz-link-btn">🏠 Beranda</a>
+        </div>
+
+        <!-- STATS / EXP BAR -->
+        <div class="stats-bar" style="margin-bottom: 20px;">
+            <div class="stat-badge jlpt">⭐ Level <span id="userLevel">1</span></div>
+            <div class="stat-badge">⚡ EXP: <span id="userExp">0</span> / <span id="nextLevelExp">100</span></div>
+        </div>
+
+        <!-- QUIZ SELECTION CARD -->
+        <div id="quizSelectionCard" class="study-hub-card">
+            <div class="study-hub-header">
+                <h2>🎯 Pilih Target Hari Quiz</h2>
+                <p>Uji pemahaman kosakata dari hari yang sudah terbuka.</p>
+            </div>
+            
+            <div class="study-selection-box">
+                <label for="quizDaySelect"><strong>Target Hari:</strong></label>
+                <select id="quizDaySelect" class="study-select">
+                    <!-- Diisi otomatis via JavaScript -->
+                </select>
+                <button class="action-btn-primary" onclick="startQuiz()">Mulai Quiz Sekarang ⚡</button>
+            </div>
+        </div>
+
+        <!-- QUIZ QUESTION AREA -->
+        <div id="quizArea" class="learning-card" style="display: none; margin-top: 0;">
+            <div class="learning-top-bar">
+                <button class="back-calendar-btn" onclick="exitQuiz()">⬅️ Keluar Quiz</button>
+                <div class="info-bar" id="quizInfoBar">
+                    <span id="quizCounter">Sesi 1/8 | Soal: 1/8</span>
+                    <span id="quizScore">Benar: 0</span>
+                </div>
+            </div>
+
+            <!-- Kotak Pertanyaan -->
+            <div class="quiz-question-container" style="margin-bottom: 20px;">
+                <div class="card-face card-front" style="position: relative; height: 160px; font-size: 2rem;" id="quizQuestionText">
+                    -
+                </div>
+            </div>
+
+            <!-- Opsi Pilihan Ganda -->
+            <div class="quiz-options-grid" id="quizOptions" style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- Tombol pilihan ganda di-generate via JS -->
+            </div>
+        </div>
+
+        <!-- SCREEN JEDA / REHAT ANTAR SESI -->
+        <div class="completion-screen" id="quizBreakScreen" style="display: none; margin-top: 20px;">
+            <div class="completion-card">
+                <h2>☕ Rehat Sebentar Yuk!</h2>
+                <p id="breakText">Sesi selesai. Tarik napas sejenak sebelum lanjut ke sesi berikutnya.</p>
+                
+                <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
+                    <button class="action-btn-primary" onclick="resumeQuizAfterBreak()">Lanjut Sesi 🚀</button>
+                    <button class="action-btn-primary" onclick="goHomeFromBreak()" style="background-color: #64748b;">🏠 Beranda</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN SELESAI QUIZ -->
+        <div class="completion-screen" id="quizCompletionScreen" style="display: none; margin-top: 20px;">
+            <div class="completion-card">
+                <h2>🎉 Quiz Selesai!</h2>
+                <p id="quizResultText">Semua sesi hari ini telah selesai ditinjau.</p>
+                <button class="restart-btn" onclick="backToQuizSelection()">Pilih Hari Lain 📚</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcard JLPT N3 - Kalender & Belajar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <div class="header-container">
+    <div class="header-title">
+        <span class="calendar-icon">⚡</span>
+        <h1>JLPT N3 Master</h1>
+    </div>
+    <div style="display: flex; gap: 10px; align-items: center;">
+        <span id="currentProfileDisplay" style="font-size: 0.9rem; font-weight: bold; color: #334155;">👤 -</span>
+        <button onclick="switchProfile()" class="quiz-link-btn" style="background-color: #64748b;">Ganti Profil</button>
+        <a href="quiz.html" class="quiz-link-btn">📝 Buka Quiz</a>
+    </div>
+</div>
+
+        <!-- TAB NAVIGATION -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" id="btnTabCalendar" onclick="switchTab('calendar')">📅 Kalender</button>
+            <button class="tab-btn" id="btnTabStudy" onclick="switchTab('study')">📖 Belajar</button>
+        </div>
+
+        <!-- TAB 1: KALENDER (AKUMULASI WAKTU & STATS) -->
+        <div id="calendarTabContent" class="tab-content">
+            <div id="calendarSection" class="calendar-card">
+<div class="stats-bar">
+    <div class="stat-badge">🔥 <span id="streakCount">0</span> hari konsisten</div>
+    <div class="stat-badge">📅 <span id="monthDaysCount">0</span> hari bulan ini</div>
+    <div class="stat-badge">⏱️ total <span id="totalMonthTime">0j 0m</span></div>
+    <div class="stat-badge target-badge">🎯 Target: <span id="targetProgress">0%</span> (20j)</div>
+    <div class="stat-badge jlpt">🏷️ H-<span id="jlptCountdown">0</span> JLPT</div>
+</div>
+
+                <!-- MONTH NAVIGATION -->
+                <div class="month-nav">
+                    <button class="nav-arrow" onclick="changeMonth(-1)">&#10094;</button>
+                    <h2 id="monthYearTitle">September 2026</h2>
+                    <button class="nav-arrow" onclick="changeMonth(1)">&#10095;</button>
+                </div>
+                <p class="calendar-subtitle">Akumulasi waktu belajar bulanan kamu.</p>
+
+                <!-- WEEKDAYS HEADER -->
+                <div class="weekdays-grid">
+                    <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
+                </div>
+
+                <!-- DAYS GRID -->
+                <div class="days-grid" id="daysGrid"></div>
+
+                <!-- LEGEND -->
+                <div class="calendar-legend">
+                    <span>Kurang</span>
+                    <div class="legend-boxes">
+                        <div class="legend-box level-0"></div>
+                        <div class="legend-box level-1"></div>
+                        <div class="legend-box level-2"></div>
+                        <div class="legend-box level-3"></div>
+                        <div class="legend-box level-4"></div>
+                    </div>
+                    <span>Rajin</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: MENU BELAJAR (DENGAN SESI PAGI, SIANG, MALAM) -->
+        <div id="studyTabContent" class="tab-content" style="display: none;">
+            <!-- Pemilihan Hari -->
+            <div id="studySelectionCard" class="study-hub-card">
+                <div class="study-hub-header">
+                    <h2>🚀 Pilih Hari Materi Belajar</h2>
+                    <p>Pilih hari materi kosakata JLPT N3 yang ingin kamu pelajari.</p>
+                </div>
+                <div class="study-selection-box">
+                    <label for="directDaySelect"><strong>Target Hari:</strong></label>
+                    <select id="directDaySelect" class="study-select">
+                        <!-- Diisi otomatis via JavaScript -->
+                    </select>
+                    <button class="action-btn-primary" onclick="openStudySessions()">Buka Menu Sesi ➔</button>
+                </div>
+            </div>
+
+            <!-- Menu Sesi (Pagi, Siang, Malam) per Hari -->
+            <div id="studySessionMenu" class="session-menu-card" style="display: none;">
+                <div class="session-header">
+                    <button class="back-calendar-btn" onclick="backToStudySelection()">⬅️ Pilih Hari Lain</button>
+                    <h3 id="studySessionMenuTitle">Sesi Belajar Hari ke-X</h3>
+                </div>
+                <div class="session-buttons-list">
+                    <button id="studyBtnPagi" class="session-btn">
+                        <div class="session-info">
+                            <span class="session-title">☀️ Sesi Pagi</span>
+                            <span class="session-desc">Bagian 1</span>
+                        </div>
+                        <span id="studyStatusPagi" class="status-badge">Mulai ➔</span>
+                    </button>
+                    <button id="studyBtnSiang" class="session-btn">
+                        <div class="session-info">
+                            <span class="session-title">🌤️ Sesi Siang</span>
+                            <span class="session-desc">Bagian 2</span>
+                        </div>
+                        <span id="studyStatusSiang" class="status-badge">Mulai ➔</span>
+                    </button>
+                    <button id="studyBtnMalam" class="session-btn">
+                        <div class="session-info">
+                            <span class="session-title">🌙 Sesi Malam</span>
+                            <span class="session-desc">Bagian 3</span>
+                        </div>
+                        <span id="studyStatusMalam" class="status-badge">Mulai ➔</span>
+                    </button>
+                <!-- TAMBAHAN: Daftar Kosakata Hari Ini -->
+                <div class="day-vocab-list-container" style="margin-top: 24px;">
+                    <h4 style="margin-bottom: 12px; font-size: 1.05rem; color: #1e293b;">📖 Daftar Kosakata Hari Ini:</h4>
+                    <div id="dayVocabList" class="vocab-list-scroll">
+                        <!-- Diisi otomatis via JavaScript -->
+                    </div>
+                </div>
+</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AREA BELAJAR FLASHCARD -->
+        <div id="learning-area" style="display: none; margin-top: 20px;" class="learning-card">
+            <div class="learning-top-bar">
+                <button class="back-calendar-btn" onclick="backToStudySessionsMenu()">⬅️ Kembali ke Menu Sesi</button>
+                <div class="info-bar" id="infoBar">
+                    <span id="counter">Sisa: 20</span>
+                    <span id="timerDisplay">⏱️ 00:00</span>
+                </div>
+            </div>
+
+            <div class="flashcard-container" id="cardContainer">
+                <div class="flashcard" id="flashcard">
+                    <div class="card-face card-front" id="cardFront">-</div>
+                    <div class="card-face card-back" id="cardBack">-</div>
+                </div>
+            </div>
+            <p class="card-hint">Klik kartu untuk membalik</p>
+
+            <div class="rating-buttons" id="ratingButtons">
+                <button class="btn-hard" onclick="rateCard(3)">Susah (3)</button>
+                <button class="btn-medium" onclick="rateCard(7)">Ragu (7)</button>
+                <button class="btn-easy" onclick="rateCard('easy')">Mudah ✔️</button>
+            </div>
+        </div>
+    </div>
+        <!-- SCREEN SELESAI -->
+        <div class="completion-screen" id="completionScreen" style="display: none; margin-top: 20px;">
+            <div class="completion-card">
+                <h2>🎉 Sesi Selesai!</h2>
+                <p id="resultText">Hebat! Kamu berhasil menguasai sesi ini.</p>
+                <button class="restart-btn" onclick="backToStudySessionsMenuFromCompletion()">Kembali ke Menu Sesi 📚</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
