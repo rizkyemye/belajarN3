@@ -7,6 +7,10 @@ let correctCount = 0;
 let questionStartTime = 0;
 let selectedDay = null;
 
+// --- TAMBAHAN VARIABEL TIMER KUIS ---
+let quizTimerInterval = null;
+let quizSecondsElapsed = 0;
+
 // User Stats (EXP & Level)
 let userExp = parseInt(localStorage.getItem('user_exp')) || 0;
 let userLevel = parseInt(localStorage.getItem('user_level')) || 1;
@@ -54,7 +58,6 @@ function populateQuizDayDropdown() {
     }
 
     days.forEach(dayNum => {
-        const count = allQuizData.filter(i => item => item.day === dayNum).length; // perbaikan filter count
         const actualCount = allQuizData.filter(i => i.day === dayNum).length;
         const opt = document.createElement('option');
         opt.value = dayNum;
@@ -121,6 +124,13 @@ function startQuiz() {
         localStorage.removeItem('saved_day_sessions');
         localStorage.removeItem('saved_correct_count');
     }
+
+    // --- MULAI TIMER KUIS DI SINI ---
+    quizSecondsElapsed = 0;
+    clearInterval(quizTimerInterval);
+    quizTimerInterval = setInterval(() => {
+        quizSecondsElapsed++;
+    }, 1000);
 
     document.getElementById('quizSelectionCard').style.display = 'none';
     document.getElementById('quizBreakScreen').style.display = 'none';
@@ -243,6 +253,28 @@ function goHomeFromBreak() {
 }
 
 function finishQuizCompletion() {
+    // --- HENTIKAN TIMER & CATAT KE KALENDER UTAMA DI SINI ---
+    clearInterval(quizTimerInterval);
+
+    if (quizSecondsElapsed >= 5) {
+        try {
+            const currentUser = localStorage.getItem('jlpt_current_user') || 'DefaultUser';
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const dateStr = `${year}-${month}-${day}`;
+
+            const storageKey = `study_time_${currentUser}_${dateStr}`;
+            const existingSeconds = parseInt(localStorage.getItem(storageKey)) || 0;
+            const totalSecondsToday = existingSeconds + quizSecondsElapsed;
+
+            localStorage.setItem(storageKey, totalSecondsToday);
+        } catch (error) {
+            console.error("Gagal menyimpan waktu belajar quiz ke kalender:", error);
+        }
+    }
+
     // Tandai hari ini sebagai hari yang sudah selesai secara permanen
     let completedDays = JSON.parse(localStorage.getItem('completed_quiz_days')) || [];
     if (!completedDays.includes(selectedDay)) {
@@ -269,6 +301,7 @@ function finishQuizCompletion() {
 }
 
 function exitQuiz() {
+    clearInterval(quizTimerInterval); // Bersihkan timer jika keluar di tengah jalan
     document.getElementById('quizArea').style.display = 'none';
     document.getElementById('quizBreakScreen').style.display = 'none';
     document.getElementById('quizSelectionCard').style.display = 'block';
