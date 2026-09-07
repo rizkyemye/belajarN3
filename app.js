@@ -75,6 +75,14 @@ fetch('data.json')
         console.error("Error loading data.json:", error);
     });
 
+// --- FUNGSI PEMBERSIH TEKS CONTOH KALIMAT ---
+function getCleanBack(rawText) {
+    if (!rawText) return "";
+    return rawText.includes("【Contoh Kalimat】") 
+        ? rawText.split("【Contoh Kalimat】")[0].trim() 
+        : rawText.trim();
+}
+
 // TAMBAHAN: Fungsi untuk memperbarui preview kosakata saat dropdown diganti
 function onDayDropdownChange() {
     const selectElement = document.getElementById('directDaySelect');
@@ -99,7 +107,7 @@ function onDayDropdownChange() {
         div.innerHTML = `
             <span class="vocab-number">${index + 1}.</span>
             <span class="vocab-front">${item.front}</span>
-            <span class="vocab-back">${item.back}</span>
+            <span class="vocab-back">${getCleanBack(item.back)}</span>
         `;
         previewContainer.appendChild(div);
     });
@@ -107,6 +115,16 @@ function onDayDropdownChange() {
 
 // --- TAB NAVIGATION LOGIC ---
 function switchTab(tabName) {
+    // Cek apakah sesi belajar sedang aktif (learningArea terbuka)
+    if (learningArea.style.display === 'block' && cardQueue.length > 0) {
+        let konfirmasi = confirm("Mau kemana? Masih banyak kosakatanya nih, yakin mau ditinggal?");
+        if (!konfirmasi) {
+            return; // Batalkan perpindahan tab jika user pilih Batal
+        }
+        // Jika user tetap ingin keluar, matikan timer sesi
+        stopTimer();
+    }
+
     const calendarTab = document.getElementById('calendarTabContent');
     const studyTab = document.getElementById('studyTabContent');
     const btnCalendar = document.getElementById('btnTabCalendar');
@@ -362,7 +380,7 @@ function renderDayVocabList(dayNum) {
         div.innerHTML = `
             <span class="vocab-number">${index + 1}.</span>
             <span class="vocab-front">${item.front}</span>
-            <span class="vocab-back">${item.back}</span>
+            <span class="vocab-back">${getCleanBack(item.back)}</span>
         `;
         vocabListContainer.appendChild(div);
     });
@@ -448,6 +466,14 @@ function startStudySession(sessionName, dayNum) {
 }
 
 function backToStudySessionsMenu() {
+    // Tambahkan konfirmasi jika user klik tombol kembali saat sesi flashcard masih berjalan
+    if (cardQueue.length > 0) {
+        let konfirmasi = confirm("Mau kemana? Masih banyak kosakatanya nih, yakin mau ditinggal?");
+        if (!konfirmasi) {
+            return; // Batal kembali jika user pilih Batal
+        }
+    }
+
     stopTimer();
     learningArea.style.display = 'none';
     document.getElementById('studySessionMenu').style.display = 'block';
