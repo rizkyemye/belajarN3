@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flashcard JLPT N3 - Kalender & Belajar</title>
     <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
@@ -37,6 +38,7 @@
     <div class="stat-badge">⏱️ total <span id="totalMonthTime">0j 0m</span></div>
     <div class="stat-badge target-badge">🎯 Target: <span id="targetProgress">0%</span> (20j)</div>
     <div class="stat-badge jlpt">🏷️ H-<span id="jlptCountdown">0</span> JLPT</div>
+    
 </div>
 
                 <!-- MONTH NAVIGATION -->
@@ -150,6 +152,13 @@
                 <button class="btn-easy" onclick="rateCard('easy')">Mudah ✔️</button>
             </div>
         </div>
+                <div class="completion-screen" id="completionScreen" style="display: none; margin-top: 20px;">
+            <div class="completion-card">
+                <h2>🎉 Sesi Selesai!</h2>
+                <p id="resultText">Hebat! Kamu berhasil menguasai sesi ini.</p>
+                <button class="restart-btn" onclick="backToStudySessionsMenuFromCompletion()">Kembali ke Menu Sesi 📚</button>
+            </div>
+        </div>
     </div>
         <!-- SCREEN SELESAI -->
         <div class="completion-screen" id="completionScreen" style="display: none; margin-top: 20px;">
@@ -160,7 +169,17 @@
             </div>
         </div>
     </div>
-
+<!-- CUSTOM POPUP KONFIRMASI KELUAR BELAJAR -->
+<div id="customStudyExitModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 24px; border-radius: 12px; max-width: 320px; width: 90%; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
+        <h3 style="margin-bottom: 12px; color: #1e293b; font-size: 1.25rem;">Mau kemana? 🏃‍♂️</h3>
+        <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">Masih banyak kosakatanya nih, yakin mau ditinggal?</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button id="cancelStudyExitBtn" style="padding: 10px 16px; background: #e2e8f0; color: #334155; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1;">Batal</button>
+            <button id="confirmStudyExitBtn" style="padding: 10px 16px; background: #ef4444; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1;">Keluar</button>
+        </div>
+    </div>
+</div>
     <script src="app.js"></script>
 </body>
 </html>
