@@ -44,6 +44,12 @@
   .rank .nm small { display: block; font-weight: 500; color: #94a3b8; font-size: 0.72rem; }
   .rank .xp { font-weight: 800; color: #4f46e5; font-size: 0.85rem; text-align: right; }
   .rank.aku { background: #eef2ff; border-radius: 10px; padding: 10px 8px; }
+  .nl-row { display: flex; gap: 8px; }
+  .nl-input {
+    flex: 1 1 0; min-width: 0; padding: 11px 12px; border: 1.5px solid #e2e8f0; border-radius: 10px;
+    font-family: inherit; font-size: 16px; background: #f8fafc; color: #1e293b; outline: none;
+  }
+  .nl-input:focus { border-color: #6366f1; background: #fff; }
   .kosong { text-align: center; color: #94a3b8; font-size: 0.9rem; padding: 26px; line-height: 1.7; }
   .catatan { font-size: 0.72rem; color: #94a3b8; line-height: 1.7; margin-top: 14px; }
 
@@ -77,6 +83,7 @@
     <h1>📊 Dashboard Belajar</h1>
     <div>
       <a class="btn" href="index.html">⬅️ Belajar</a>
+      <button class="btn" id="btnSandi" style="display:none">🔑 Ganti sandi</button>
       <button class="btn bahaya" id="btnKeluar" style="display:none">Keluar</button>
     </div>
   </div>
@@ -96,6 +103,20 @@
     <h2>⬆️ Data lama di HP ini</h2>
     <p class="catatan" id="imporTeks" style="margin-top:0"></p>
     <button class="btn utama" id="btnImpor" style="width:100%">Kirim ke server (sekali saja)</button>
+  </div>
+
+  <div class="card" id="kartuNilai" style="display:none">
+    <h2>✍️ Input nilai kuis lama</h2>
+    <p class="catatan" style="margin-top:0">
+      Kuis yang kamu kerjakan sebelum web tersambung ke server belum tercatat nilainya.
+      Masukkan di sini — aman dikirim berulang, yang dipakai selalu nilai tertinggi.
+    </p>
+    <div class="nl-row">
+      <input id="nlHari" class="nl-input" type="number" min="1" max="31" inputmode="numeric" placeholder="Hari">
+      <input id="nlBenar" class="nl-input" type="number" min="0" inputmode="numeric" placeholder="Benar">
+      <input id="nlTotal" class="nl-input" type="number" min="1" inputmode="numeric" placeholder="Total soal">
+    </div>
+    <button class="btn utama" id="btnNilai" style="width:100%; margin-top:10px">Simpan nilai kuis</button>
   </div>
 
   <div class="card">
@@ -176,6 +197,35 @@
     };
   }
 
+  function siapkanInputNilai() {
+    const kartu = document.getElementById("kartuNilai");
+    if (!kartu) return;
+    kartu.style.display = "block";
+    document.getElementById("btnNilai").onclick = async function () {
+      const hari = parseInt(document.getElementById("nlHari").value);
+      const benar = parseInt(document.getElementById("nlBenar").value);
+      const total = parseInt(document.getElementById("nlTotal").value);
+
+      if (!hari || hari < 1 || hari > 31) { alert("Isi hari materi (1–31) dulu ya"); return; }
+      if (isNaN(benar) || benar < 0) { alert("Isi jumlah jawaban benar"); return; }
+      if (!total || total < 1) { alert("Isi jumlah soal"); return; }
+      if (benar > total) { alert("Jawaban benar tidak boleh lebih besar dari total soal"); return; }
+
+      this.disabled = true;
+      this.textContent = "Menyimpan…";
+      try {
+        if (window.N3 && N3.tandaiHariKuis) N3.tandaiHariKuis(hari, benar, total);
+        await new Promise(function (r) { setTimeout(r, 900); });
+        alert("Tersimpan!\nHari " + hari + " → " + benar + "/" + total + "\nHalaman akan dimuat ulang.");
+        location.reload();
+      } catch (e) {
+        this.disabled = false;
+        this.textContent = "Simpan nilai kuis";
+        alert("Gagal menyimpan: " + (e && e.message ? e.message : e));
+      }
+    };
+  }
+
   async function jalan() {
     const elPesan = document.getElementById("pesanMuat");
     const elPapan = document.getElementById("papan");
@@ -195,6 +245,26 @@
 
     document.getElementById("btnKeluar").style.display = "inline-block";
     document.getElementById("btnKeluar").onclick = function () { N3.keluar(); };
+
+    // ganti sandi (berguna kalau sandi lama sempat ditulis di chat)
+    const btnSandi = document.getElementById("btnSandi");
+    btnSandi.style.display = "inline-block";
+    btnSandi.onclick = async function () {
+      const baru = prompt("Sandi baru (minimal 6 karakter):");
+      if (baru === null) return;
+      if (!baru || baru.length < 6) { alert("Sandi minimal 6 karakter."); return; }
+      const ulang = prompt("Ulangi sandi baru:");
+      if (ulang !== baru) { alert("Sandi tidak sama, coba lagi."); return; }
+      btnSandi.disabled = true;
+      try {
+        await N3.gantiSandi(baru);
+        alert("Sandi berhasil diganti ✅\nMulai sekarang pakai sandi baru untuk masuk ya.");
+      } catch (e) {
+        alert("Gagal ganti sandi: " + (e && e.message ? e.message : e));
+      } finally {
+        btnSandi.disabled = false;
+      }
+    };
 
     const st = await N3.statistik();
     const xp = st ? Number(st.xp) || 0 : 0;
@@ -227,6 +297,7 @@
       soal > 0 ? Math.round((Number(st.benar_total) / soal) * 100) + "%" : "–";
 
     tampilkanImpor(aku);
+    siapkanInputNilai();
 
     const papan = await N3.papanPeringkat(50);
     if (!papan.length) { elPapan.innerHTML = '<div class="kosong">Belum ada yang belajar. Jadi yang pertama yuk! 🌸</div>'; return; }
