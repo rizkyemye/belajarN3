@@ -134,6 +134,7 @@
         muatKata: muatKataDariServer,
         muatHariKuis: muatHariKuisDariServer,
         imporWaktuLama: imporWaktuLama,
+        gantiSandi: gantiSandi,
 
         // halaman lain bisa: await N3.tungguSiap()
         tungguSiap: function () { return janjiSiap; },
@@ -395,6 +396,15 @@
             } catch (e) { gagal++; }
         }
         return { kirim: kirim, gagal: gagal };
+    }
+
+    /* ================= ganti sandi (tanpa email, karena akun pakai username) === */
+    async function gantiSandi(baru) {
+        if (!AKTIF || !sb) throw new Error("Belum tersambung ke server.");
+        if (!baru || String(baru).length < 6) throw new Error("Sandi baru minimal 6 karakter.");
+        const { error } = await sb.auth.updateUser({ password: String(baru) });
+        if (error) throw new Error(error.message);
+        return true;
     }
 
     /* ================= gerbang login (overlay) ================= */
