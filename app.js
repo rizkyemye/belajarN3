@@ -70,6 +70,7 @@ fetch('data.json')
         renderCalendar();
         updateStatsBar();
         populateDirectStudyDropdown();
+        initBunpouUI();
     })
     .catch(error => {
         console.error("Error loading data.json:", error);
@@ -145,6 +146,139 @@ function onDayDropdownChange() {
 }
 
 // --- TAB NAVIGATION LOGIC ---
+// --- TAB BUNPOU: KUMPULAN TATA BAHASA (dibaca langsung dari data.json) ---
+const BUNPOU_MARK = "【Contoh Kalimat】";
+
+function isBunpouItem(item) {
+    // entri tata bahasa di data.json selalu diawali tanda gelombang (〜 / ～)
+    return /^[\u301c\uff5e〜～]/.test(String(item.front || "").trim());
+}
+
+function parseBunpouBack(rawText) {
+    const text = rawText || "";
+    const cut = text.indexOf(BUNPOU_MARK);
+    const meaning = (cut === -1 ? text : text.slice(0, cut)).trim();
+    const rest = cut === -1 ? "" : text.slice(cut + BUNPOU_MARK.length).trim();
+    const lines = rest.split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
+    const id = lines.length ? lines[lines.length - 1] : "";
+    const jp = lines.slice(0, -1).join(" ");
+    return { meaning: meaning, jp: jp, id: id };
+}
+
+function bunpouItems() {
+    return allData.filter(isBunpouItem).map(function (item) {
+        const p = parseBunpouBack(item.back);
+        return { day: Number(item.day), pattern: String(item.front).trim(), meaning: p.meaning, jp: p.jp, id: p.id };
+    });
+}
+
+// Satu pola bisa muncul di beberapa hari (data hari 1-14 ada yang dobel),
+// jadi digabung per pola + dicatat hari-hari kemunculannya.
+function bunpouGroups() {
+    const map = new Map();
+    bunpouItems().forEach(function (it) {
+        if (!map.has(it.pattern)) {
+            map.set(it.pattern, { pattern: it.pattern, meaning: it.meaning, jp: it.jp, id: it.id, days: [it.day] });
+            return;
+        }
+        const g = map.get(it.pattern);
+        if (g.days.indexOf(it.day) === -1) g.days.push(it.day);
+        if ((!g.jp || !g.meaning) && it.jp) { g.jp = it.jp; g.id = it.id; }
+        if (!g.meaning && it.meaning) g.meaning = it.meaning;
+    });
+    return Array.from(map.values()).map(function (g) {
+        g.days.sort(function (a, b) { return a - b; });
+        return g;
+    }).sort(function (a, b) {
+        return (a.days[0] - b.days[0]) || a.pattern.localeCompare(b.pattern, "ja");
+    });
+}
+
+let bunpouFilterDay = "all";
+let bunpouQuery = "";
+
+function buildBunpouFilters() {
+    const chips = document.getElementById("bunpouDayChips");
+    if (!chips) return;
+    const groups = bunpouGroups();
+    const days = [];
+    groups.forEach(function (g) { g.days.forEach(function (d) { if (days.indexOf(d) === -1) days.push(d); }); });
+    days.sort(function (a, b) { return a - b; });
+
+    let html = '<button class="bunpou-chip active" data-day="all">Semua <span class="chip-n">' + groups.length + "</span></button>";
+    days.forEach(function (d) {
+        const n = groups.filter(function (g) { return g.days.indexOf(d) !== -1; }).length;
+        html += '<button class="bunpou-chip" data-day="' + d + '">Hari ' + d + ' <span class="chip-n">' + n + "</span></button>";
+    });
+    chips.innerHTML = html;
+
+    chips.querySelectorAll(".bunpou-chip").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            chips.querySelectorAll(".bunpou-chip").forEach(function (b) { b.classList.remove("active"); });
+            btn.classList.add("active");
+            bunpouFilterDay = btn.dataset.day === "all" ? "all" : Number(btn.dataset.day);
+            renderBunpou();
+        });
+    });
+}
+
+function renderBunpou() {
+    const list = document.getElementById("bunpouList");
+    const countEl = document.getElementById("bunpouCount");
+    if (!list) return;
+
+    let groups = bunpouGroups();
+    if (bunpouFilterDay !== "all") {
+        groups = groups.filter(function (g) { return g.days.indexOf(bunpouFilterDay) !== -1; });
+    }
+
+    const q = bunpouQuery.trim().toLowerCase();
+    if (q) {
+        groups = groups.filter(function (g) {
+            return (g.pattern + " " + g.meaning + " " + g.jp + " " + g.id).toLowerCase().indexOf(q) !== -1;
+        });
+    }
+
+    if (countEl) {
+        countEl.textContent = groups.length + " rumus bunpou" +
+            (bunpouFilterDay === "all" ? " · semua hari" : " · Hari " + bunpouFilterDay) +
+            (q ? " · cari: " + bunpouQuery.trim() : "");
+    }
+
+    if (!groups.length) {
+        list.innerHTML = '<div class="bunpou-empty">Tidak ada pola yang cocok 🙈<br>Coba kata kunci lain ya〜</div>';
+        return;
+    }
+
+    let html = "";
+    groups.forEach(function (g) {
+        html += '<div class="bunpou-item">' +
+            '<div class="bunpou-days">Hari ' + g.days.join(" · ") + "</div>" +
+            '<div class="bunpou-pattern">' + escapeHtml(g.pattern) + "</div>" +
+            (g.meaning ? '<div class="bunpou-meaning">' + escapeHtml(g.meaning) + "</div>" : "") +
+            (g.jp ? '<div class="bunpou-example">' +
+                '<div class="bunpou-ex-label">Contoh Kalimat</div>' +
+                '<div class="bunpou-jp">' + escapeHtml(g.jp) + "</div>" +
+                (g.id ? '<div class="bunpou-id">' + escapeHtml(g.id) + "</div>" : "") +
+            "</div>" : "") +
+        "</div>";
+    });
+    list.innerHTML = html;
+}
+
+function initBunpouUI() {
+    const searchEl = document.getElementById("bunpouSearch");
+    if (searchEl && !searchEl.dataset.wired) {
+        searchEl.dataset.wired = "1";
+        searchEl.addEventListener("input", function (e) {
+            bunpouQuery = e.target.value;
+            renderBunpou();
+        });
+    }
+    buildBunpouFilters();
+    renderBunpou();
+}
+
 function switchTab(tabName) {
     // Cek apakah sesi belajar sedang aktif (learningArea terbuka)
     if (learningArea.style.display === 'block' && cardQueue.length > 0) {
@@ -156,30 +290,32 @@ function switchTab(tabName) {
         stopTimer();
     }
 
-    const calendarTab = document.getElementById('calendarTabContent');
-    const studyTab = document.getElementById('studyTabContent');
-    const btnCalendar = document.getElementById('btnTabCalendar');
-    const btnStudy = document.getElementById('btnTabStudy');
-    
+    const tabs = {
+        calendar: { content: document.getElementById('calendarTabContent'), btn: document.getElementById('btnTabCalendar') },
+        study:    { content: document.getElementById('studyTabContent'),    btn: document.getElementById('btnTabStudy') },
+        bunpou:   { content: document.getElementById('bunpouTabContent'),  btn: document.getElementById('btnTabBunpou') }
+    };
+
     learningArea.style.display = 'none';
     completionScreen.style.display = 'none';
 
+    Object.keys(tabs).forEach(function (key) {
+        const t = tabs[key];
+        if (!t.content || !t.btn) return;
+        const aktif = (key === tabName);
+        t.content.style.display = aktif ? 'block' : 'none';
+        t.btn.classList.toggle('active', aktif);
+    });
+
     if (tabName === 'calendar') {
-        calendarTab.style.display = 'block';
-        studyTab.style.display = 'none';
-        btnCalendar.classList.add('active');
-        btnStudy.classList.remove('active');
         renderCalendar();
         updateStatsBar();
     } else if (tabName === 'study') {
-        calendarTab.style.display = 'none';
-        studyTab.style.display = 'block';
-        btnStudy.classList.add('active');
-        btnCalendar.classList.remove('active');
-        
         document.getElementById('studySelectionCard').style.display = 'block';
         document.getElementById('studySessionMenu').style.display = 'none';
         populateDirectStudyDropdown();
+    } else if (tabName === 'bunpou') {
+        initBunpouUI();
     }
 }
 

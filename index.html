@@ -27,6 +27,7 @@
         <div class="tab-navigation">
             <button class="tab-btn active" id="btnTabCalendar" onclick="switchTab('calendar')">📅 Kalender</button>
             <button class="tab-btn" id="btnTabStudy" onclick="switchTab('study')">📖 Belajar</button>
+            <button class="tab-btn" id="btnTabBunpou" onclick="switchTab('bunpou')">📐 Bunpou</button>
         </div>
 
         <!-- TAB 1: KALENDER (AKUMULASI WAKTU & STATS) -->
@@ -126,6 +127,17 @@
                 </div>
                 </div>
             </div>
+        </div>
+
+        <!-- TAB 3: BUNPOU (TATA BAHASA) -->
+        <div id="bunpouTabContent" class="tab-content" style="display: none;">
+            <div class="bunpou-header-card">
+                <h2>📐 Kumpulan Bunpou (Tata Bahasa)</h2>
+                <p class="bunpou-subtitle" id="bunpouCount">Memuat data bunpou…</p>
+                <input type="text" id="bunpouSearch" class="bunpou-search" placeholder="🔍 Cari rumus, arti, atau contoh kalimat…">
+                <div class="bunpou-day-chips" id="bunpouDayChips"></div>
+            </div>
+            <div id="bunpouList" class="bunpou-list"></div>
         </div>
 
         <!-- AREA BELAJAR FLASHCARD -->

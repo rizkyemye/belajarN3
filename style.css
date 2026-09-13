@@ -1349,3 +1349,122 @@ body {
     .card-back .back-example-jp { font-size: 0.98rem; }
     .card-back .back-example-id { font-size: 0.86rem; }
 }
+
+/* ===== TAB BUNPOU: KUMPULAN TATA BAHASA ===== */
+.tab-content { padding-bottom: 30px; }
+
+.bunpou-header-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+    border: 1px solid #eef2f7;
+    margin-bottom: 14px;
+}
+.bunpou-header-card h2 { margin: 0 0 4px; font-size: 1.15rem; color: #0f172a; }
+.bunpou-subtitle { margin: 0 0 14px; font-size: 0.85rem; color: #64748b; }
+
+.bunpou-search {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: #f8fafc;
+    color: #1e293b;
+    outline: none;
+}
+.bunpou-search:focus { border-color: #6366f1; background: #ffffff; }
+
+.bunpou-day-chips {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 12px 2px 2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+.bunpou-day-chips::-webkit-scrollbar { display: none; }
+
+.bunpou-chip {
+    flex: 0 0 auto;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1.5px solid #e2e8f0;
+    background: #f8fafc;
+    color: #475569;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.bunpou-chip.active { background: #4f46e5; border-color: #4f46e5; color: #ffffff; }
+.bunpou-chip .chip-n { opacity: 0.65; font-weight: 500; }
+
+.bunpou-list { display: flex; flex-direction: column; gap: 12px; }
+
+.bunpou-days {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #6366f1;
+    background: #eef2ff;
+    border-radius: 999px;
+    padding: 3px 9px;
+    margin-bottom: 8px;
+}
+
+.bunpou-item {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 16px 18px;
+    border: 1px solid #eef2f7;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+}
+.bunpou-pattern {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.3;
+    word-break: break-word;
+}
+.bunpou-meaning {
+    font-size: 0.95rem;
+    color: #334155;
+    margin-top: 6px;
+    line-height: 1.5;
+}
+.bunpou-example {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #e2e8f0;
+}
+.bunpou-ex-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin-bottom: 6px;
+}
+.bunpou-jp { font-size: 1.05rem; font-weight: 500; color: #0f172a; line-height: 1.6; }
+.bunpou-id { font-size: 0.9rem; color: #64748b; margin-top: 4px; line-height: 1.5; }
+
+.bunpou-empty {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    padding: 34px 20px;
+    line-height: 1.7;
+}
+
+/* 3 tab sekarang — kecilkan sedikit biar muat di layar HP */
+@media (max-width: 480px) {
+    .tab-btn { font-size: 0.82rem; padding: 10px 4px; }
+    .bunpou-pattern { font-size: 1.25rem; }
+}
