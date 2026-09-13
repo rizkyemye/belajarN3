@@ -46,6 +46,29 @@
   .rank.aku { background: #eef2ff; border-radius: 10px; padding: 10px 8px; }
   .kosong { text-align: center; color: #94a3b8; font-size: 0.9rem; padding: 26px; line-height: 1.7; }
   .catatan { font-size: 0.72rem; color: #94a3b8; line-height: 1.7; margin-top: 14px; }
+
+  /* ===== RESPONSIVE (HP) — v7 ===== */
+  @media (max-width: 640px) {
+    body { padding: 12px max(12px, env(safe-area-inset-left)) 30px max(12px, env(safe-area-inset-right)); }
+    .topbar { gap: 8px; }
+    .topbar h1 { font-size: 1.05rem; }
+    .btn { min-height: 40px; padding: 9px 12px; font-size: 0.8rem; }
+    .grid { gap: 8px; }
+    .kotak { padding: 12px 8px; }
+    .kotak .angka { font-size: 1.3rem; }
+    .card { padding: 14px; border-radius: 14px; }
+    .rank { gap: 8px; padding: 9px 0; }
+    .rank .pos { width: 24px; }
+    .rank .xp { font-size: 0.78rem; }
+    .rank .nm { font-size: 0.88rem; }
+    .avatar { width: 48px; height: 48px; font-size: 1.8rem; }
+    .nama { font-size: 1.05rem; }
+  }
+  @media (max-width: 380px) {
+    .grid { grid-template-columns: 1fr; }
+    .rank .nm small { font-size: 0.68rem; }
+    .bar-teks { font-size: 0.72rem; }
+  }
 </style>
 </head>
 <body>
@@ -67,6 +90,12 @@
     <div class="kotak"><div class="angka" id="sHari">0</div><div class="label">hari materi disentuh</div></div>
     <div class="kotak"><div class="angka" id="sSelesai">0</div><div class="label">sesi selesai</div></div>
     <div class="kotak"><div class="angka" id="sAkurasi">–</div><div class="label">akurasi kuis</div></div>
+  </div>
+
+  <div class="card" id="kartuImpor" style="display:none">
+    <h2>⬆️ Data lama di HP ini</h2>
+    <p class="catatan" id="imporTeks" style="margin-top:0"></p>
+    <button class="btn utama" id="btnImpor" style="width:100%">Kirim ke server (sekali saja)</button>
   </div>
 
   <div class="card">
@@ -106,6 +135,46 @@
       ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
   function jam(n) { return (Math.round((Number(n) || 0) * 10) / 10).toLocaleString("id-ID"); }
+
+  // --- data lama yang masih cuma ada di HP ini ---
+  function dataLamaDiHP(user) {
+    const pre = "study_time_" + user + "_";
+    const tanggal = [];
+    let detik = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (!k || k.indexOf(pre) !== 0) continue;
+      const d = parseInt(localStorage.getItem(k)) || 0;
+      if (d > 0) { tanggal.push({ tanggal: k.slice(pre.length), detik: d }); detik += d; }
+    }
+    return { tanggal: tanggal, detik: detik };
+  }
+
+  async function tampilkanImpor(aku) {
+    if (!aku) return;
+    const lokal = dataLamaDiHP(aku.username);
+    const hari = (N3.hariSelesai ? N3.hariSelesai() : []);
+    if (!lokal.detik && !hari.length) return;
+
+    const kartu = document.getElementById("kartuImpor");
+    kartu.style.display = "block";
+    document.getElementById("imporTeks").innerHTML =
+      "Ada <b>" + jam(lokal.detik / 3600) + " jam</b> belajar" +
+      (lokal.tanggal.length ? " (" + lokal.tanggal.length + " tanggal)" : "") +
+      " dan <b>" + hari.length + " hari</b> yang masih tersimpan di HP ini, belum terkirim ke server.<br>" +
+      "Kirim sekali biar muncul di Dashboard. Aman dikirim berkali-kali — tidak akan dobel.";
+
+    document.getElementById("btnImpor").onclick = async function () {
+      this.disabled = true;
+      this.textContent = "Mengirim…";
+      let hasil = { kirim: 0, gagal: 0 };
+      try { hasil = await N3.imporWaktuLama(lokal.tanggal); } catch (e) { hasil = { kirim: 0, gagal: lokal.tanggal.length, error: e.message }; }
+      for (const d of hari) { try { N3.tandaiHariKuis(d, 0, 0); } catch (e) {} }
+      await new Promise(function (r) { setTimeout(r, 900); });
+      alert("Selesai!\nTerkirim: " + hasil.kirim + " tanggal" + (hasil.gagal ? "\nGagal: " + hasil.gagal + " (pastikan SQL baru sudah dijalankan)" : "") + "\nHalaman akan dimuat ulang.");
+      location.reload();
+    };
+  }
 
   async function jalan() {
     const elPesan = document.getElementById("pesanMuat");
@@ -156,6 +225,8 @@
     const soal = st ? Number(st.soal_total) || 0 : 0;
     document.getElementById("sAkurasi").textContent =
       soal > 0 ? Math.round((Number(st.benar_total) / soal) * 100) + "%" : "–";
+
+    tampilkanImpor(aku);
 
     const papan = await N3.papanPeringkat(50);
     if (!papan.length) { elPapan.innerHTML = '<div class="kosong">Belum ada yang belajar. Jadi yang pertama yuk! 🌸</div>'; return; }

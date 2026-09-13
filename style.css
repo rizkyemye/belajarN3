@@ -1555,3 +1555,122 @@ body {
 .n3-pesan.err { color: #dc2626; }
 .n3-pesan.ok { color: #16a34a; }
 .n3-gate-note { font-size: 0.75rem; color: #94a3b8; margin: 12px 0 0; line-height: 1.6; }
+
+
+/* ============================================================================
+   LAYER RESPONSIVE (v7) — dibuat Tzuyu 13 Sep 2026
+   Tujuan: rapi di HP (360–430px), tetap enak di tablet & laptop.
+   Ditaruh di paling bawah supaya menang dari aturan-aturan sebelumnya.
+   ============================================================================ */
+
+/* --- 1. DASAR: cegah layar geser ke samping & ukuran jangan aneh --- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+html, body { max-width: 100%; }
+html { overflow-x: hidden; }
+body { overflow-x: clip; }   /* 'clip' (bukan hidden) supaya tab sticky tetap nempel */
+img, svg, video, canvas { max-width: 100%; height: auto; }
+body {
+    padding: 12px max(12px, env(safe-area-inset-left)) 32px max(12px, env(safe-area-inset-right));
+}
+.app-container { width: 100%; max-width: 700px; margin: 0 auto; }
+
+/* teks panjang (kanji/katakana/URL) tidak boleh bikin kotak melar */
+.card-face, .quiz-option-btn, .bunpou-pattern, .bunpou-rumus-text, .back-word,
+.back-example-jp, .back-example-id, .rank .nm, .session-title, .n3-pesan {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* --- 2. UKURAN FONT YANG IKUT LEBAR LAYAR (clamp) ---
+   Nilai maksimum = ukuran aslinya, jadi tampilan laptop tidak berubah. */
+.header-title h1 { font-size: clamp(1.1rem, 4.6vw, 1.5rem); line-height: 1.3; }
+.card-face { font-size: clamp(1.15rem, 5.6vw, 1.8rem); }
+.card-back .back-word { font-size: clamp(1.2rem, 6vw, 1.8rem); }
+.card-back .back-example-jp { font-size: clamp(0.95rem, 4.2vw, 1.05rem); }
+.card-back .back-example-id { font-size: clamp(0.8rem, 3.6vw, 0.92rem); }
+.flashcard-container { height: clamp(210px, 46vh, 300px); }
+
+/* --- 3. TOMBOL: minimal 44–46px supaya enak dipencet jempol --- */
+.tab-btn { min-height: 44px; }
+.rating-buttons button { min-height: 46px; font-size: 0.88rem; padding: 10px 6px; }
+.action-btn-primary, .restart-btn, .n3-btn, .session-btn, .quiz-link-btn, .back-calendar-btn { min-height: 44px; }
+.quiz-option-btn { min-height: 48px; padding: 12px 14px; }
+
+/* --- 4. INPUT: font 16px, kalau lebih kecil iPhone suka auto-zoom --- */
+@media (max-width: 640px) {
+    input, select, textarea, .n3-input, .bunpou-search, .study-select, .rv-select, #directDaySelect, #quizDaySelect {
+        font-size: 16px !important;
+    }
+}
+
+/* --- 5. TATA LETAK KHUSUS HP --- */
+@media (max-width: 640px) {
+    body { padding: 10px max(10px, env(safe-area-inset-left)) 30px max(10px, env(safe-area-inset-right)); }
+
+    /* header: judul di baris sendiri, tombol-tombolnya turun ke bawah */
+    .header-container { flex-wrap: wrap; align-items: flex-start; gap: 10px; margin-bottom: 16px; }
+    .header-title { flex: 1 1 100%; }
+    .header-container > div:last-child { width: 100%; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .quiz-link-btn { flex: 0 1 auto; padding: 9px 12px; font-size: 0.82rem; }
+    #currentProfileDisplay { flex: 1 1 100%; font-size: 0.85rem !important; }
+
+    /* tab dibuat nempel di atas biar gampang pindah */
+    .tab-navigation { position: sticky; top: 0; z-index: 60; backdrop-filter: blur(6px); }
+    .tab-btn { font-size: 0.8rem; padding: 10px 4px; }
+
+    /* kalender: kotak tanggal proporsional & angka tidak meluber */
+    .days-grid { gap: 4px; }
+    /* .day-cell sudah persegi & flex-column dari aturan lama — di sini cukup kecilkan angkanya */
+    .days-grid > div { font-size: clamp(0.7rem, 3.4vw, 0.9rem); }
+    .day-cell .day-number { font-size: clamp(0.72rem, 3.4vw, 0.9rem); line-height: 1.1; }
+    .day-cell .day-time { font-size: clamp(0.5rem, 2.3vw, 0.62rem); line-height: 1.1; }
+    .weekdays-grid { gap: 4px; font-size: 0.74rem; }
+    .stats-bar { gap: 6px; }
+    .stat-badge { font-size: 0.76rem; padding: 5px 10px; }
+
+    /* kartu: padding sedikit lebih rapat, sudut tetap manis */
+    .study-hub-card, .session-menu-card, .learning-card, .card, .rv-card,
+    .bunpou-header-card, .bunpou-item, .calendar-card { padding: 16px; border-radius: 14px; }
+
+    /* kuis: kotak soal jangan kaku 160px, kata panjang tetap muat */
+    #quizQuestionText { height: auto !important; min-height: 130px; padding: 14px !important; }
+
+    /* sesi belajar: judul & status tidak berdesakan */
+    .session-btn { padding: 14px 16px; gap: 8px; }
+    .session-title { font-size: 0.95rem; }
+    .session-desc { font-size: 0.78rem; }
+
+    /* papan peringkat & kartu bunpou */
+    .rank { gap: 8px; }
+    .rank .xp { font-size: 0.8rem; }
+    .bunpou-rumus { flex-direction: column; gap: 6px; }
+    .bunpou-rumus-label { margin-top: 0; align-self: flex-start; }
+}
+
+/* --- 6. HP KECIL (≤ 400px, misal iPhone SE / layar 360px) --- */
+@media (max-width: 400px) {
+    body { padding: 8px max(8px, env(safe-area-inset-left)) 26px max(8px, env(safe-area-inset-right)); }
+    .header-title h1 { font-size: 1.05rem; }
+    .calendar-icon { font-size: 1.2rem; }
+    .quiz-link-btn { font-size: 0.76rem; padding: 8px 10px; min-height: 40px; }
+    .tab-btn { font-size: 0.74rem; padding: 10px 2px; }
+    .flashcard-container { height: clamp(200px, 44vh, 250px); }
+    .rating-buttons { flex-wrap: wrap; }
+    .rating-buttons button { flex: 1 1 45%; }
+    .bunpou-chip { font-size: 0.73rem; padding: 6px 10px; }
+    .bunpou-pattern { font-size: 1.2rem; }
+    .stat-badge { font-size: 0.72rem; padding: 4px 9px; }
+    .card-hint { font-size: 0.72rem; }
+    table { font-size: 0.8rem; }
+}
+
+/* --- 7. LAYAR LEBAR (laptop/tablet): sedikit lebih lega --- */
+@media (min-width: 900px) {
+    .flashcard-container { height: 300px; }
+}
+
+/* --- 8. HORMATI PREFERENSI "kurangi animasi" --- */
+@media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

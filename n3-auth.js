@@ -73,6 +73,14 @@
                 });
                 return !error;
             }
+            if (it.jenis === "kata") {
+                const { error } = await sb.rpc("catat_kata", {
+                    p_kata: it.kata, p_day: it.day,
+                    p_benar: !!it.benar, p_detik: Math.round(it.detik || 0),
+                    p_ambang: it.ambang || 30
+                });
+                return !error;
+            }
             if (it.jenis === "selesai") {
                 const { error } = await sb.rpc("mark_session_done", {
                     p_day: it.day, p_session: it.session,
@@ -118,6 +126,15 @@
         statistik: statistik,
         papanPeringkat: papanPeringkat,
         namaPengguna: function () { return pengguna ? pengguna.username : ""; },
+        // --- Review Kosakata ---
+        catatKata: catatKata,
+        kataSusah: kataSusah,
+        hariSelesai: hariSelesai,
+        tandaiHariKuis: tandaiHariKuis,
+        muatKata: muatKataDariServer,
+        muatHariKuis: muatHariKuisDariServer,
+        imporWaktuLama: imporWaktuLama,
+
         // halaman lain bisa: await N3.tungguSiap()
         tungguSiap: function () { return janjiSiap; },
         // kirim ulang data yang sempat gagal (dipakai juga oleh dashboard)
@@ -253,6 +270,133 @@
         return data || [];
     }
 
+    /* ================= REVIEW KOSAKATA: catatan per kata =================
+       Mirror lokal (biar tetap jalan walau offline / belum jalankan SQL baru):
+         n3_kata_<username> = { "<kanji>": {day, benar, salah, lambat, detik_total, terakhir} }
+       Server: tabel word_stats lewat RPC catat_kata.                        */
+    function kunciKata() { return "n3_kata_" + (pengguna ? pengguna.username : (localStorage.getItem(KUNCI_USER) || "-")); }
+
+    function bacaKata() {
+        try { return JSON.parse(localStorage.getItem(kunciKata()) || "{}") || {}; } catch (e) { return {}; }
+    }
+    function simpanKata(obj) {
+        try { localStorage.setItem(kunciKata(), JSON.stringify(obj)); } catch (e) {}
+    }
+
+    function catatKata(kata, day, benar, detik, ambang) {
+        if (!kata) return;
+        const amb = Number(ambang) || 30;
+        const d = Math.max(0, Math.round(Number(detik) || 0));
+
+        // 1) mirror lokal (langsung, biar tampilan responsif)
+        const semua = bacaKata();
+        const k = String(kata).trim();
+        const s = semua[k] || { day: Number(day) || 0, benar: 0, salah: 0, lambat: 0, detik_total: 0, terakhir: "" };
+        if (benar) s.benar++; else s.salah++;
+        if (d >= amb) s.lambat++;
+        s.detik_total += d;
+        s.day = Number(day) || s.day;
+        s.terakhir = new Date().toISOString();
+        semua[k] = s;
+        simpanKata(semua);
+
+        // 2) kirim ke server
+        if (!AKTIF) return;
+        const item = { jenis: "kata", kata: k, day: Number(day) || 0, benar: !!benar, detik: d, ambang: amb };
+        if (!sb || !pengguna) return antre(item);
+        kirimKeServer(item).then(function (ok) { if (!ok) antre(item); });
+    }
+
+    async function muatHariKuisDariServer() {
+        if (!sb || !pengguna) return;
+        try {
+            const { data } = await sb.from("progress").select("day_no").eq("user_id", pengguna.id).eq("session", "kuis").eq("selesai", true);
+            if (!data || !data.length) return;
+            let arr = [];
+            try { arr = JSON.parse(localStorage.getItem("n3_hari_kuis")) || []; } catch (e) { arr = []; }
+            data.forEach(function (r) {
+                if (arr.indexOf(Number(r.day_no)) === -1) arr.push(Number(r.day_no));
+            });
+            localStorage.setItem("n3_hari_kuis", JSON.stringify(arr.sort(function (x, y) { return x - y; })));
+        } catch (e) {}
+    }
+
+    async function muatKataDariServer() {
+        if (!sb || !pengguna) return;
+        await muatHariKuisDariServer();
+        try {
+            const { data } = await sb.from("word_stats")
+                .select("kata,day_no,benar,salah,lambat,detik_total,terakhir").eq("user_id", pengguna.id);
+            if (!data) return;
+            const lokal = bacaKata();
+            data.forEach(function (r) {
+                lokal[r.kata] = {
+                    day: r.day_no, benar: r.benar, salah: r.salah, lambat: r.lambat,
+                    detik_total: r.detik_total, terakhir: r.terakhir
+                };
+            });
+            simpanKata(lokal);
+        } catch (e) { /* tabel belum dipasang? biarkan pakai mirror lokal */ }
+    }
+
+    // kata yang perlu diulang (salah atau lama), hanya dari hari yang kuisnya sudah selesai
+    function kataSusah(ambang) {
+        const amb = Number(ambang) || 30;
+        const semua = bacaKata();
+        const hariOK = hariSelesai();
+        const hasil = [];
+        Object.keys(semua).forEach(function (k) {
+            const s = semua[k] || {};
+            if (!hariOK.includes(Number(s.day))) return;      // hari belum selesai -> jangan muncul
+            if ((s.salah || 0) > 0 || (s.lambat || 0) > 0) {
+                hasil.push({
+                    kata: k, day: Number(s.day) || 0,
+                    benar: s.benar || 0, salah: s.salah || 0, lambat: s.lambat || 0,
+                    detik_total: s.detik_total || 0,
+                    skor: (s.salah || 0) * 3 + (s.lambat || 0) * 2,
+                    rata_detik: Math.round(((s.detik_total || 0) / Math.max((s.benar || 0) + (s.salah || 0), 1)) * 10) / 10
+                });
+            }
+        });
+        return hasil.sort(function (a, b) { return b.skor - a.skor || b.rata_detik - a.rata_detik; });
+    }
+
+    // hari yang kuisnya sudah selesai (gabungan lokal + server)
+    function hariSelesai() {
+        const hari = [];
+        function tambah(d) { d = Number(d); if (d && hari.indexOf(d) === -1) hari.push(d); }
+        try { (JSON.parse(localStorage.getItem("completed_quiz_days")) || []).forEach(tambah); } catch (e) {}
+        try { (JSON.parse(localStorage.getItem("n3_hari_kuis")) || []).forEach(tambah); } catch (e) {}
+        return hari.sort(function (a, b) { return a - b; });
+    }
+
+    // dipanggil quiz.js saat satu hari selesai dikerjakan
+    function tandaiHariKuis(day, benar, total) {
+        if (!day) return;
+        try {
+            const arr = JSON.parse(localStorage.getItem("n3_hari_kuis")) || [];
+            if (arr.indexOf(Number(day)) === -1) { arr.push(Number(day)); localStorage.setItem("n3_hari_kuis", JSON.stringify(arr)); }
+        } catch (e) {}
+        N3.kirimSelesai(day, "kuis", benar, total);
+    }
+
+    /* ================= impor data lama (dari HP, sekali klik) =================
+       Dipakai kalau waktu belajar sudah tercatat di HP sebelum web tersambung
+       ke server. Idempoten: kirim dua kali tidak bikin dobel.               */
+    async function imporWaktuLama(daftarTanggal) {
+        if (!AKTIF || !sb || !pengguna) return { kirim: 0, gagal: 0 };
+        let kirim = 0, gagal = 0;
+        for (const it of (daftarTanggal || [])) {
+            try {
+                const { error } = await sb.rpc("impor_waktu_lama", {
+                    p_tanggal: it.tanggal, p_detik: Math.round(it.detik)
+                });
+                if (error) gagal++; else kirim++;
+            } catch (e) { gagal++; }
+        }
+        return { kirim: kirim, gagal: gagal };
+    }
+
     /* ================= gerbang login (overlay) ================= */
     function gerbang() {
         if (!AKTIF) return null;
@@ -347,11 +491,11 @@
             const sesi = res && res.data ? res.data.session : null;
             if (sesi && sesi.user) {
                 await pasangPengguna(sesi.user);
-                simpanSesiLokal();
-                tampilkanGerbang(false);
+                    tampilkanGerbang(false);
                 await sinkronData();
                 await kirimAntrean();
                 await sinkronData();
+                await muatKataDariServer();
             } else {
                 tampilkanGerbang(true);
             }

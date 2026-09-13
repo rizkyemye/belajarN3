@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Review - Flashcard JLPT N3</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=7">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -40,6 +40,7 @@
                     <!-- Diisi otomatis via JavaScript -->
                 </select>
                 <button class="action-btn-primary" onclick="startQuiz()">Mulai Quiz Sekarang ⚡</button>
+                <button class="action-btn-primary" onclick="window.location.href='review.html'" style="background-color:#4f46e5;">🔁 Review Kosakata</button>
                 <button class="action-btn-primary" onclick="window.location.href='index.html'">🏠 Beranda</button>
             </div>
         </div>
@@ -100,6 +101,10 @@
         </div>
     </div>
 </div>
-    <script src="quiz.js"></script>
+    <!-- Supabase: login + pencatatan kata (untuk Review Kosakata) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="n3-auth.js?v=7"></script>
+    <script src="quiz.js?v=7"></script>
 </body>
 </html>

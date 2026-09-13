@@ -205,6 +205,16 @@ function selectQuizAnswer(buttonElement, selectedAnswer, correctAnswer) {
     allButtons.forEach(btn => btn.disabled = true);
 
     const answerDuration = (Date.now() - questionStartTime) / 1000;
+    const benarJawaban = (selectedAnswer === correctAnswer);
+
+    // === Untuk fitur Review Kosakata ===
+    // Kata dicatat sebagai "perlu diulang" kalau dijawab SALAH atau LAMA (> 30 detik).
+    try {
+        const soalKata = (currentSessionQuestions && currentSessionQuestions[currentQuestionIndex]) || null;
+        if (window.N3 && N3.catatKata && soalKata) {
+            N3.catatKata(soalKata.front, selectedDay, benarJawaban, answerDuration, 30);
+        }
+    } catch (e) { console.warn("gagal catat kata:", e); }
 
     if (selectedAnswer === correctAnswer) {
         buttonElement.classList.add('correct');
@@ -256,6 +266,11 @@ function triggerSessionBreak() {
         const currentSec = parseInt(localStorage.getItem(calendarKey)) || 0;
         
         localStorage.setItem(calendarKey, currentSec + quizSecondsElapsed);
+
+        // kirim juga ke server (biar jam belajar kuis muncul di Dashboard)
+        try {
+            if (window.N3 && N3.kirimDetik) N3.kirimDetik(selectedDay, 'kuis', quizSecondsElapsed);
+        } catch (e) { console.warn("gagal kirim waktu kuis:", e); }
     }
 
     let nextSessionIdx = currentSessionIdx + 1;
@@ -305,6 +320,12 @@ function finishQuizCompletion() {
     localStorage.removeItem('saved_session_idx');
     localStorage.removeItem('saved_day_sessions');
     localStorage.removeItem('saved_correct_count');
+
+    // === Hari ini dianggap "selesai" (dipakai halaman Review Kosakata) ===
+    try {
+        const totalSoalSemua = daySessions.reduce((acc, s) => acc + s.length, 0);
+        if (window.N3 && N3.tandaiHariKuis) N3.tandaiHariKuis(selectedDay, correctCount, totalSoalSemua);
+    } catch (e) { console.warn("gagal tandai hari kuis:", e); }
     
     document.getElementById('quizArea').style.display = 'none';
     document.getElementById('quizBreakScreen').style.display = 'none';
