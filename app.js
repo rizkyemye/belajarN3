@@ -196,6 +196,8 @@ function bunpouGroups() {
 
 let bunpouFilterDay = "all";
 let bunpouQuery = "";
+let bunpouRumus = {};          // diisi dari bunpou_rumus.json (rumus/aturan sambung tiap pola)
+let bunpouRumusDimuat = false;
 
 function buildBunpouFilters() {
     const chips = document.getElementById("bunpouDayChips");
@@ -235,7 +237,7 @@ function renderBunpou() {
     const q = bunpouQuery.trim().toLowerCase();
     if (q) {
         groups = groups.filter(function (g) {
-            return (g.pattern + " " + g.meaning + " " + g.jp + " " + g.id).toLowerCase().indexOf(q) !== -1;
+            return (g.pattern + " " + (bunpouRumus[g.pattern] || "") + " " + g.meaning + " " + g.jp + " " + g.id).toLowerCase().indexOf(q) !== -1;
         });
     }
 
@@ -252,9 +254,11 @@ function renderBunpou() {
 
     let html = "";
     groups.forEach(function (g) {
+        const rumus = bunpouRumus[g.pattern] || "";
         html += '<div class="bunpou-item">' +
             '<div class="bunpou-days">Hari ' + g.days.join(" · ") + "</div>" +
             '<div class="bunpou-pattern">' + escapeHtml(g.pattern) + "</div>" +
+            (rumus ? '<div class="bunpou-rumus"><span class="bunpou-rumus-label">Rumus</span><span class="bunpou-rumus-text">' + escapeHtml(rumus) + "</span></div>" : "") +
             (g.meaning ? '<div class="bunpou-meaning">' + escapeHtml(g.meaning) + "</div>" : "") +
             (g.jp ? '<div class="bunpou-example">' +
                 '<div class="bunpou-ex-label">Contoh Kalimat</div>' +
@@ -266,6 +270,28 @@ function renderBunpou() {
     list.innerHTML = html;
 }
 
+function injectBunpouLegend() {
+    const head = document.querySelector(".bunpou-header-card");
+    if (!head || head.querySelector(".bunpou-legend")) return;
+    const div = document.createElement("div");
+    div.className = "bunpou-legend";
+    div.innerHTML = "<b>Arti singkatan rumus:</b> 名詞 = kata benda · 動詞 = kata kerja · い形 = kata sifat-i · " +
+        "な形 = kata sifat-na · 普通形 = bentuk biasa · 辞書形 = bentuk kamus · た形 = bentuk lampau · " +
+        "ない形 = bentuk negatif · ます形の語幹 = akar bentuk sopan · 意向形 = bentuk ajakan";
+    const anchorEl = document.getElementById("bunpouDayChips");
+    if (anchorEl && anchorEl.parentNode) anchorEl.parentNode.insertBefore(div, anchorEl);
+    else head.appendChild(div);
+}
+
+function loadBunpouRumus() {
+    if (bunpouRumusDimuat) return;
+    bunpouRumusDimuat = true;
+    fetch("bunpou_rumus.json")
+        .then(function (r) { return r.ok ? r.json() : {}; })
+        .then(function (json) { bunpouRumus = json || {}; renderBunpou(); })
+        .catch(function () { bunpouRumus = {}; });
+}
+
 function initBunpouUI() {
     const searchEl = document.getElementById("bunpouSearch");
     if (searchEl && !searchEl.dataset.wired) {
@@ -275,6 +301,8 @@ function initBunpouUI() {
             renderBunpou();
         });
     }
+    injectBunpouLegend();
+    loadBunpouRumus();
     buildBunpouFilters();
     renderBunpou();
 }

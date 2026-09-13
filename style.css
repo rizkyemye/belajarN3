@@ -1468,3 +1468,44 @@ body {
     .tab-btn { font-size: 0.82rem; padding: 10px 4px; }
     .bunpou-pattern { font-size: 1.25rem; }
 }
+
+.bunpou-rumus {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 9px 12px;
+    background: #f5f3ff;
+    border-left: 3px solid #8b5cf6;
+    border-radius: 8px;
+}
+.bunpou-rumus-label {
+    flex: 0 0 auto;
+    margin-top: 3px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #8b5cf6;
+    color: #ffffff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+.bunpou-rumus-text {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #4c1d95;
+    line-height: 1.55;
+    word-break: break-word;
+}
+.bunpou-legend {
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: #f8fafc;
+    border: 1px dashed #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.74rem;
+    color: #64748b;
+    line-height: 1.75;
+}
+.bunpou-legend b { color: #475569; }
