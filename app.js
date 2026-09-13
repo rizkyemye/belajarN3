@@ -3,6 +3,20 @@ let currentUser = localStorage.getItem('jlpt_current_user') || '';
 
 // Fungsi untuk memastikan user sudah memasukkan nama saat pertama buka
 function checkAndInitUser() {
+    // ONLINE: login pakai username + sandi (Supabase) -> gerbang login
+    if (window.N3 && N3.aktif) {
+        const tersimpan = localStorage.getItem('n3_username') || '';
+        if (tersimpan) {
+            currentUser = tersimpan;
+        } else {
+            currentUser = '';
+            if (typeof window.N3TampilkanGerbang === 'function') window.N3TampilkanGerbang(true);
+        }
+        updateProfileDisplay();
+        return;
+    }
+
+    // LOKAL (belum tersambung server): perilaku lama
     if (!currentUser || currentUser.trim() === '') {
         let inputName = prompt("Masukkan nama profil kamu untuk mulai belajar:");
         if (inputName && inputName.trim() !== '') {
@@ -17,6 +31,13 @@ function checkAndInitUser() {
 
 // Fungsi untuk mengganti profil
 function switchProfile() {
+    // ONLINE: tombol ini jadi "keluar" (ganti akun)
+    if (window.N3 && N3.aktif && N3.pengguna) {
+        if (confirm("Keluar dari akun " + currentUser + "?")) {
+            if (typeof window.N3Keluar === 'function') window.N3Keluar();
+        }
+        return;
+    }
     let inputName = prompt("Masukkan nama profil baru atau ganti profil:", currentUser);
     if (inputName && inputName.trim() !== '') {
         currentUser = inputName.trim();
@@ -35,7 +56,14 @@ function switchProfile() {
 function updateProfileDisplay() {
     const profileEl = document.getElementById('currentProfileDisplay');
     if (profileEl) {
-        profileEl.textContent = `👤 ${currentUser}`;
+        profileEl.textContent = currentUser ? `👤 ${currentUser}` : '👤 belum masuk';
+    }
+    // kalau online, tombol "Ganti Profil" berubah jadi "Keluar"
+    const btnGanti = document.querySelector('.quiz-link-btn[onclick="switchProfile()"]');
+    if (btnGanti && window.N3 && N3.aktif) {
+        btnGanti.textContent = 'Keluar';
+        btnGanti.style.backgroundColor = '#fee2e2';
+        btnGanti.style.color = '#b91c1c';
     }
 }
 
@@ -196,8 +224,129 @@ function bunpouGroups() {
 
 let bunpouFilterDay = "all";
 let bunpouQuery = "";
-let bunpouRumus = {};          // diisi dari bunpou_rumus.json (rumus/aturan sambung tiap pola)
-let bunpouRumusDimuat = false;
+// Rumus/aturan sambung tiap pola, ditanam langsung di file ini
+// (biar nggak perlu file terpisah + nggak bisa gagal load).
+const BUNPOU_RUMUS = {
+    "〜あまり": "名詞 + の ／ 動詞・い形・な形（普通形）+ あまり",
+    "〜うちに": "名詞 + の ／ 動詞（辞書形・ている形）／ い形 + うちに",
+    "〜おかげで": "名詞 + の ／ 動詞・い形・な形（普通形）+ おかげで",
+    "〜およそ": "およそ + 数・量",
+    "〜かねる": "動詞（ます形の語幹）+ かねる",
+    "〜かのように": "名詞 + の ／ 普通形 + かのように",
+    "〜かもしれない": "普通形 + かもしれない（名詞・な形は「だ」を付けない）",
+    "〜からこそ": "名詞・普通形 + からこそ",
+    "〜かわりに": "名詞 + の ／ 動詞（辞書形・た形）+ かわりに",
+    "〜がたい": "動詞（ます形の語幹）+ がたい",
+    "〜がち": "名詞 ／ 動詞（ます形の語幹）+ がち",
+    "〜がてら": "名詞 ／ 動詞（ます形の語幹）+ がてら",
+    "〜きる": "動詞（ます形の語幹）+ きる",
+    "〜ことだ": "動詞（辞書形・ない形）+ ことだ",
+    "〜ことなく": "動詞（辞書形）+ ことなく",
+    "〜さえ": "名詞 + さえ（+ 〜ない／〜ば）",
+    "〜ざるを得ない": "動詞（ない形の「ない」→「ざる」）+ を得ない　※する → せざるを得ない",
+    "〜ずじまい": "動詞（ない形の「ない」→「ず」）+ じまい　※する → せずじまい",
+    "〜ずにはいられない": "動詞（ない形の「ない」→「ず」）+ にはいられない",
+    "〜ずにはすまない": "動詞（ない形の「ない」→「ず」）+ にはすまない",
+    "〜せいで": "名詞 + の ／ 普通形 + せいで",
+    "〜たびごとに": "名詞 + の ／ 動詞（辞書形）+ たびごとに",
+    "〜たびに": "名詞 + の ／ 動詞（辞書形）+ たびに",
+    "〜ため": "名詞 + の ／ 動詞（辞書形・た形）+ ため（に）",
+    "〜ために": "名詞 + の ／ 動詞（辞書形）+ ために",
+    "〜だけでなく": "名詞・普通形 + だけでなく",
+    "〜だけのことはある": "名詞 ／ 普通形 + だけのことはある",
+    "〜っこない": "動詞（ます形の語幹）+ っこない",
+    "〜っぱなし": "動詞（ます形の語幹）+ っぱなし",
+    "〜っぽい": "名詞 ／ い形（〜い）／ 動詞（ます形の語幹）+ っぽい",
+    "〜ついでに": "名詞 + の ／ 動詞（辞書形・た形）+ ついでに",
+    "〜つつ": "動詞（ます形の語幹）+ つつ",
+    "〜つつある": "動詞（ます形の語幹）+ つつある",
+    "〜つもりだ": "動詞（辞書形・ない形）+ つもりだ",
+    "〜つもりで": "動詞（辞書形・ない形）+ つもりで",
+    "〜つもりはない": "動詞（辞書形）+ つもりはない",
+    "〜てたまらない": "い形（〜くて）／ な形（〜で）／ 動詞（て形）+ たまらない",
+    "〜てならない": "い形（〜くて）／ な形（〜で）／ 動詞（て形）+ ならない",
+    "〜てはじめて": "動詞（て形）+ はじめて",
+    "〜であれ": "名詞 + であれ",
+    "〜とあって": "名詞・普通形 + とあって",
+    "〜ということ": "普通形 ／ 名詞 + ということ",
+    "〜というものだ": "普通形 ／ 名詞 + というものだ",
+    "〜というより": "名詞・普通形 + というより",
+    "〜といった": "名詞 + といった + 名詞",
+    "〜といっても": "名詞・普通形 + といっても",
+    "〜とおり": "名詞 + の ／ 動詞（辞書形・た形）+ とおり（に）",
+    "〜として": "名詞 + として",
+    "〜とともに": "名詞 ／ 動詞（辞書形）+ とともに",
+    "〜とはいえ": "名詞・普通形 + とはいえ",
+    "〜とは限らない": "普通形 + とは限らない",
+    "〜ともなると": "名詞 + ともなると",
+    "〜どころか": "名詞・普通形 + どころか",
+    "〜ないことには": "動詞（ない形）+ ことには",
+    "〜ないまでも": "動詞（ない形）+ までも",
+    "〜ながらも": "動詞（ます形の語幹）／ い形 ／ 名詞 + ながらも",
+    "〜なり〜なり": "名詞 + なり + 名詞 + なり",
+    "〜にあたって": "名詞 ／ 動詞（辞書形）+ にあたって",
+    "〜において": "名詞 + において",
+    "〜にかけて": "名詞 + にかけて（は）",
+    "〜にこたえて": "名詞 + にこたえて",
+    "〜にちなんで": "名詞 + にちなんで",
+    "〜について": "名詞 + について",
+    "〜につれて": "動詞（辞書形）／ 名詞 + につれて",
+    "〜にとって": "名詞 + にとって",
+    "〜にほかならない": "名詞 + にほかならない",
+    "〜によって": "名詞 + によって",
+    "〜にわたって": "名詞 + にわたって",
+    "〜に伴って": "名詞 ／ 動詞（辞書形）+ に伴って",
+    "〜に先立って": "名詞 + に先立って",
+    "〜に加えて": "名詞 + に加えて",
+    "〜に反して": "名詞 + に反して",
+    "〜に基づいて": "名詞 + に基づいて",
+    "〜に対して": "名詞 + に対して",
+    "〜に応じて": "名詞 + に応じて",
+    "〜に決まっている": "普通形 + に決まっている",
+    "〜に沿って": "名詞 + に沿って",
+    "〜に越したことはない": "動詞（辞書形）+ に越したことはない",
+    "〜に過ぎない": "名詞・普通形 + に過ぎない",
+    "〜に違いない": "普通形 + に違いない",
+    "〜に関して": "名詞 + に関して",
+    "〜に限って": "名詞 + に限って",
+    "〜に限る": "名詞 ／ 動詞（辞書形・ない形）+ に限る",
+    "〜ぬく": "動詞（ます形の語幹）+ ぬく",
+    "〜のみならず": "名詞・普通形 + のみならず",
+    "〜の際に": "名詞 + の際に",
+    "〜はずだ": "普通形 + はずだ",
+    "〜はもとより": "名詞 + はもとより",
+    "〜ばかりか": "名詞・普通形 + ばかりか",
+    "〜ばかりに": "名詞・普通形 + ばかりに",
+    "〜ばよかった": "動詞（ば形）+ よかった",
+    "〜べきだ": "動詞（辞書形）+ べきだ　※する → すべきだ／するべきだ",
+    "〜べく": "動詞（辞書形）+ べく　※する → すべく",
+    "〜ほど": "名詞 ／ 動詞（辞書形）+ ほど",
+    "〜ものだ": "普通形 + ものだ",
+    "〜ものだから": "普通形 + ものだから",
+    "〜ものなら": "動詞（可能形）+ ものなら",
+    "〜ものの": "普通形（名詞・な形は「な」）+ ものの",
+    "〜ようがない": "動詞（ます形の語幹）+ ようがない",
+    "〜ようでは": "動詞（辞書形・ない形）+ ようでは",
+    "〜ようとしている": "動詞（意向形）+ としている　※する → しようとしている",
+    "〜ように": "動詞（辞書形・ない形）+ ように",
+    "〜ようにする": "動詞（辞書形・ない形）+ ようにする",
+    "〜ように見える": "名詞 + の ／ 普通形 + ように見える",
+    "〜わけがない": "普通形 + わけがない",
+    "〜わけだ": "普通形 + わけだ",
+    "〜をはじめ": "名詞 + をはじめ",
+    "〜をめぐって": "名詞 + をめぐって",
+    "〜を問わず": "名詞 + を問わず",
+    "〜を込めて": "名詞 + を込めて",
+    "〜を通して": "名詞 + を通して",
+    "〜を通じて": "名詞 + を通じて",
+    "〜一方だ": "動詞（辞書形）+ 一方だ",
+    "〜一方で": "動詞・い形（普通形）／ 名詞 + である + 一方で",
+    "〜上で": "名詞 + の ／ 動詞（辞書形・た形）+ 上で",
+    "〜反面": "動詞・い形（普通形）／ 名詞・な形（である・な）+ 反面",
+    "〜恐れがある": "名詞 + の ／ 動詞（辞書形）+ 恐れがある",
+    "〜次第": "名詞 + 次第（で）",
+    "〜気味": "名詞 ／ 動詞（ます形の語幹）+ 気味",
+};
 
 function buildBunpouFilters() {
     const chips = document.getElementById("bunpouDayChips");
@@ -237,12 +386,12 @@ function renderBunpou() {
     const q = bunpouQuery.trim().toLowerCase();
     if (q) {
         groups = groups.filter(function (g) {
-            return (g.pattern + " " + (bunpouRumus[g.pattern] || "") + " " + g.meaning + " " + g.jp + " " + g.id).toLowerCase().indexOf(q) !== -1;
+            return (g.pattern + " " + (BUNPOU_RUMUS[g.pattern] || "") + " " + g.meaning + " " + g.jp + " " + g.id).toLowerCase().indexOf(q) !== -1;
         });
     }
 
     if (countEl) {
-        countEl.textContent = groups.length + " rumus bunpou" +
+        countEl.textContent = "v4 · " + groups.length + " rumus bunpou" +
             (bunpouFilterDay === "all" ? " · semua hari" : " · Hari " + bunpouFilterDay) +
             (q ? " · cari: " + bunpouQuery.trim() : "");
     }
@@ -254,7 +403,7 @@ function renderBunpou() {
 
     let html = "";
     groups.forEach(function (g) {
-        const rumus = bunpouRumus[g.pattern] || "";
+        const rumus = BUNPOU_RUMUS[g.pattern] || "";
         html += '<div class="bunpou-item">' +
             '<div class="bunpou-days">Hari ' + g.days.join(" · ") + "</div>" +
             '<div class="bunpou-pattern">' + escapeHtml(g.pattern) + "</div>" +
@@ -283,15 +432,6 @@ function injectBunpouLegend() {
     else head.appendChild(div);
 }
 
-function loadBunpouRumus() {
-    if (bunpouRumusDimuat) return;
-    bunpouRumusDimuat = true;
-    fetch("bunpou_rumus.json")
-        .then(function (r) { return r.ok ? r.json() : {}; })
-        .then(function (json) { bunpouRumus = json || {}; renderBunpou(); })
-        .catch(function () { bunpouRumus = {}; });
-}
-
 function initBunpouUI() {
     const searchEl = document.getElementById("bunpouSearch");
     if (searchEl && !searchEl.dataset.wired) {
@@ -302,7 +442,6 @@ function initBunpouUI() {
         });
     }
     injectBunpouLegend();
-    loadBunpouRumus();
     buildBunpouFilters();
     renderBunpou();
 }
@@ -597,6 +736,11 @@ function isSessionCompleted(dayNum, sessionName) {
 
 function setSessionCompleted(dayNum, sessionName) {
     localStorage.setItem(getDaySessionKey(dayNum, sessionName), 'true');
+
+    // kirim juga ke server (Supabase)
+    if (window.N3 && N3.kirimSelesai) {
+        N3.kirimSelesai(dayNum, sessionName);
+    }
 }
 
 function updateStudySessionButtonsState(dayNum) {
@@ -719,6 +863,11 @@ function addStudyTimeToToday(seconds) {
     const key = getFormattedDateKey(today.getFullYear(), today.getMonth(), today.getDate());
     const currentSec = parseInt(localStorage.getItem(key)) || 0;
     localStorage.setItem(key, currentSec + seconds);
+
+    // kirim juga ke server (Supabase) supaya data tidak hilang
+    if (window.N3 && N3.kirimDetik) {
+        N3.kirimDetik(currentActiveDay, currentSession || '-', seconds);
+    }
 }
 
 function updateCard() {
