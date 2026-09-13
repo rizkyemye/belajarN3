@@ -83,6 +83,37 @@ function getCleanBack(rawText) {
         : rawText.trim();
 }
 
+
+// --- RENDER KARTU BELAKANG: kosakata besar, contoh kalimat lebih kecil ---
+function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+}
+
+function renderCardBack(el, rawText) {
+    const MARK = "【Contoh Kalimat】";
+    const text = rawText || "";
+    const cut = text.indexOf(MARK);
+    const head = (cut === -1 ? text : text.slice(0, cut)).trim();
+    const rest = cut === -1 ? "" : text.slice(cut + MARK.length).trim();
+
+    // baris terakhir = terjemahan Indonesia, sisanya = kalimat Jepang
+    const lines = rest.split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
+    const indo = lines.length ? lines[lines.length - 1] : "";
+    const jp = lines.slice(0, -1).join(" ");
+
+    let html = '<div class="back-wrap"><div class="back-word">' + escapeHtml(head) + "</div>";
+    if (rest) {
+        html += '<div class="back-example">'
+              + '<div class="back-example-label">Contoh Kalimat</div>'
+              + (jp ? '<div class="back-example-jp">' + escapeHtml(jp) + "</div>" : "")
+              + (indo ? '<div class="back-example-id">' + escapeHtml(indo) + "</div>" : "")
+              + "</div>";
+    }
+    html += "</div>";
+    el.innerHTML = html;
+}
 // TAMBAHAN: Fungsi untuk memperbarui preview kosakata saat dropdown diganti
 function onDayDropdownChange() {
     const selectElement = document.getElementById('directDaySelect');
@@ -540,7 +571,7 @@ function updateCard() {
     }
 
     cardFront.textContent = cardQueue[0].front;
-    cardBack.textContent = cardQueue[0].back;
+    renderCardBack(cardBack, cardQueue[0].back);
     counter.textContent = `Sisa: ${cardQueue.length} kartu`;
     
     flashcard.classList.remove("flipped");
