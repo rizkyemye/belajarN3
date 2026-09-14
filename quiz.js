@@ -18,7 +18,7 @@ let userLevel = parseInt(localStorage.getItem('user_level')) || 1;
 document.addEventListener("DOMContentLoaded", () => {
     updateUserStatsDisplay();
     
-    fetch('data.json')
+    fetch('data.json?v=10')
         .then(response => response.json())
         .then(data => {
             allQuizData = data;

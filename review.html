@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Review Kosakata — JLPT N3 Master</title>
-<link rel="stylesheet" href="style.css?v=7">
+<link rel="stylesheet" href="style.css?v=10">
 <style>
     .rv-card { background:#fff; border:1px solid #eef2f7; border-radius:16px; padding:18px; margin-bottom:14px; box-shadow:0 2px 10px rgba(15,23,42,.05); }
     .rv-card h2 { font-size:1.1rem; margin:0 0 6px; color:#0f172a; }
@@ -117,7 +117,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="supabase-config.js"></script>
-<script src="n3-auth.js?v=7"></script>
+<script src="n3-auth.js?v=10"></script>
 <script>
 /* ============ REVIEW KOSAKATA ============ */
 let rvData = [];        // semua entri dari data.json
@@ -251,7 +251,7 @@ function tampilkanKartu() {
             '<div class="back-word">' + esc(bersihBack(e.back)) + '</div>' +
             (p.jp ? '<div class="back-example">' +
                       '<div class="back-example-label">Contoh Kalimat</div>' +
-                      '<div class="back-example-jp">' + esc(p.jp) + '</div>' +
+                      '<div class="back-example-jp">' + (e.furi ? e.furi : esc(p.jp)) + '</div>' +
                       (p.id ? '<div class="back-example-id">' + esc(p.id) + '</div>' : '') +
                     '</div>' : '') +
         '</div>';
@@ -313,7 +313,7 @@ document.getElementById("rvAmbang").addEventListener("change", function () {
 /* ==== muat data & sinkron dengan server ==== */
 (async function () {
     try {
-        const r = await fetch("data.json");
+        const r = await fetch("data.json?v=10");
         rvData = await r.json();
     } catch (e) { console.warn("gagal muat data.json", e); }
 

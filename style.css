@@ -1674,3 +1674,76 @@ body {
 @media (prefers-reduced-motion: reduce) {
     * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+/* ===== TAB KANJI (漢字) ===== */
+.kanji-header-card {
+    background: #ffffff; border: 1px solid #eef2f7; border-radius: 14px; padding: 18px;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06); margin-bottom: 14px;
+}
+.kanji-header-card h2 { margin: 0 0 4px; font-size: 1.15rem; color: #0f172a; }
+.kanji-sub { margin: 0 0 14px; font-size: 0.85rem; color: #64748b; }
+.kanji-cari {
+    width: 100%; box-sizing: border-box; padding: 12px 14px; border: 1.5px solid #e2e8f0;
+    border-radius: 10px; font-size: 0.95rem; font-family: inherit; background: #f8fafc; color: #1e293b; outline: none;
+}
+.kanji-cari:focus { border-color: #0f766e; background: #ffffff; }
+.kanji-cek { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 0.85rem; color: #475569; font-weight: 600; }
+.kanji-chips { display: flex; gap: 8px; overflow-x: auto; padding: 12px 2px 2px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.kanji-chips::-webkit-scrollbar { display: none; }
+.kanji-chip {
+    flex: 0 0 auto; padding: 7px 12px; border-radius: 999px; border: 1.5px solid #e2e8f0;
+    background: #f8fafc; color: #475569; font-family: inherit; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap;
+}
+.kanji-chip.aktif { background: #0f766e; border-color: #0f766e; color: #ffffff; }
+.kanji-n { opacity: 0.7; font-weight: 500; }
+.kanji-legenda { margin: 12px 0 0; font-size: 0.72rem; color: #94a3b8; line-height: 1.7; }
+.kanji-list { display: flex; flex-direction: column; gap: 10px; }
+.kanji-item {
+    display: flex; gap: 14px; background: #ffffff; border: 1px solid #eef2f7; border-radius: 14px;
+    padding: 14px; box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+}
+.kanji-badge {
+    flex: 0 0 auto; width: 66px; height: 66px; border-radius: 12px; background: #0f766e; color: #ffffff;
+    display: flex; align-items: center; justify-content: center; font-size: 2.1rem; font-weight: 700;
+}
+.kanji-isi { flex: 1 1 auto; min-width: 0; }
+.kanji-baris { display: flex; gap: 8px; align-items: baseline; margin-bottom: 4px; }
+.kanji-label { flex: 0 0 auto; font-size: 0.62rem; font-weight: 700; border-radius: 6px; padding: 2px 6px; }
+.kanji-label.on { background: #eef2ff; color: #4f46e5; }
+.kanji-label.kun { background: #ecfdf5; color: #047857; }
+.kanji-label.arti { background: #f1f5f9; color: #475569; }
+.kanji-baca { font-size: 1.05rem; font-weight: 600; color: #0f172a; overflow-wrap: anywhere; }
+.kanji-arti { font-size: 0.85rem; color: #475569; overflow-wrap: anywhere; }
+.kanji-meta { font-size: 0.72rem; color: #94a3b8; margin-top: 6px; }
+.kanji-contoh { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.kanji-kata { font-size: 0.75rem; background: #f8fafc; border: 1px solid #eef2f7; border-radius: 8px; padding: 4px 8px; color: #475569; }
+.kanji-kata b { color: #0f172a; }
+.kanji-more {
+    width: 100%; padding: 13px; border: none; border-radius: 12px; background: #eef2ff; color: #4f46e5;
+    font-family: inherit; font-weight: 700; font-size: 0.9rem; cursor: pointer; min-height: 46px;
+}
+.kanji-kosong { text-align: center; color: #94a3b8; padding: 34px 20px; font-size: 0.9rem; line-height: 1.8; }
+@media (max-width: 640px) {
+    .kanji-header-card { padding: 15px; }
+    .kanji-item { padding: 12px; gap: 11px; }
+}
+@media (max-width: 400px) {
+    .kanji-badge { width: 54px; height: 54px; font-size: 1.7rem; }
+    .kanji-baca { font-size: 0.95rem; }
+    .kanji-chip { font-size: 0.73rem; padding: 6px 10px; }
+    .tab-btn { font-size: 0.7rem; padding: 10px 1px; }
+}
+
+/* ===== FURIGANA (ruby) di kalimat contoh ===== */
+.back-example-jp { line-height: 2.15; }
+.back-example-jp ruby { ruby-position: over; -webkit-ruby-position: over; }
+.back-example-jp rt {
+    font-size: 0.52em; font-weight: 400; color: #94a3b8;
+    letter-spacing: 0; line-height: 1; text-align: center;
+}
+#previewVocabList .back-example-jp, .rv-back .back-example-jp { line-height: 2.15; }
+#previewVocabList rt, .rv-back rt { font-size: 0.52em; font-weight: 400; color: #94a3b8; }
+@media (max-width: 640px) {
+    .back-example-jp { line-height: 2.05; }
+    .back-example-jp rt { font-size: 0.55em; }
+}

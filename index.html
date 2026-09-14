@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flashcard JLPT N3 - Kalender & Belajar</title>
-    <link rel="stylesheet" href="style.css?v=7">
+    <link rel="stylesheet" href="style.css?v=10">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -30,6 +30,7 @@
             <button class="tab-btn active" id="btnTabCalendar" onclick="switchTab('calendar')">📅 Kalender</button>
             <button class="tab-btn" id="btnTabStudy" onclick="switchTab('study')">📖 Belajar</button>
             <button class="tab-btn" id="btnTabBunpou" onclick="switchTab('bunpou')">📐 Bunpou</button>
+            <button class="tab-btn" id="btnTabKanji" onclick="switchTab('kanji')">漢字 Kanji</button>
         </div>
 
         <!-- TAB 1: KALENDER (AKUMULASI WAKTU & STATS) -->
@@ -142,6 +143,22 @@
             <div id="bunpouList" class="bunpou-list"></div>
         </div>
 
+        <!-- TAB 4: KANJI (音読み / 訓読み) -->
+        <div id="kanjiTabContent" class="tab-content" style="display: none;">
+            <div class="kanji-header-card">
+                <h2>漢字 · Kanji</h2>
+                <p class="kanji-sub" id="kanjiInfo">Memuat data kanji…</p>
+                <input type="text" id="kanjiCari" class="kanji-cari" placeholder="🔍 Cari kanji, bacaan, arti, atau kata…">
+                <label class="kanji-cek"><input type="checkbox" id="kanjiN3"> Hanya kanji JLPT N3</label>
+                <div class="kanji-chips" id="kanjiHari"></div>
+                <p class="kanji-legenda">
+                    <b>音読み</b> = bacaan ala Cina (ditulis katakana) · <b>訓読み</b> = bacaan asli Jepang (hiragana)<br>
+                    tanda <b>.</b> / <b>-</b> = pemisah dengan okurigana (contoh: ひと.つ → 一つ = <i>hitotsu</i>)
+                </p>
+            </div>
+            <div id="kanjiList" class="kanji-list"></div>
+        </div>
+
         <!-- AREA BELAJAR FLASHCARD -->
         <div id="learning-area" style="display: none; margin-top: 20px;" class="learning-card">
             <div class="learning-top-bar">
@@ -197,7 +214,8 @@
     <!-- Supabase: login + penyimpanan data di server -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="supabase-config.js"></script>
-    <script src="n3-auth.js?v=7"></script>
-    <script src="app.js?v=7"></script>
+    <script src="n3-auth.js?v=10"></script>
+    <script src="n3-kanji.js?v=10"></script>
+    <script src="app.js?v=10"></script>
 </body>
 </html>

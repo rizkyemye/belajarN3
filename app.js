@@ -91,7 +91,7 @@ const counter = document.getElementById("counter");
 const timerDisplay = document.getElementById("timerDisplay");
 const resultText = document.getElementById("resultText");
 
-fetch('data.json')
+fetch('data.json?v=10')
     .then(response => response.json())
     .then(data => {
         allData = data;
@@ -120,7 +120,7 @@ function escapeHtml(value) {
     });
 }
 
-function renderCardBack(el, rawText) {
+function renderCardBack(el, rawText, furi) {
     const MARK = "【Contoh Kalimat】";
     const text = rawText || "";
     const cut = text.indexOf(MARK);
@@ -136,7 +136,7 @@ function renderCardBack(el, rawText) {
     if (rest) {
         html += '<div class="back-example">'
               + '<div class="back-example-label">Contoh Kalimat</div>'
-              + (jp ? '<div class="back-example-jp">' + escapeHtml(jp) + "</div>" : "")
+              + (jp ? '<div class="back-example-jp">' + (furi ? furi : escapeHtml(jp)) + "</div>" : "")
               + (indo ? '<div class="back-example-id">' + escapeHtml(indo) + "</div>" : "")
               + "</div>";
     }
@@ -460,7 +460,8 @@ function switchTab(tabName) {
     const tabs = {
         calendar: { content: document.getElementById('calendarTabContent'), btn: document.getElementById('btnTabCalendar') },
         study:    { content: document.getElementById('studyTabContent'),    btn: document.getElementById('btnTabStudy') },
-        bunpou:   { content: document.getElementById('bunpouTabContent'),  btn: document.getElementById('btnTabBunpou') }
+        bunpou:   { content: document.getElementById('bunpouTabContent'),  btn: document.getElementById('btnTabBunpou') },
+        kanji:    { content: document.getElementById('kanjiTabContent'),   btn: document.getElementById('btnTabKanji') }
     };
 
     learningArea.style.display = 'none';
@@ -483,6 +484,8 @@ function switchTab(tabName) {
         populateDirectStudyDropdown();
     } else if (tabName === 'bunpou') {
         initBunpouUI();
+    } else if (tabName === 'kanji') {
+        if (typeof window.initKanjiUI === 'function') window.initKanjiUI();
     }
 }
 
@@ -884,7 +887,7 @@ function updateCard() {
     }
 
     cardFront.textContent = cardQueue[0].front;
-    renderCardBack(cardBack, cardQueue[0].back);
+    renderCardBack(cardBack, cardQueue[0].back, cardQueue[0].furi);
     counter.textContent = `Sisa: ${cardQueue.length} kartu`;
     
     flashcard.classList.remove("flipped");
