@@ -135,6 +135,10 @@
         muatHariKuis: muatHariKuisDariServer,
         imporWaktuLama: imporWaktuLama,
         gantiSandi: gantiSandi,
+        // --- kode pemulihan / lupa sandi ---
+        pasangKodeBaru: pasangKodeBaru,
+        statusKode: statusKode,
+        lupaSandi: lupaSandi,
 
         // halaman lain bisa: await N3.tungguSiap()
         tungguSiap: function () { return janjiSiap; },
@@ -192,6 +196,12 @@
         }
         await pasangPengguna(data.user);
         simpanSesiLokal();
+
+        // sekalian bikinkan kode pemulihan (biar user nggak terkunci kalau lupa sandi)
+        let kodeBaru = null;
+        try { kodeBaru = await pasangKodeBaru(); }
+        catch (e) { console.warn("[N3] kode pemulihan belum bisa dibuat:", e); }
+        return kodeBaru;
     }
 
     async function keluar() {
@@ -407,6 +417,59 @@
         return true;
     }
 
+    /* ================= kode pemulihan (buat lupa sandi mandiri) ================= */
+    function buatKodeAcak() {
+        const AB = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";   // tanpa I/O/0/1 biar tak salah baca
+        let k = "";
+        let acak = null;
+        try { acak = window.crypto.getRandomValues(new Uint8Array(8)); } catch (e) { acak = null; }
+        for (let i = 0; i < 8; i++) {
+            const n = acak ? (acak[i] % AB.length) : Math.floor(Math.random() * AB.length);
+            k += AB[n];
+        }
+        return k.slice(0, 4) + "-" + k.slice(4);
+    }
+
+    // bikin kode baru (disimpan di server dalam bentuk hash) -> kode dikembalikan sekali
+    async function pasangKodeBaru() {
+        if (!sb || !pengguna) throw new Error("Harus login dulu.");
+        const kode = buatKodeAcak();
+        const { data, error } = await sb.rpc("set_kode_pemulihan", { p_kode: kode });
+        if (error) {
+            if (/set_kode_pemulihan/i.test(error.message))
+                throw new Error("Fitur kode pemulihan belum aktif. Jalankan schema-reset.sql di Supabase dulu.");
+            throw new Error(error.message);
+        }
+        if (data && data.ok === false) throw new Error(data.pesan || "Gagal menyimpan kode.");
+        return kode;
+    }
+
+    // apakah akun ini sudah punya kode pemulihan?
+    async function statusKode() {
+        if (!sb || !pengguna) return null;
+        const { data, error } = await sb.from("profiles").select("kode_dibuat").eq("id", pengguna.id).maybeSingle();
+        if (error) return null;
+        return { ada: !!(data && data.kode_dibuat), dibuat: data ? data.kode_dibuat : null };
+    }
+
+    // lupa sandi: username + kode pemulihan -> sandi baru (tanpa email, tanpa login)
+    async function lupaSandi(username, kode, sandiBaru) {
+        if (!sb) throw new Error("Belum tersambung ke server.");
+        if (String(sandiBaru || "").length < 6) throw new Error("Sandi baru minimal 6 karakter.");
+        const { data, error } = await sb.rpc("reset_sandi_dengan_kode", {
+            p_username: String(username || "").trim().toLowerCase(),
+            p_kode: String(kode || ""),
+            p_sandi_baru: String(sandiBaru)
+        });
+        if (error) {
+            if (/reset_sandi_dengan_kode/i.test(error.message))
+                throw new Error("Fitur lupa sandi belum aktif. Jalankan schema-reset.sql di Supabase dulu.");
+            throw new Error(error.message);
+        }
+        if (data && data.ok === false) throw new Error(data.pesan || "Gagal mengganti sandi.");
+        return true;
+    }
+
     /* ================= gerbang login (overlay) ================= */
     function gerbang() {
         if (!AKTIF) return null;
@@ -429,6 +492,18 @@
             '  <div id="n3Pesan" class="n3-pesan"></div>',
             '  <button id="n3Kirim" class="n3-btn">Masuk ➔</button>',
             '  <p class="n3-gate-note">Data kamu (jam belajar, progress, level) tersimpan di server, jadi bisa dibuka dari HP mana pun 🌸</p>',
+            '  <button id="n3Lupa" class="n3-lupa" type="button">🔑 Lupa sandi?</button>',
+            '  <div id="n3Reset" class="n3-reset" style="display:none">',
+            '    <div class="n3-reset-judul">Masukkan username + kode pemulihan kamu</div>',
+            '    <input id="n3RUser" class="n3-input" type="text" placeholder="Username">',
+            '    <input id="n3RKode" class="n3-input" type="text" placeholder="Kode pemulihan (contoh: K7F2-9QX4)">',
+            '    <input id="n3RPass" class="n3-input" type="password" placeholder="Sandi baru (minimal 6 karakter)">',
+            '    <input id="n3RPass2" class="n3-input" type="password" placeholder="Ulangi sandi baru">',
+            '    <div id="n3RPesan" class="n3-pesan"></div>',
+            '    <button id="n3RKirim" class="n3-btn" type="button">Ganti sandi ➔</button>',
+            '    <button id="n3RBatal" class="n3-lupa" type="button">← Balik ke halaman masuk</button>',
+            '  </div>',
+            '  <div id="n3KodeBox" class="n3-kode-box" style="display:none"></div>',
             '</div>'
         ].join("\n");
         document.body.appendChild(g);
@@ -459,11 +534,18 @@
             elPesan.className = "n3-pesan";
             elPesan.textContent = "Memproses…";
             elKirim.disabled = true;
+            let kodeBaru = null;
             try {
                 if (mode === "daftar") {
-                    await daftar(elUser.value, elPass.value, elNama.value);
+                    kodeBaru = await daftar(elUser.value, elPass.value, elNama.value);
                 } else {
                     await masuk(elUser.value, elPass.value);
+                }
+                if (kodeBaru) {          // daftar baru: tunjukkan kode pemulihan dulu
+                    elPesan.textContent = "";
+                    elKirim.disabled = false;
+                    tampilkanKode(kodeBaru);
+                    return;
                 }
                 elPesan.textContent = "Berhasil! Memuat data…";
                 elPesan.className = "n3-pesan ok";
@@ -480,6 +562,91 @@
         [elUser, elPass, elNama].forEach(function (el) {
             el.addEventListener("keydown", function (e) { if (e.key === "Enter") kirim(); });
         });
+
+        /* ---------- lupa sandi ---------- */
+        const elLupa   = g.querySelector("#n3Lupa");
+        const elReset  = g.querySelector("#n3Reset");
+        const elRUser  = g.querySelector("#n3RUser");
+        const elRKode  = g.querySelector("#n3RKode");
+        const elRPass  = g.querySelector("#n3RPass");
+        const elRPass2 = g.querySelector("#n3RPass2");
+        const elRPesan = g.querySelector("#n3RPesan");
+        const elRKirim = g.querySelector("#n3RKirim");
+        const elRBatal = g.querySelector("#n3RBatal");
+        const elKodeBox = g.querySelector("#n3KodeBox");
+        const elemenLogin = [elUser, elPass, elNama, elKirim];
+
+        function gantiPanel(mana) {
+            const login = (mana === "login");
+            if (elReset) elReset.style.display = login ? "none" : "block";
+            elemenLogin.forEach(function (x) { if (x) x.style.display = login ? "" : "none"; });
+            g.querySelectorAll(".n3-tab").forEach(function (x) { x.style.display = login ? "" : "none"; });
+            if (elLupa) elLupa.style.display = login ? "block" : "none";
+            if (elKodeBox) elKodeBox.style.display = "none";
+            if (elRPesan) { elRPesan.textContent = ""; elRPesan.className = "n3-pesan"; }
+            if (!login && elRUser) {
+                elRUser.value = elUser.value || "";
+                setTimeout(function () { (elRUser.value ? elRKode : elRUser).focus(); }, 60);
+            }
+        }
+
+        if (elLupa && elReset && elRKirim) {
+            elLupa.addEventListener("click", function () { gantiPanel("lupa"); });
+            if (elRBatal) elRBatal.addEventListener("click", function () { gantiPanel("login"); });
+            if (elRKode) elRKode.addEventListener("input", function () {
+                elRKode.value = elRKode.value.toUpperCase();
+            });
+            elRKirim.addEventListener("click", async function () {
+                elRPesan.className = "n3-pesan";
+                elRPesan.textContent = "Memproses…";
+                elRKirim.disabled = true;
+                try {
+                    if (elRPass.value !== elRPass2.value) throw new Error("Sandi baru dan ulangannya belum sama.");
+                    await lupaSandi(elRUser.value, elRKode.value, elRPass.value);
+                    elRPesan.textContent = "✅ Sandi berhasil diganti! Sekarang login pakai sandi baru.";
+                    elRPesan.className = "n3-pesan ok";
+                    mode = "masuk";
+                    elUser.value = String(elRUser.value || "").trim().toLowerCase();
+                    elPass.value = "";
+                    if (elRKode) elRKode.value = "";
+                    elRPass.value = ""; elRPass2.value = "";
+                    setTimeout(function () { gantiPanel("login"); elPass.focus(); }, 1500);
+                } catch (err) {
+                    elRPesan.textContent = (err && err.message) ? err.message : String(err);
+                    elRPesan.className = "n3-pesan err";
+                } finally {
+                    elRKirim.disabled = false;
+                }
+            });
+        }
+
+        /* ---------- tampilkan kode pemulihan sekali (habis daftar / buat baru) ---------- */
+        function tampilkanKode(kode) {
+            if (!elKodeBox) return;
+            const aman = String(kode).replace(/[^A-Z0-9\-]/g, "");
+            elKodeBox.innerHTML =
+                '<div class="kode-judul">🔑 Ini kode pemulihan kamu</div>' +
+                '<div class="kode-besar">' + aman + '</div>' +
+                '<button class="n3-btn kecil" id="n3Salin" type="button">📋 Salin kode</button>' +
+                '<div class="kode-ket">Kode ini <b>satu-satunya cara</b> ganti sandi kalau kamu lupa. ' +
+                'Screenshot atau tulis di catatan HP ya. Jangan dikasih ke siapa pun 🌸</div>' +
+                '<button class="n3-btn" id="n3Lanjut" type="button">Sudah kusimpan, mulai belajar ➔</button>';
+            elKodeBox.style.display = "block";
+            elemenLogin.forEach(function (x) { if (x) x.style.display = "none"; });
+            g.querySelectorAll(".n3-tab").forEach(function (x) { x.style.display = "none"; });
+            if (elReset) elReset.style.display = "none";
+            if (elLupa) elLupa.style.display = "none";
+            const btnSalin = g.querySelector("#n3Salin");
+            if (btnSalin) btnSalin.addEventListener("click", function () {
+                try {
+                    if (navigator.clipboard) navigator.clipboard.writeText(aman);
+                    btnSalin.textContent = "✅ Tersalin!";
+                } catch (e) { btnSalin.textContent = "Salin manual ya"; }
+            });
+            const lanjut = g.querySelector("#n3Lanjut");
+            if (lanjut) lanjut.addEventListener("click", function () { location.reload(); });
+        }
+        N3._tampilkanKode = tampilkanKode;
 
         return g;
     }

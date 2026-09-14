@@ -1747,3 +1747,24 @@ body {
     .back-example-jp { line-height: 2.05; }
     .back-example-jp rt { font-size: 0.55em; }
 }
+
+/* ===== LUPA SANDI (kode pemulihan) ===== */
+.n3-lupa {
+    display: block; width: 100%; margin-top: 8px; padding: 10px; background: none; border: none;
+    color: #0f766e; font: inherit; font-size: 0.9rem; font-weight: 700; cursor: pointer;
+    text-align: center; min-height: 42px;
+}
+.n3-lupa:hover { text-decoration: underline; }
+.n3-reset { border-top: 1px dashed #e2e8f0; margin-top: 12px; padding-top: 12px; text-align: left; }
+.n3-reset-judul { font-size: 0.85rem; font-weight: 700; color: #475569; margin-bottom: 8px; }
+.n3-kode-box { text-align: center; }
+.kode-judul { font-size: 0.95rem; font-weight: 800; color: #0f766e; margin-bottom: 6px; }
+.kode-besar {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 24px; font-weight: 800;
+    letter-spacing: 2px; color: #0f766e; background: #ecfdf5; border: 2px dashed #0f766e;
+    border-radius: 12px; padding: 14px 8px; margin: 8px 0; user-select: all; -webkit-user-select: all;
+    overflow-wrap: anywhere;
+}
+.kode-ket { font-size: 0.82rem; color: #64748b; line-height: 1.7; margin: 10px 0; }
+.n3-btn.kecil { padding: 9px; font-size: 0.85rem; }
+@media (max-width: 400px) { .kode-besar { font-size: 20px; letter-spacing: 1px; } }
