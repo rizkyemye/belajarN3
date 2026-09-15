@@ -12,6 +12,7 @@
     let hariAktif = null;
     let pakaiFurigana = true;
     let tampilArti = false;
+    let ukuran = localStorage.getItem("n3_dokkai_ukuran") || "sedang";   // kecil | sedang | besar
     let jawaban = {};
     let diperiksa = false;
     let sudahMuat = false;
@@ -57,14 +58,18 @@
             <div class="dokkai-tombol-baris">
                 <button class="tombol-kecil ${pakaiFurigana ? "terang" : ""}" id="btnFurigana">ふりがな ${pakaiFurigana ? "ON" : "OFF"}</button>
                 <button class="tombol-kecil ${tampilArti ? "terang" : ""}" id="btnArti">Artinya ${tampilArti ? "ON" : "OFF"}</button>
-                <span class="catatan">sudah dibaca: ${Object.keys(hasil).length}/${hariList.length} hari</span>
+                <span class="dokkai-ukuran">
+                    <button data-ukuran="kecil" class="${ukuran === "kecil" ? "aktif" : ""}" title="huruf kecil">小</button>
+                    <button data-ukuran="sedang" class="${ukuran === "sedang" ? "aktif" : ""}" title="huruf sedang">中</button>
+                    <button data-ukuran="besar" class="${ukuran === "besar" ? "aktif" : ""}" title="huruf besar">大</button>
+                </span>
             </div>
         </div>
 
         <div class="kartu dokkai-bacaan">
             <div class="dokkai-judul">${pakaiFurigana ? hari.judul_furi || esc(hari.judul) : esc(hari.judul)}</div>
             <div class="catatan">Hari ${hari.day} · ${esc(hari.tema_jp)}（${esc(hari.tema_id)}）</div>
-            <div class="dokkai-teks">${(pakaiFurigana ? hari.furi : esc(hari.teks)).replace(/\n\n/g, "</p><p>").replace(/^/, "<p>") + "</p>"}</div>
+            <div class="dokkai-teks ukuran-${ukuran}">${(pakaiFurigana ? hari.furi : esc(hari.teks)).replace(/\n\n/g, "</p><p>").replace(/^/, "<p>") + "</p>"}</div>
             ${hari.kotoba && hari.kotoba.length ? `<div class="dokkai-kotoba">
                 <div class="label-kecil">KATA PENTING</div>
                 ${hari.kotoba.map((k) => `<span class="dokkai-kata"><b>${esc(k.kata)}</b> ${esc(k.arti)}</span>`).join("")}
@@ -104,6 +109,12 @@
         if (bf) bf.addEventListener("click", () => { pakaiFurigana = !pakaiFurigana; render(); });
         const ba = $("#btnArti");
         if (ba) ba.addEventListener("click", () => { tampilArti = !tampilArti; render(); });
+        document.querySelectorAll("#isiDokkai .dokkai-ukuran button").forEach((b) =>
+            b.addEventListener("click", () => {
+                ukuran = b.dataset.ukuran;
+                try { localStorage.setItem("n3_dokkai_ukuran", ukuran); } catch (e) {}
+                render();
+            }));
 
         document.querySelectorAll("#isiDokkai .dokkai-opsi").forEach((b) =>
             b.addEventListener("click", () => {

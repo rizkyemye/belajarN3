@@ -1784,17 +1784,44 @@ body {
 .dokkai-tema { font-size: 0.64rem; font-weight: 500; opacity: 0.8; }
 .dokkai-tombol-baris { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
 .dokkai-judul { font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 4px 0; }
-.dokkai-teks { font-size: 1.08rem; line-height: 2.35; color: #1e293b; margin-top: 8px; }
-.dokkai-teks p { margin: 0 0 12px; }
-.dokkai-teks ruby rt { font-size: 0.5em; color: #94a3b8; font-weight: 400; }
-.dokkai-kotoba { margin-top: 12px; padding-top: 10px; border-top: 1px dashed #e2e8f0; display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* bacaan: dibuat senyaman buku pelajaran (ruby rapat, baris lega, paragraf menjorok) */
+.dokkai-teks {
+    font-size: 1.1rem; line-height: 2.3; color: #1e293b; margin: 14px auto 0;
+    max-width: 40em; text-align: left; letter-spacing: 0; word-spacing: normal;
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", "MS Mincho", system-ui, serif;
+    font-feature-settings: normal; -webkit-text-size-adjust: 100%;
+}
+.dokkai-teks p { margin: 0 0 1.1em; text-indent: 1em; }
+.dokkai-teks p:last-child { margin-bottom: 0; }
+.dokkai-teks ruby {
+    ruby-position: over; -webkit-ruby-position: over; ruby-align: center;
+    letter-spacing: 0; margin: 0;
+}
+.dokkai-teks rt {
+    font-size: 0.48em; line-height: 1; color: #64748b; font-weight: 400;
+    letter-spacing: 0; font-family: system-ui, -apple-system, sans-serif;
+}
+/* ukuran huruf bacaan (diatur dari tombol 小・中・大) */
+.dokkai-teks.ukuran-kecil { font-size: 0.95rem; line-height: 2.1; }
+.dokkai-teks.ukuran-sedang { font-size: 1.1rem; line-height: 2.3; }
+.dokkai-teks.ukuran-besar { font-size: 1.28rem; line-height: 2.4; }
+.dokkai-bacaan { background: #ffffff; }
+.dokkai-ukuran { display: flex; gap: 6px; align-items: center; margin-left: auto; }
+.dokkai-ukuran button {
+    width: 38px; height: 34px; border-radius: 8px; border: 1.5px solid #e2e8f0; background: #f8fafc;
+    color: #475569; font: inherit; font-size: 0.8rem; font-weight: 700; cursor: pointer;
+}
+.dokkai-ukuran button.aktif { background: #4f46e5; border-color: #4f46e5; color: #fff; }
+.dokkai-kotoba { margin-top: 16px; padding-top: 10px; border-top: 1px dashed #e2e8f0; display: flex; flex-wrap: wrap; gap: 6px; }
 .dokkai-kata { font-size: 0.78rem; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 8px; color: #475569; }
 .dokkai-kata b { color: #0f172a; }
 .dokkai-arti { margin-top: 12px; padding: 12px; border-radius: 10px; background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; font-size: 0.88rem; }
 .dokkai-soal-item { border-top: 1px solid #eef2f7; padding: 12px 0; }
 .dokkai-soal-item:first-of-type { border-top: none; }
-.dokkai-pertanyaan { font-size: 0.98rem; line-height: 2.1; color: #0f172a; margin-bottom: 8px; }
-.dokkai-pertanyaan ruby rt { font-size: 0.5em; color: #94a3b8; font-weight: 400; }
+.dokkai-pertanyaan { font-size: 1rem; line-height: 2.05; color: #0f172a; margin-bottom: 8px; }
+.dokkai-pertanyaan ruby { ruby-position: over; -webkit-ruby-position: over; ruby-align: center; }
+.dokkai-pertanyaan rt { font-size: 0.48em; color: #64748b; font-weight: 400; line-height: 1; }
 .dokkai-pilihan { display: flex; flex-direction: column; gap: 8px; }
 .dokkai-opsi {
     display: flex; gap: 9px; align-items: flex-start; text-align: left; width: 100%;
