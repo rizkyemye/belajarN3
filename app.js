@@ -461,7 +461,8 @@ function switchTab(tabName) {
         calendar: { content: document.getElementById('calendarTabContent'), btn: document.getElementById('btnTabCalendar') },
         study:    { content: document.getElementById('studyTabContent'),    btn: document.getElementById('btnTabStudy') },
         bunpou:   { content: document.getElementById('bunpouTabContent'),  btn: document.getElementById('btnTabBunpou') },
-        kanji:    { content: document.getElementById('kanjiTabContent'),   btn: document.getElementById('btnTabKanji') }
+        kanji:    { content: document.getElementById('kanjiTabContent'),   btn: document.getElementById('btnTabKanji') },
+        dokkai:   { content: document.getElementById('dokkaiTabContent'),  btn: document.getElementById('btnTabDokkai') }
     };
 
     learningArea.style.display = 'none';
@@ -486,6 +487,8 @@ function switchTab(tabName) {
         initBunpouUI();
     } else if (tabName === 'kanji') {
         if (typeof window.initKanjiUI === 'function') window.initKanjiUI();
+    } else if (tabName === 'dokkai') {
+        if (typeof window.initDokkaiUI === 'function') window.initDokkaiUI();
     }
 }
 

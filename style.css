@@ -1768,3 +1768,56 @@ body {
 .kode-ket { font-size: 0.82rem; color: #64748b; line-height: 1.7; margin: 10px 0; }
 .n3-btn.kecil { padding: 9px; font-size: 0.85rem; }
 @media (max-width: 400px) { .kode-besar { font-size: 20px; letter-spacing: 1px; } }
+
+/* ===== TAB DOKKAI (読解) ===== */
+.dokkai-header h2 { margin: 0 0 6px; }
+.dokkai-chips { display: flex; gap: 8px; overflow-x: auto; padding: 10px 2px 2px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.dokkai-chips::-webkit-scrollbar { display: none; }
+.dokkai-chip {
+    flex: 0 0 auto; padding: 7px 12px; border-radius: 999px; border: 1.5px solid #e2e8f0;
+    background: #f8fafc; color: #475569; font-family: inherit; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; line-height: 1.25;
+}
+.dokkai-chip.aktif { background: #4f46e5; border-color: #4f46e5; color: #fff; }
+.dokkai-chip.selesai { border-color: #16a34a; }
+.dokkai-chip.selesai.aktif { background: #16a34a; border-color: #16a34a; }
+.dokkai-tema { font-size: 0.64rem; font-weight: 500; opacity: 0.8; }
+.dokkai-tombol-baris { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+.dokkai-judul { font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 4px 0; }
+.dokkai-teks { font-size: 1.08rem; line-height: 2.35; color: #1e293b; margin-top: 8px; }
+.dokkai-teks p { margin: 0 0 12px; }
+.dokkai-teks ruby rt { font-size: 0.5em; color: #94a3b8; font-weight: 400; }
+.dokkai-kotoba { margin-top: 12px; padding-top: 10px; border-top: 1px dashed #e2e8f0; display: flex; flex-wrap: wrap; gap: 6px; }
+.dokkai-kata { font-size: 0.78rem; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 8px; color: #475569; }
+.dokkai-kata b { color: #0f172a; }
+.dokkai-arti { margin-top: 12px; padding: 12px; border-radius: 10px; background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; font-size: 0.88rem; }
+.dokkai-soal-item { border-top: 1px solid #eef2f7; padding: 12px 0; }
+.dokkai-soal-item:first-of-type { border-top: none; }
+.dokkai-pertanyaan { font-size: 0.98rem; line-height: 2.1; color: #0f172a; margin-bottom: 8px; }
+.dokkai-pertanyaan ruby rt { font-size: 0.5em; color: #94a3b8; font-weight: 400; }
+.dokkai-pilihan { display: flex; flex-direction: column; gap: 8px; }
+.dokkai-opsi {
+    display: flex; gap: 9px; align-items: flex-start; text-align: left; width: 100%;
+    padding: 11px 12px; min-height: 46px; border-radius: 10px; border: 1.5px solid #e2e8f0;
+    background: #f8fafc; color: #334155; font: inherit; font-size: 0.92rem; cursor: pointer;
+}
+.dokkai-opsi .huruf {
+    flex: 0 0 auto; width: 22px; height: 22px; border-radius: 50%; background: #e2e8f0; color: #475569;
+    font-size: 0.72rem; font-weight: 800; display: flex; align-items: center; justify-content: center;
+}
+.dokkai-opsi.dipilih { border-color: #4f46e5; background: #eef2ff; }
+.dokkai-opsi.dipilih .huruf { background: #4f46e5; color: #fff; }
+.dokkai-opsi.jawaban-benar { border-color: #16a34a; background: #f0fdf4; }
+.dokkai-opsi.jawaban-benar .huruf { background: #16a34a; color: #fff; }
+.dokkai-opsi.jawaban-salah { border-color: #dc2626; background: #fef2f2; }
+.dokkai-opsi.jawaban-salah .huruf { background: #dc2626; color: #fff; }
+.dokkai-bahas { margin-top: 10px; padding: 10px 12px; border-radius: 10px; font-size: 0.85rem; line-height: 1.7; }
+.dokkai-bahas.ok { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+.dokkai-bahas.salah { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+.dokkai-aksi { margin-top: 14px; }
+.dokkai-skor { margin-top: 12px; padding: 14px; border-radius: 12px; background: #eef2ff; border: 1px solid #c7d2fe; color: #3730a3; font-size: 0.92rem; line-height: 1.7; }
+.dokkai-kosong { text-align: center; color: #94a3b8; padding: 36px 20px; font-size: 0.9rem; line-height: 1.8; }
+@media (max-width: 400px) {
+    .dokkai-teks { font-size: 1rem; line-height: 2.25; }
+    .dokkai-chip { font-size: 0.72rem; padding: 6px 10px; }
+}
