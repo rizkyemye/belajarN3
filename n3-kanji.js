@@ -13,6 +13,25 @@
     let hanyaN3 = false;
     let batas = 60;           // tampilkan bertahap biar HP tetap ringan
 
+    // kunci per hari (aturan sama dengan tab Belajar)
+    function hariTerbuka(h) { return !window.N3Unlock || window.N3Unlock.terbuka(h); }
+    // kanji yang tidak terikat hari mana pun selalu tampil
+    function kanjiTerbuka(k) {
+        const daftar = k.hari || [];
+        return daftar.length === 0 || daftar.some(hariTerbuka);
+    }
+    function kunciJml() {
+        if (!window.N3Unlock || window.N3Unlock.lihatSemua()) return 0;
+        return semuaKanji.filter(function (k) { return !kanjiTerbuka(k); }).length;
+    }
+    function hariTerkunciTerkecil() {
+        let min = 0;
+        semuaKanji.forEach(function (k) {
+            (k.hari || []).forEach(function (h) { if (!hariTerbuka(h) && (!min || h < min)) min = h; });
+        });
+        return min;
+    }
+
     function esc(s) {
         return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
             return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
@@ -20,7 +39,7 @@
     }
 
     function tampilkanDaftar() {
-        let arr = semuaKanji;
+        let arr = semuaKanji.filter(kanjiTerbuka);
 
         if (filterHari !== "all") {
             arr = arr.filter(function (k) { return (k.hari || []).indexOf(Number(filterHari)) !== -1; });
@@ -45,6 +64,15 @@
                 (filterHari === "all" ? " · semua hari" : " · Hari " + filterHari) +
                 (hanyaN3 ? " · hanya JLPT N3" : "") +
                 (q.trim() ? ' · cari: "' + q.trim() + '"' : "");
+        }
+
+        const terkunci = kunciJml();
+        const head = document.querySelector(".kanji-header-card");
+        if (head) {
+            const lama = head.querySelector(".kunci-catatan");
+            if (lama) lama.remove();
+            const note = window.N3Unlock ? window.N3Unlock.catatan(hariTerkunciTerkecil(), terkunci, function () { batas = 60; bikinChip(); tampilkanDaftar(); }) : null;
+            if (note) { const chips = document.getElementById("kanjiHari"); if (chips && chips.parentNode === head) head.insertBefore(note, chips); else head.appendChild(note); }
         }
 
         const list = document.getElementById("kanjiList");
@@ -93,8 +121,8 @@
         });
         const hari = Object.keys(hitung).map(Number).sort(function (a, b) { return a - b; });
 
-        let html = '<button class="kanji-chip aktif" data-hari="all">Semua <span class="kanji-n">' + semuaKanji.length + "</span></button>";
-        hari.forEach(function (h) {
+        let html = '<button class="kanji-chip aktif" data-hari="all">Semua <span class="kanji-n">' + semuaKanji.filter(kanjiTerbuka).length + "</span></button>";
+        hari.filter(hariTerbuka).forEach(function (h) {
             html += '<button class="kanji-chip" data-hari="' + h + '">Hari ' + h + ' <span class="kanji-n">' + hitung[h] + "</span></button>";
         });
         chips.innerHTML = html;

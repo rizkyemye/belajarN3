@@ -356,12 +356,25 @@ function buildBunpouFilters() {
     groups.forEach(function (g) { g.days.forEach(function (d) { if (days.indexOf(d) === -1) days.push(d); }); });
     days.sort(function (a, b) { return a - b; });
 
-    let html = '<button class="bunpou-chip active" data-day="all">Semua <span class="chip-n">' + groups.length + "</span></button>";
-    days.forEach(function (d) {
+    const jmlTerbuka = groups.filter(function (g) { return g.days.some(hariTerbukaUntukMateri); }).length;
+    let html = '<button class="bunpou-chip active" data-day="all">Semua <span class="chip-n">' + jmlTerbuka + "</span></button>";
+    days.filter(hariTerbukaUntukMateri).forEach(function (d) {
         const n = groups.filter(function (g) { return g.days.indexOf(d) !== -1; }).length;
         html += '<button class="bunpou-chip" data-day="' + d + '">Hari ' + d + ' <span class="chip-n">' + n + "</span></button>";
     });
     chips.innerHTML = html;
+
+    const lamaCatatan = document.querySelector('#bunpouTabContent .kunci-catatan');
+    if (lamaCatatan) lamaCatatan.remove();
+    if (window.N3Unlock) {
+        const jmlTerkunci = groups.length - jmlTerbuka;
+        let hariKecil = 0;
+        groups.forEach(function (g) {
+            g.days.forEach(function (d) { if (!hariTerbukaUntukMateri(d) && (!hariKecil || d < hariKecil)) hariKecil = d; });
+        });
+        const note = window.N3Unlock.catatan(hariKecil, jmlTerkunci, function () { buildBunpouFilters(); renderBunpou(); });
+        if (note && chips.parentNode) chips.parentNode.insertBefore(note, chips);
+    }
 
     chips.querySelectorAll(".bunpou-chip").forEach(function (btn) {
         btn.addEventListener("click", function () {
@@ -379,6 +392,9 @@ function renderBunpou() {
     if (!list) return;
 
     let groups = bunpouGroups();
+    if (window.N3Unlock && !window.N3Unlock.lihatSemua()) {
+        groups = groups.filter(function (g) { return g.days.some(hariTerbukaUntukMateri); });
+    }
     if (bunpouFilterDay !== "all") {
         groups = groups.filter(function (g) { return g.days.indexOf(bunpouFilterDay) !== -1; });
     }
@@ -650,6 +666,11 @@ function updateStatsBar() {
 }
 
 // --- SISTEM UNLOCK HARIAN (HARI KE-1 DIMULAI TANGGAL 5) ---
+function hariTerbukaUntukMateri(h) {
+    if (window.N3Unlock) return window.N3Unlock.terbuka(h);
+    return Number(h) <= getMaxUnlockedDay();
+}
+
 function getMaxUnlockedDay() {
     const now = new Date();
     const dateNum = now.getDate();
