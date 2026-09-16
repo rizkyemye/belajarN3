@@ -27,6 +27,11 @@
         return Object.keys(semua || {}).map(Number).sort((a, b) => a - b);
     }
 
+    // kunci per hari: bacaan hari ke-N baru muncul setelah hari itu kebuka di tab Belajar
+    const hariTerbuka = (h) => !window.N3Unlock || window.N3Unlock.terbuka(h);
+    function daftarHariTerbuka() { return daftarHari().filter(hariTerbuka); }
+    function hariTerkunci() { return daftarHari().filter((d) => !hariTerbuka(d)); }
+
     function pilihHari(d) {
         hariAktif = d;
         jawaban = {}; diperiksa = false;
@@ -40,13 +45,15 @@
         const hari = semua[hariAktif];
         if (!hari) { wrap.innerHTML = '<div class="dokkai-kosong">Materi untuk hari ini belum ada 🙈</div>'; return; }
         const hasil = bacaHasil();
-        const hariList = daftarHari();
+        const hariList = daftarHariTerbuka();
+        const terkunci = hariTerkunci();
 
         let html = `
         <div class="kartu dokkai-header">
             <h2>📖 読解 · Dokkai</h2>
             <p class="catatan">Bacaan + soal pemahaman, temanya sama dengan tema kosakata hari itu.
             Baca dulu tanpa lihat artinya, baru jawab 3 soal di bawah 👇</p>
+            <div id="dokkaiKunci"></div>
             <div class="dokkai-chips">
                 ${hariList.map((d) => {
                     const h = semua[d];
@@ -98,6 +105,19 @@
         </div>`;
 
         wrap.innerHTML = html;
+        const kotakKunci = $("#dokkaiKunci");
+        if (kotakKunci && window.N3Unlock) {
+            const note = window.N3Unlock.catatan(terkunci.length ? terkunci[0] : 0, terkunci.length, () => {
+                if (!hariList.length) {
+                    const baru = daftarHariTerbuka();
+                    if (baru.length) hariAktif = baru[baru.length - 1];
+                } else if (!daftarHariTerbuka().includes(hariAktif)) {
+                    hariAktif = daftarHariTerbuka()[0];
+                }
+                render();
+            });
+            if (note) kotakKunci.appendChild(note);
+        }
         pasangAksi();
     }
 
@@ -186,8 +206,9 @@
                     return;
                 }
                 const terakhir = Number(localStorage.getItem(KUNCI_TERAKHIR) || 0);
-                const daftar = daftarHari();
-                hariAktif = daftar.indexOf(terakhir) !== -1 ? terakhir : daftar[0];
+                const daftar = daftarHariTerbuka();
+                // default = hari terakhir yang sudah kebuka (hari yang sedang dipelajari sekarang)
+                hariAktif = daftar.indexOf(terakhir) !== -1 ? terakhir : daftar[daftar.length - 1];
                 render();
             })
             .catch((e) => {
