@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Bunpou - Flashcard JLPT N3</title>
+    <link rel="stylesheet" href="style.css?v=12">
+    <style>
+        /* --- EXP dari Dashboard + animasi naik --- */
+        .xp-baris { width: 100%; height: 10px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin-bottom: 6px; }
+        .xp-isi { height: 100%; width: 0%; border-radius: 999px; background: linear-gradient(90deg, #6366f1, #a855f7); transition: width .7s cubic-bezier(.22,1,.36,1); }
+        .xp-teks { font-size: .78rem; color: #64748b; text-align: center; margin-bottom: 18px; }
+        @keyframes expNaik {
+            0%   { opacity: 0; transform: translateY(10px) scale(.85); }
+            18%  { opacity: 1; transform: translateY(0)    scale(1.05); }
+            100% { opacity: 0; transform: translateY(-52px) scale(1.15); }
+        }
+        .exp-naik {
+            position: fixed; top: 58px; right: 18px; z-index: 999;
+            background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff;
+            font-weight: 800; font-size: .95rem; padding: 8px 14px; border-radius: 999px;
+            box-shadow: 0 6px 18px rgba(22,163,74,.35); pointer-events: none;
+            animation: expNaik 1.1s ease-out forwards;
+        }
+        @keyframes badgePulse {
+            0% { transform: scale(1); } 40% { transform: scale(1.18); } 100% { transform: scale(1); }
+        }
+        .badge-pulse { animation: badgePulse .55s ease; }
+        @keyframes levelNaik {
+            0% { opacity: 0; transform: translateY(14px) scale(.8); }
+            20% { opacity: 1; transform: translateY(0) scale(1.08); }
+            85% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-30px) scale(1); }
+        }
+        .level-naik {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;
+            background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; font-weight: 900;
+            font-size: 1.05rem; padding: 14px 22px; border-radius: 16px; text-align: center;
+            box-shadow: 0 10px 30px rgba(239,68,68,.4); pointer-events: none;
+            animation: levelNaik 2.3s ease-out forwards;
+        }
+    </style>
+    <link rel="stylesheet" href="tema-baru.css?v=1">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <div class="header-container header-kecil">
+            <div class="header-title">
+                <span class="calendar-icon">🎓</span>
+                <h1>Quiz Bunpou N3</h1>
+            </div>
+        </div>
+
+        <!-- STATS / EXP BAR -->
+        <!-- STATS / XP — satu sumber dengan Dashboard -->
+        <div class="stats-bar" style="margin-bottom: 10px;">
+            <div class="stat-badge jlpt">⭐ Level <span id="userLevel">1</span> · <span id="namaLevel">初心者</span></div>
+            <div class="stat-badge" id="badgeXp">⚡ <span id="userExp">0</span> XP <span id="nextLevelExp" style="display:none">100</span></div>
+            <div class="stat-badge" id="badgeSumber" style="font-size:0.72rem; opacity:0.85;">📊 dari Dashboard</div>
+        </div>
+        <div class="xp-baris"><div class="xp-isi" id="barXp"></div></div>
+        <div class="xp-teks" id="xpTeks">Memuat EXP dari Dashboard…</div>
+
+        <!-- PILIH HARI -->
+        <div id="bunpouSelectionCard" class="study-hub-card">
+            <div class="study-hub-header">
+                <h2>🎯 Pilih Target Hari Quiz Bunpou</h2>
+                <p>10 soal tata bahasa dari 5 pola yang muncul di hari itu: isian kalimat, arti pola, dan arah balik.</p>
+            </div>
+
+            <div class="study-selection-box">
+                <label for="bunpouDaySelect"><strong>Target Hari:</strong></label>
+                <select id="bunpouDaySelect" class="study-select">
+                    <!-- Diisi otomatis via JavaScript -->
+                </select>
+                <button class="action-btn-primary" onclick="startBunpouQuiz()">Mulai Quiz Bunpou ⚡</button>
+                <button class="action-btn-primary" onclick="window.location.href='quiz.html'" style="background-color:#4f46e5;">📖 Quiz Kosakata</button>
+                <button class="action-btn-primary" onclick="window.location.href='index.html'">🏠 Beranda</button>
+            </div>
+        </div>
+
+        <!-- AREA SOAL -->
+        <div id="bunpouArea" class="learning-card" style="display: none; margin-top: 0;">
+            <div class="learning-top-bar">
+                <button class="back-calendar-btn" onclick="exitBunpouQuiz()">⬅️ Keluar Quiz</button>
+                <div class="info-bar">
+                    <span id="bunpouCounter">Soal: 1/10</span>
+                    <span id="bunpouScore">Benar: 0</span>
+                </div>
+            </div>
+
+            <p id="bunpouPetunjuk" style="text-align:center; color:#64748b; font-weight:600; margin-bottom:8px;">Pilih jawaban yang tepat</p>
+
+            <div class="quiz-question-container" style="margin-bottom: 20px;">
+                <div class="card-face card-front" style="position: relative; min-height: 120px; font-size: 1.35rem; line-height: 1.7; padding: 16px;" id="bunpouQuestionText">
+                    -
+                </div>
+            </div>
+
+            <div class="quiz-options-grid" id="bunpouOptions" style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- Pilihan di-generate via JS -->
+            </div>
+
+            <!-- PENJELASAN (muncul setelah menjawab) -->
+            <div id="bunpouExplain" style="display:none; margin-top:18px; background:#f8fafc; border:1px solid #e2e8f0; border-left:5px solid #4f46e5; border-radius:10px; padding:14px;">
+                <div id="bunpouExplainBody" style="color:#334155; font-size:0.95rem; line-height:1.6;"></div>
+                <button class="action-btn-primary" style="margin-top:12px; width:100%;" onclick="lanjutBunpou()">Lanjut ➡️</button>
+            </div>
+        </div>
+
+        <!-- SELESAI -->
+        <div class="completion-screen" id="bunpouCompletionScreen" style="display: none; margin-top: 20px;">
+            <div class="completion-card">
+                <h2>🎉 Quiz Bunpou Selesai!</h2>
+                <p id="bunpouResultText">-</p>
+                <div style="display:flex; gap:10px; justify-content:center; margin-top:16px; flex-wrap:wrap;">
+                    <button class="action-btn-primary" onclick="ulangiBunpou()">🔁 Ulangi Hari Ini</button>
+                    <button class="action-btn-primary" style="background-color:#64748b;" onclick="kembaliPilihBunpou()">📚 Pilih Hari Lain</button>
+                    <button class="action-btn-primary" style="background-color:#0f766e;" onclick="window.location.href='index.html'">🏠 Beranda</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase: login + pencatatan (opsional, sama seperti quiz kosakata) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="n3-auth.js?v=10"></script>
+    <script src="quiz-bunpou.js?v=1"></script>
+    <script src="dengar.js?v=1"></script>
+</body>
+</html>

@@ -2,30 +2,61 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Flashcard JLPT N3 - Kalender & Belajar</title>
-    <link rel="stylesheet" href="style.css?v=13">
+<meta name="description" content="Belajar JLPT N3 tiap hari: kosakata, tata bahasa, kanji, dan bacaan — plus kuis harian, kartu hafalan, dan progres belajar yang kelihatan.">
+<meta name="theme-color" content="#4f46e5">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="JLPT N3 Master">
+<meta property="og:title" content="JLPT N3 Master — belajar N3 tiap hari">
+<meta property="og:description" content="1 hari = 1 materi baru: kosakata + contoh kalimat, bunpou, kanji, dokkai, dan kuis harian. Ada dashboard progres dan review kata yang salah.">
+<meta property="og:url" content="https://rizkyemye.github.io/belajarN3/">
+<meta property="og:image" content="https://rizkyemye.github.io/belajarN3/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="id_ID">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="JLPT N3 Master — belajar N3 tiap hari">
+<meta name="twitter:description" content="Kosakata, bunpou, kanji, dokkai + kuis harian. Belajar 10 menit sehari.">
+<meta name="twitter:image" content="https://rizkyemye.github.io/belajarN3/og-image.png">
+    <link rel="stylesheet" href="style.css?v=12">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="tema-baru.css?v=1">
 </head>
 <body>
 
     <div class="app-container">
         <!-- HEADER -->
         <div class="header-container">
-    <div class="header-title">
-        <span class="calendar-icon">⚡</span>
-        <h1>JLPT N3 Master</h1>
-    </div>
-    <div style="display: flex; gap: 10px; align-items: center;">
-        <span id="currentProfileDisplay" style="font-size: 0.9rem; font-weight: bold; color: #334155;">👤 -</span>
-        <button onclick="switchProfile()" class="quiz-link-btn" style="background-color: #64748b;">Ganti Profil</button>
-        <a href="dashboard.html" class="quiz-link-btn" style="background-color:#0ea5e9;">📊 Dashboard</a>
-        <a href="review.html" class="quiz-link-btn" style="background-color:#4f46e5;">🔁 Review</a>
-        <a href="quiz.html" class="quiz-link-btn">📝 Buka Quiz</a>
-    </div>
-</div>
+            <!-- BANNER SAPA -->
+            <div class="hero-banner">
+                <div class="hero-baris">
+                    <span class="hero-ikon">⚡</span>
+                    <div style="min-width: 0;">
+                        <div class="hero-judul">JLPT N3 Master</div>
+                        <div id="sapaan" class="hero-sapaan"></div>
+                    </div>
+                    <span id="currentProfileDisplay" class="hero-profil">👤 -</span>
+                </div>
+            </div>
 
-        <!-- TAB NAVIGATION -->
+            <!-- Tombol aksi: grid 2 kolom di HP supaya selalu rapi -->
+            <div class="aksi-grid">
+                <a href="quiz.html" class="tombol-aksi utama">📝 Buka Quiz</a>
+                <a href="dashboard.html" class="tombol-aksi">📊 Dashboard</a>
+                <a href="review.html" class="tombol-aksi">🔁 Review</a>
+                <button type="button" onclick="switchProfile()" class="tombol-aksi">👤 Ganti Profil</button>
+            </div>
+        </div>
+
+        <p style="text-align:center;margin:4px 0 10px;font-size:.84rem">
+    <a href="mulai.html" style="color:#4f46e5;font-weight:700">🌱 Baru di sini? Mulai dari sini</a>
+    <span style="color:#cbd5e1"> · </span>
+    <a href="kredit.html" style="color:#64748b">📖 Cara pakai &amp; kredit</a>
+</p>
+
+<!-- TAB NAVIGATION -->
         <div class="tab-navigation">
             <button class="tab-btn active" id="btnTabCalendar" onclick="switchTab('calendar')">📅 Kalender</button>
             <button class="tab-btn" id="btnTabStudy" onclick="switchTab('study')">📖 Belajar</button>
@@ -140,6 +171,7 @@
                 <p class="bunpou-subtitle" id="bunpouCount">Memuat data bunpou…</p>
                 <input type="text" id="bunpouSearch" class="bunpou-search" placeholder="🔍 Cari rumus, arti, atau contoh kalimat…">
                 <div class="bunpou-day-chips" id="bunpouDayChips"></div>
+                <a class="action-btn-primary" href="quiz-bunpou.html" style="display:inline-block;margin-top:12px;background-color:#7c3aed;text-decoration:none;">🎓 Latihan Quiz Bunpou (10 soal/hari)</a>
             </div>
             <div id="bunpouList" class="bunpou-list"></div>
         </div>
@@ -184,9 +216,8 @@
             <p class="card-hint">Klik kartu untuk membalik</p>
 
             <div class="rating-buttons" id="ratingButtons">
-                <button class="btn-hard" onclick="rateCard(3)">Susah (3)</button>
-                <button class="btn-medium" onclick="rateCard(7)">Ragu (7)</button>
-                <button class="btn-easy" onclick="rateCard('easy')">Mudah ✔️</button>
+                <button class="btn-lupa" onclick="rateCard('belum')">🔁 Belum ingat</button>
+                <button class="btn-ingat" onclick="rateCard('ingat')">✅ Sudah ingat</button>
             </div>
         </div>
                 <div class="completion-screen" id="completionScreen" style="display: none; margin-top: 20px;">
@@ -225,5 +256,7 @@
     <script src="n3-kanji.js?v=14"></script>
     <script src="n3-dokkai.js?v=14"></script>
     <script src="app.js?v=14"></script>
+    <script src="sapaan.js?v=1"></script>
+    <script src="dengar.js?v=1"></script>
 </body>
 </html>

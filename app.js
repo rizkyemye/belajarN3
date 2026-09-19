@@ -482,6 +482,7 @@ function switchTab(tabName) {
     };
 
     learningArea.style.display = 'none';
+    document.body.classList.remove('sesi-aktif');
     completionScreen.style.display = 'none';
 
     Object.keys(tabs).forEach(function (key) {
@@ -822,9 +823,11 @@ function startStudySession(sessionName, dayNum) {
     }
 
     cardQueue = shuffleArray([...sessionData]);
+    hitungBelum = {};
 
     document.getElementById('studySessionMenu').style.display = 'none';
     learningArea.style.display = 'block';
+    document.body.classList.add('sesi-aktif'); // sembunyikan banner & tombol menu saat belajar
     completionScreen.style.display = 'none';
 
     startTimer();
@@ -842,6 +845,7 @@ function backToStudySessionsMenu() {
 
     stopTimer();
     learningArea.style.display = 'none';
+    document.body.classList.remove('sesi-aktif');
     document.getElementById('studySessionMenu').style.display = 'block';
     updateStudySessionButtonsState(currentActiveDay);
 }
@@ -904,12 +908,14 @@ function updateCard() {
         setSessionCompleted(currentActiveDay, currentSession);
 
         learningArea.style.display = 'none';
+    document.body.classList.remove('sesi-aktif');
         completionScreen.style.display = "block";
         
         resultText.innerHTML = `Hebat! Sesi <b>${currentSession.toUpperCase()}</b> selesai dalam <b>${formatTime(secondsElapsed)}</b>.<br>Waktu belajar telah dicatat ke kalender hari ini 🎉`;
         return;
     }
 
+    waktuKartu = Date.now();
     cardFront.textContent = cardQueue[0].front;
     renderCardBack(cardBack, cardQueue[0].back, cardQueue[0].furi);
     counter.textContent = `Sisa: ${cardQueue.length} kartu`;
@@ -923,15 +929,40 @@ flashcard.addEventListener("click", () => {
     }
 });
 
+// --- PENILAIAN KARTU: 2 pilihan saja (Sudah ingat / Belum ingat) ---
+let hitungBelum = {};                 // berapa kali kartu ditandai "belum ingat" di sesi ini
+let waktuKartu = Date.now();          // kapan kartu yang tampil sekarang mulai dilihat
+
+function catatKartu(card, ingat, durasi) {
+    // dicatat ke server supaya masuk halaman Review Kosakata
+    try {
+        if (window.N3 && N3.catatKata && card && card.front) {
+            N3.catatKata(card.front, currentActiveDay, ingat, durasi, 6);  // >6 detik = masuk review
+        }
+    } catch (e) { console.warn("gagal catat kartu:", e); }
+}
+
 function rateCard(action) {
     if (cardQueue.length === 0) return;
 
     const currentCard = cardQueue.shift();
+    const durasi = (Date.now() - waktuKartu) / 1000;
 
-    if (action === 'easy') {
-        // Kartu langsung selesai
-    } else {
-        let insertIndex = Math.min(action, cardQueue.length);
+    if (action === 'ingat' || action === 'easy') {
+        // sudah ingat → selesai untuk sesi ini
+        catatKartu(currentCard, true, durasi);
+    } else if (action === 'belum' || action === 3) {
+        // belum ingat → muncul lagi 3 kartu kemudian (maksimal 2 kali per sesi)
+        const kali = (hitungBelum[currentCard.front] || 0) + 1;
+        hitungBelum[currentCard.front] = kali;
+        catatKartu(currentCard, false, durasi);
+        if (kali <= 2) {
+            const insertIndex = Math.min(3, cardQueue.length);
+            cardQueue.splice(insertIndex, 0, currentCard);
+        }
+    } else if (typeof action === "number") {
+        // kompatibilitas gaya lama (3 = susah, 7 = ragu) untuk halaman lain
+        const insertIndex = Math.min(action, cardQueue.length);
         cardQueue.splice(insertIndex, 0, currentCard);
     }
 

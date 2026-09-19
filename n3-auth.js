@@ -311,6 +311,9 @@
         semua[k] = s;
         simpanKata(semua);
 
+        // 3) jadwal ulang (SRS) — kalau modul n3-srs.js dimuat di halaman ini
+        try { if (window.N3SRS && N3SRS.catat) N3SRS.catat(k, !!benar, !!benar && d >= amb); } catch (e) {}
+
         // 2) kirim ke server
         if (!AKTIF) return;
         const item = { jenis: "kata", kata: k, day: Number(day) || 0, benar: !!benar, detik: d, ambang: amb };
@@ -359,12 +362,14 @@
         Object.keys(semua).forEach(function (k) {
             const s = semua[k] || {};
             if (!hariOK.includes(Number(s.day))) return;      // hari belum selesai -> jangan muncul
-            if ((s.salah || 0) > 0 || (s.lambat || 0) > 0) {
+            const rataKata = (s.detik_total || 0) / Math.max((s.benar || 0) + (s.salah || 0), 1);
+            // masuk daftar "perlu diulang" kalau pernah salah, pernah lama, ATAU rata-rata jawabnya lebih lambat dari ambang
+            if ((s.salah || 0) > 0 || (s.lambat || 0) > 0 || rataKata > amb) {
                 hasil.push({
                     kata: k, day: Number(s.day) || 0,
                     benar: s.benar || 0, salah: s.salah || 0, lambat: s.lambat || 0,
                     detik_total: s.detik_total || 0,
-                    skor: (s.salah || 0) * 3 + (s.lambat || 0) * 2,
+                    skor: (s.salah || 0) * 3 + ((s.lambat || 0) + (rataKata > amb ? 1 : 0)) * 2,
                     rata_detik: Math.round(((s.detik_total || 0) / Math.max((s.benar || 0) + (s.salah || 0), 1)) * 10) / 10
                 });
             }

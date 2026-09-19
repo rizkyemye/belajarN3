@@ -1,19 +1,109 @@
 /* ==========================================================================
-   KUNCI MATERI PER HARI  (dipakai tab Bunpou · 漢字 Kanji · 読解 Dokkai)
-   Aturan sama dengan tab 📖 Belajar:
-       hari ke-1 dimulai tanggal 5  →  maks hari terbuka = tanggal - 4
-   Jadi materi hari ke-N baru muncul setelah hari itu kebuka di tab Belajar.
-   Tombol "Tampilkan semua" (mode lihat-lihat) bisa dipakai kalau mau
-   mengulang materi lama / mengintip ke depan.
+   KUNCI MATERI PER HARI  (dipakai tab 📖 Belajar · Bunpou · 漢字 Kanji · 読解 Dokkai)
+   --------------------------------------------------------------------------
+   ATURAN BARU (agar situs aman untuk banyak orang):
+       · Setiap akun punya "tanggal mulai" sendiri.
+       · Hari ke-1 = hari kamu mulai belajar → 1 hari = 1 materi baru kebuka.
+       · Akun lama (yang sudah punya progres) otomatis dihitung ulang supaya
+         materi yang sudah terbuka TIDAK ikut terkunci.
+       · Tombol "Tampilkan semua" tetap ada kalau mau mengulang / mengintip.
    ========================================================================== */
 (function () {
     "use strict";
 
-    const KUNCI_SEMUA = "n3_buka_semua";   // "1" = jangan dikunci (lihat semua)
+    const KUNCI_SEMUA = "n3_buka_semua";        // "1" = jangan dikunci (lihat semua)
+    const KUNCI_MULAI = "n3_tanggal_mulai";     // "YYYY-MM-DD" milik akun/browser ini
+    const SEHARI = 24 * 60 * 60 * 1000;
 
-    function maksHari() {
+    /* ---------- tanggal mulai ---------- */
+
+    function penggunaAktif() {
+        try { return localStorage.getItem("jlpt_current_user") || ""; } catch (e) { return ""; }
+    }
+
+    function kunciMulai() {
+        const u = penggunaAktif();
+        return u ? KUNCI_MULAI + "_" + u : KUNCI_MULAI;
+    }
+
+    function ubahKeTanggal(t) {
+        const p = String(t).split("-");
+        return new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
+    }
+
+    function jadikanTeks(d) {
+        const b = String(d.getMonth() + 1).padStart(2, "0");
+        const t = String(d.getDate()).padStart(2, "0");
+        return d.getFullYear() + "-" + b + "-" + t;
+    }
+
+    function bacaMulai() {
+        try {
+            const u = penggunaAktif();
+            return (u && localStorage.getItem(KUNCI_MULAI + "_" + u)) ||
+                localStorage.getItem(KUNCI_MULAI) || null;
+        } catch (e) { return null; }
+    }
+
+    function tanggalMulai() {
+        const t = bacaMulai();
+        return t ? ubahKeTanggal(t) : null;
+    }
+
+    function setTanggalMulai(t) {
+        try {
+            localStorage.setItem(kunciMulai(), t);
+            localStorage.setItem(KUNCI_MULAI, t);
+        } catch (e) {}
+    }
+
+    /* ---------- ada progres lama? (akun yang sudah belajar sebelum aturan baru) ---------- */
+
+    function punyaProgresLama() {
+        try {
+            if (localStorage.getItem("jlpt_current_user")) return true;
+            for (let i = 0; i < localStorage.length; i++) {
+                const k = localStorage.key(i) || "";
+                if (k.indexOf("n3_detik_") === 0 || k.indexOf("n3_selesai_") === 0) return true;
+            }
+        } catch (e) {}
+        return false;
+    }
+
+    /* ---------- inti: hari maksimal yang terbuka ---------- */
+
+    // aturan lama (hari ke-1 = tanggal 5) — hanya dipakai sekali untuk akun lama
+    function maksHariLama() {
         const tgl = new Date().getDate();
         return tgl < 5 ? 1 : tgl - 4;
+    }
+
+    function hariKe(mulai) {
+        const dasar = new Date(mulai.getFullYear(), mulai.getMonth(), mulai.getDate());
+        const kini = new Date();
+        const kiniDasar = new Date(kini.getFullYear(), kini.getMonth(), kini.getDate());
+        const selisih = Math.floor((kiniDasar - dasar) / SEHARI);
+        return Math.max(1, selisih + 1);
+    }
+
+    function maksHari() {
+        let mulai = bacaMulai();
+
+        if (!mulai) {
+            if (punyaProgresLama()) {
+                // akun lama: bekukan progres sekarang supaya tidak ada yang terkunci
+                const lama = maksHariLama();
+                const d = new Date();
+                d.setDate(d.getDate() - (lama - 1));
+                setTanggalMulai(jadikanTeks(d));
+            } else {
+                // pengunjung baru: mulai dari Hari 1 hari ini
+                setTanggalMulai(jadikanTeks(new Date()));
+            }
+            mulai = bacaMulai();
+        }
+
+        return hariKe(tanggalMulai() || new Date());
     }
 
     function lihatSemua() {
@@ -48,6 +138,11 @@
         (document.head || document.documentElement).appendChild(s);
     }
 
+    function tanggalIndah(d) {
+        const bulan = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+        return d.getDate() + " " + bulan[d.getMonth()] + " " + d.getFullYear();
+    }
+
     /**
      * Bikin elemen catatan kunci.
      * @param {number} hariTerkunciAwal  hari terkecil yang masih terkunci (0 kalau tidak ada)
@@ -66,9 +161,11 @@
             pesan = "🔓 <b>Mode lihat semua</b> — semua hari ditampilkan (termasuk yang belum kebuka).";
         } else {
             div.className = "kunci-catatan";
+            const mulai = tanggalMulai();
             pesan = "🔒 <b>" + jmlTerkunci + " materi</b> masih terkunci" +
                 (hariTerkunciAwal ? " (mulai Hari " + hariTerkunciAwal + ")" : "") +
-                ". Kebuka otomatis sesuai progres di tab <b>📖 Belajar</b>.";
+                ". <b>1 hari = 1 materi baru</b> — hari ini Hari <b>" + maksHari() + "</b>" +
+                (mulai ? " (mulai " + tanggalIndah(mulai) + ")" : "") + ".";
         }
         div.innerHTML = "<span>" + pesan + "</span>" +
             '<button type="button">' + (lihatSemua() ? "Kunci lagi" : "Tampilkan semua") + "</button>";
@@ -84,6 +181,11 @@
         terbuka: terbuka,
         lihatSemua: lihatSemua,
         setLihatSemua: setLihatSemua,
-        catatan: catatan
+        catatan: catatan,
+        // tambahan untuk halaman "Mulai dari sini" & dashboard
+        tanggalMulai: tanggalMulai,
+        setTanggalMulai: setTanggalMulai,
+        hariKe: function () { return maksHari(); },
+        tanggalIndah: tanggalIndah
     };
 })();

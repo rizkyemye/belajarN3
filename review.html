@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Review Kosakata — JLPT N3 Master</title>
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=12">
 <style>
     .rv-card { background:#fff; border:1px solid #eef2f7; border-radius:16px; padding:18px; margin-bottom:14px; box-shadow:0 2px 10px rgba(15,23,42,.05); }
     .rv-card h2 { font-size:1.1rem; margin:0 0 6px; color:#0f172a; }
@@ -36,11 +36,12 @@
         .rv-card h2 { font-size: 1rem; }
     }
 </style>
+    <link rel="stylesheet" href="tema-baru.css?v=1">
 </head>
 <body>
 <div class="app-container">
 
-    <div class="header-container">
+    <div class="header-container header-kecil">
         <div class="header-title">
             <span class="calendar-icon">🔁</span>
             <h1>Review Kosakata</h1>
@@ -66,14 +67,17 @@
         <div class="rv-label">Mau review apa?</div>
         <div class="rv-chips" id="rvMode">
             <button class="rv-chip aktif" data-mode="susah">🔥 Kata yang susah aja</button>
+            <button class="rv-chip" data-mode="jadwal">🔁 Jadwal ulang (jatuh tempo)</button>
             <button class="rv-chip" data-mode="semua">📚 Semua kata hari selesai</button>
         </div>
 
         <div class="rv-label">Batas dianggap "lama" (susah)</div>
         <select class="rv-select" id="rvAmbang">
+            <option value="3" selected>jawab &gt; 3 detik = masuk review (⚡ gaya kilat)</option>
+            <option value="5">jawab &gt; 5 detik = masuk review</option>
+            <option value="8">jawab &gt; 8 detik = masuk review</option>
             <option value="15">jawab &gt; 15 detik = susah</option>
             <option value="20">jawab &gt; 20 detik = susah</option>
-            <option value="30" selected>jawab &gt; 30 detik = susah (saran Tzuyu)</option>
             <option value="45">jawab &gt; 45 detik = susah</option>
             <option value="60">jawab &gt; 60 detik = susah</option>
         </select>
@@ -118,6 +122,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="supabase-config.js"></script>
 <script src="n3-auth.js?v=10"></script>
+<script src="n3-srs.js"></script>
 <script>
 /* ============ REVIEW KOSAKATA ============ */
 let rvData = [];        // semua entri dari data.json
@@ -125,7 +130,7 @@ let rvQueue = [];       // antrean kartu yang sedang direview
 let rvIndexUlang = [];  // kartu yang perlu diulang (masih susah)
 let rvDone = 0;
 let rvMode = "susah";
-let rvAmbang = 30;
+let rvAmbang = 3;
 let rvMulaiKartu = 0;
 
 function ambilEntri(kata) {
@@ -181,14 +186,24 @@ function perbaruiRingkasan() {
     const susah = kataSusahLokal();
     let teks = "";
     if (!hari.length) {
-        teks = "Belum ada hari yang kuisnya selesai. Selesaikan <a href='quiz.html'>Kuis</a> satu hari dulu ya〜";
+        teks = (window.N3SRS && N3SRS.statistik().total)
+            ? "Jadwal ulang sudah aktif ✓ — pilih <b>🔁 Jadwal ulang</b> di bawah untuk kata yang jatuh tempo hari ini."
+            : "Belum ada hari yang kuisnya selesai. Selesaikan <a href='quiz.html'>Kuis</a> satu hari dulu ya〜";
     } else if (modeDipakai() === "susah") {
-        teks = susah.length + " kata perlu diulang dari " + hari.length + " hari yang sudah selesai.";
+        teks = susah.length + " kata perlu diulang dari " + hari.length + " hari yang sudah selesai (pernah salah atau <b>jawabnya lebih dari " + rvAmbang + " detik</b>).";
         if (!susah.length) teks += " Mantap, belum ada yang susah! Coba mode 'Semua kata hari selesai'.";
     } else {
         const kata = semuaKataHariSelesai().length;
         teks = kata + " kata tersedia dari " + hari.length + " hari yang sudah selesai.";
     }
+    try {
+        if (window.N3SRS) {
+            const st = N3SRS.statistik();
+            teks += (teks ? " " : "") + (st.total
+                ? "🔁 <b>" + st.jatuhTempo + " kata jatuh tempo hari ini</b> dari " + st.total + " kata terjadwal (<b>" + st.kuat + "</b> sudah kuat)."
+                : "🔁 Jadwal ulang akan jalan sendiri setelah kamu mulai menilai kartu.");
+        }
+    } catch (e) {}
     document.getElementById("rvRingkas").innerHTML = teks;
 }
 function modeDipakai() { return rvMode; }
@@ -208,13 +223,19 @@ function semuaKataHariSelesai() {
 
 function mulaiReview() {
     const hari = hariSelesaiLokal();
-    if (!hari.length) { alert("Belum ada hari yang kuisnya selesai. Selesaikan Kuis satu hari dulu ya〜"); return; }
+    if (!hari.length && rvMode !== "jadwal") { alert("Belum ada hari yang kuisnya selesai. Selesaikan Kuis satu hari dulu ya〜"); return; }
 
     let daftar;
-    if (rvMode === "susah") {
+    if (rvMode === "jadwal") {
+        if (!window.N3SRS) { alert("Jadwal ulang belum siap di halaman ini."); return; }
+        daftar = N3SRS.jatuhTempo().map(function (k) {
+            const e = ambilEntri(k);
+            return e ? { kata: k, day: Number(e.day) || 0, entri: e, salah: 0, lambat: 0, skor: 0 } : null;
+        }).filter(Boolean);
+    } else if (rvMode === "susah") {
         daftar = kataSusahLokal().map(function (s) {
             const e = ambilEntri(s.kata);
-            return e ? { kata: s.kata, day: s.day, entri: e, salah: s.salah, lambat: s.lambat, skor: s.skor } : null;
+            return e ? { kata: s.kata, day: s.day, entri: e, salah: s.salah, lambat: s.lambat, skor: s.skor, rata: s.rata_detik } : null;
         }).filter(Boolean);
     } else {
         const susahMap = {};
@@ -225,6 +246,12 @@ function mulaiReview() {
     }
 
     if (!daftar.length) {
+        if (rvMode === "jadwal") {
+            const dekat = (window.N3SRS && N3SRS.kataTerdekat()) || "";
+            alert("Belum ada kata yang jatuh tempo hari ini 🎉" +
+                (dekat ? "\nKata berikutnya jatuh tempo: " + dekat + "." : "\nNilai beberapa kartu dulu, nanti otomatis terjadwal."));
+            return;
+        }
         alert(rvMode === "susah"
             ? "Belum ada kata yang perlu diulang 🎉 Coba mode 'Semua kata hari selesai'."
             : "Belum ada kosakata dari hari yang selesai.");
@@ -262,7 +289,8 @@ function tampilkanKartu() {
     document.getElementById("rvDone").textContent = "Selesai: " + rvDone;
     document.getElementById("rvAsal").textContent = "Hari " + kartu.day +
         (kartu.salah ? " · pernah salah " + kartu.salah + "×" : "") +
-        (kartu.lambat ? " · pernah lama " + kartu.lambat + "×" : "");
+        (kartu.lambat ? " · pernah lama " + kartu.lambat + "×" : "") +
+        (kartu.rata ? " · ⚡ rata-rata " + String(kartu.rata).replace(".", ",") + " dtk" : "");
     rvMulaiKartu = Date.now();
 }
 
