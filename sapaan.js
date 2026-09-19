@@ -9,7 +9,7 @@
     var NAMA_CADANGAN = "リズ";
 
     // nama yang tidak enak dipakai untuk sapaan → pakai panggilan sayang
-    var NAMA_UMUM = ["defaultuser", "guest", "ujicoba", "user", "-", ""];
+    var NAMA_UMUM = ["defaultuser", "guest", "ujicoba", "user", "-", "", "belum masuk", "masuk", "login", "silakan masuk", "not logged in", "anonim", "anon"];
     function layakDipakai(n) {
         if (!n) return false;
         return NAMA_UMUM.indexOf(String(n).trim().toLowerCase()) === -1;
