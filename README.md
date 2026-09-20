@@ -19,7 +19,9 @@
 | --- | --- |
 | 🌸 **Banner & sapaan** | sapaan otomatis sesuai waktu (おはよう / こんにちは / こんばんは) + pesan harian; nama diambil dari halaman *Mulai dari sini* |
 | 📅 **Kalender** | hari konsisten (streak), jumlah hari belajar bulan ini, total jam, target 20 jam, hitung mundur ke JLPT (6 Desember 2026) |
-| 📖 **Belajar** | **1.160 kartu** dari 31 hari materi — kosakata + contoh kalimat **berfurigana**, 3 sesi per hari, tombol nilai *Belum ingat / Sudah ingat*, timer belajar otomatis |
+| 🎯 **Level terpisah** | waktu daftar wajib pilih **N5 / N4 / N3** — masing-masing punya halamannya sendiri (`n5.html` · `n4.html` · `index.html`), tersimpan di akun, dan tidak ada fitur ganti-ganti level |
+| ✍️ **Latihan kana** | `tulis.html` — **(a) 🃏 Kartu hafalan**: 71 kana (46 dasar + dakuten) hiragana & katakana, ketuk untuk membalik, ada 🔁 Belum ingat / ✅ Sudah ingat + penghitung hafal; **(b) ✍️ Latihan tulis**: tulis pakai jari dengan panduan **urutan goresan** (KanjiVG), tombol *Cara tulis* (animasi), 🔊 dengar |
+| 📖 **Belajar** | **1.510 kartu** dari 38 hari materi (31 hari tema harian + **Hari 32–38: set kosakata ujian N3, 50 kata per hari**) — kosakata + contoh kalimat **berfurigana**, 3 sesi per hari, tombol nilai *Belum ingat / Sudah ingat*, timer belajar otomatis |
 | 🔁 **Jadwal ulang (spaced repetition)** | tiap kata punya tingkat ulangan sendiri: **besok → 3 → 7 → 14 → 30 → 60 → 120 hari**. Benar & cepat = naik tingkat, benar tapi lambat = tingkatnya tetap, salah = mulai dari besok lagi |
 | ⚡ **Aturan 3 detik** | kata yang dijawab **lebih dari 3 detik** (walau jawabannya benar) otomatis masuk Review Kosakata — ambangnya bisa diganti dari 3 / 5 / 8 / 15 / … / 60 detik |
 | 📐 **Bunpou** | **119 pola tata bahasa** N3 — tiap pola ada **rumus sambung**, arti, contoh kalimat + terjemahan, bisa dicari & difilter per hari |
@@ -94,7 +96,7 @@ quiz-bunpou.html/js   kuiz tata bahasa (10 soal per hari)
 review.html           Review Kosakata + jadwal ulang
 dashboard.html        dashboard: statistik, level, papan peringkat, input nilai lama
 style.css             seluruh tampilan lama (responsif)
-data.json             1.160 kartu (front/back + furigana + hari)
+data.json             1.510 kartu N3 (front/back + furigana + hari)
 kanji.json            824 kanji (bacaan on/kun + arti + contoh kata)
 bunpou_rumus.json     119 pola tata bahasa
 bunpou_quiz.json      310 soal bunpou (10 soal × 31 hari)
@@ -148,12 +150,12 @@ Supaya fitur login & penyimpanan progres jalan, siapkan Supabase:
 
 ## 🗺️ Rencana berikutnya
 
-- [ ] 2.000 kosakata (sekarang 1.160)
+- [ ] 2.000 kosakata (sekarang 1.510 — termasuk set ujian N3 Hari 32–38)
 - [ ] latihan 聴解 (mendengar) penuh — sekarang baru pengucapan per kata
 - [ ] mode gelap
-- [ ] latihan urutan goresan kanji (KanjiVG)
+- [x] latihan tulis hiragana & katakana (KanjiVG) — berikutnya: urutan goresan kanji
 - [ ] export/import progres belajar
-- [ ] level N5 & N4
+- [x] level N5 & N4 (kosakata + kuis) — tahap berikutnya: bunpou/kanji/dokkai per level
 
 ---
 

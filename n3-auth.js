@@ -122,6 +122,7 @@
 
         masuk: masuk,
         daftar: daftar,
+        level: function () { return (pengguna && pengguna.level) || ""; },
         keluar: keluar,
         statistik: statistik,
         papanPeringkat: papanPeringkat,
@@ -167,7 +168,7 @@
         simpanSesiLokal();
     }
 
-    async function daftar(username, sandi, nama) {
+    async function daftar(username, sandi, nama, level) {
         if (!sb) throw new Error("Belum tersambung ke server.");
         const u = String(username || "").trim().toLowerCase();
         if (!usernameValid(u)) throw new Error("Username 3–20 karakter, pakai huruf kecil/angka/underscore.");
@@ -184,7 +185,7 @@
         const { data, error } = await sb.auth.signUp({
             email: emailDari(u),
             password: sandi,
-            options: { data: { username: u, display_name: (nama && nama.trim()) || u } }
+            options: { data: { username: u, display_name: (nama && nama.trim()) || u, level: (level || "N3") } }
         });
         if (error) {
             if (/already registered/i.test(error.message)) throw new Error("Username sudah dipakai, pilih yang lain.");
@@ -227,8 +228,13 @@
             const { data } = await sb.from("profiles").select("username,display_name").eq("id", user.id).single();
             if (data) { username = data.username || username; nama = data.display_name || username; }
         } catch (e) {}
-        pengguna = { id: user.id, username: username || ("user_" + String(user.id).slice(0, 6)), nama: nama || username };
+        let lv = (user.user_metadata && user.user_metadata.level) || "";
+        try { if (!lv) lv = localStorage.getItem("n3_level_" + String(username).toLowerCase()) || localStorage.getItem("n3_level") || ""; } catch (e) {}
+        pengguna = { id: user.id, username: username || ("user_" + String(user.id).slice(0, 6)), nama: nama || username, level: lv || "" };
         N3.pengguna = pengguna;
+        try {
+            if (lv) { localStorage.setItem("n3_level", lv); localStorage.setItem("n3_level_" + String(pengguna.username).toLowerCase(), lv); }
+        } catch (e) {}
     }
 
     /* ================= tarik data server -> cache lokal ================= */
@@ -494,6 +500,14 @@
             '  <input id="n3User" class="n3-input" type="text" autocomplete="username" placeholder="Username (huruf kecil, contoh: emye)">',
             '  <input id="n3Pass" class="n3-input" type="password" autocomplete="current-password" placeholder="Sandi (minimal 6 karakter)">',
             '  <input id="n3Nama" class="n3-input" type="text" placeholder="Nama tampilan (opsional)" style="display:none">',
+            '  <div id="n3LevelWrap" class="n3-level-wrap" style="display:none">',
+            '    <div class="n3-level-judul">Pilih levelmu <span>(wajib — materi & latihan mengikuti level ini)</span></div>',
+            '    <div class="n3-level" id="n3Level">',
+            '      <button type="button" class="n3-lv" data-lv="N5"><b>N5</b><span>pemula</span></button>',
+            '      <button type="button" class="n3-lv" data-lv="N4"><b>N4</b><span>dasar</span></button>',
+            '      <button type="button" class="n3-lv" data-lv="N3"><b>N3</b><span>menengah</span></button>',
+            '    </div>',
+            '  </div>',
             '  <div id="n3Pesan" class="n3-pesan"></div>',
             '  <button id="n3Kirim" class="n3-btn">Masuk ➔</button>',
             '  <p class="n3-gate-note">Data kamu (jam belajar, progress, level) tersimpan di server, jadi bisa dibuka dari HP mana pun 🌸</p>',
@@ -530,8 +544,19 @@
                 g.querySelectorAll(".n3-tab").forEach(function (x) { x.classList.remove("aktif"); });
                 t.classList.add("aktif");
                 elNama.style.display = (mode === "daftar") ? "block" : "none";
+                const w = g.querySelector("#n3LevelWrap");
+                if (w) w.style.display = (mode === "daftar") ? "block" : "none";
                 elKirim.textContent = (mode === "daftar") ? "Daftar & Mulai ➔" : "Masuk ➔";
                 elPesan.textContent = "";
+            });
+        });
+
+        let levelDipilih = "";
+        g.querySelectorAll("#n3Level .n3-lv").forEach(function (b) {
+            b.addEventListener("click", function () {
+                g.querySelectorAll("#n3Level .n3-lv").forEach(function (x) { x.classList.remove("aktif"); });
+                b.classList.add("aktif");
+                levelDipilih = b.dataset.lv || "";
             });
         });
 
@@ -542,7 +567,17 @@
             let kodeBaru = null;
             try {
                 if (mode === "daftar") {
-                    kodeBaru = await daftar(elUser.value, elPass.value, elNama.value);
+                    if (!levelDipilih) {
+                        elPesan.textContent = "Pilih levelmu dulu ya (N5 / N4 / N3) 👇";
+                        elPesan.className = "n3-pesan err";
+                        elKirim.disabled = false;
+                        return;
+                    }
+                    kodeBaru = await daftar(elUser.value, elPass.value, elNama.value, levelDipilih);
+                    try {
+                        localStorage.setItem("n3_level", levelDipilih);
+                        localStorage.setItem("n3_level_" + String(elUser.value).trim().toLowerCase(), levelDipilih);
+                    } catch (e) {}
                 } else {
                     await masuk(elUser.value, elPass.value);
                 }

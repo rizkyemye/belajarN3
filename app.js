@@ -91,7 +91,7 @@ const counter = document.getElementById("counter");
 const timerDisplay = document.getElementById("timerDisplay");
 const resultText = document.getElementById("resultText");
 
-fetch('data.json?v=10')
+fetch((window.N3BerkasData ? N3BerkasData() : 'data.json?v=10'))
     .then(response => response.json())
     .then(data => {
         allData = data;

@@ -98,7 +98,7 @@ function tampilkanLevelNaik(noLama, noBaru) {
 document.addEventListener("DOMContentLoaded", () => {
     muatXp();  // EXP diambil dari Dashboard (satu sumber)
     
-    fetch('data.json?v=10')
+    fetch((window.N3BerkasData ? N3BerkasData() : 'data.json?v=10'))
         .then(response => response.json())
         .then(data => {
             allQuizData = data;

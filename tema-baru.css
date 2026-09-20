@@ -711,3 +711,42 @@ body.sesi-aktif .aksi-grid { display: none !important; }
     body.sesi-aktif .tab-navigation { display: none !important; }
     body.sesi-aktif .app-container { padding-top: 10px !important; }
 }
+
+/* ---------- pemilih level di form daftar ---------- */
+.n3-level-wrap { margin: 4px 0 2px; }
+.n3-level-judul { font-size: .85rem; color: #475569; margin-bottom: 8px; font-weight: 600; }
+.n3-level-judul span { font-weight: 400; color: #94a3b8; }
+.n3-level { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.n3-level .n3-lv {
+    background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 14px; padding: 12px 6px;
+    cursor: pointer; font-family: inherit; color: #334155; display: flex; flex-direction: column;
+    align-items: center; gap: 2px; min-height: 62px;
+}
+.n3-level .n3-lv b { font-size: 1.05rem; }
+.n3-level .n3-lv span { font-size: .68rem; color: #94a3b8; }
+.n3-level .n3-lv.aktif {
+    background: linear-gradient(135deg, #4f46e5, #a21caf); border-color: transparent; color: #fff;
+    box-shadow: 0 8px 18px rgba(79, 70, 229, .25);
+}
+.n3-level .n3-lv.aktif span { color: rgba(255, 255, 255, .85); }
+.n3-level .n3-lv:active { transform: scale(.97); }
+
+/* ---------- chip level & pemilih level (level.js) ---------- */
+.chip-level { margin-left: auto; align-self: flex-start; background: rgba(255,255,255,.22); color: #fff;
+    border: 0; border-radius: 99px; padding: 7px 12px; font-weight: 800; font-size: .78rem; cursor: pointer;
+    white-space: nowrap; font-family: inherit; }
+.chip-level span { font-weight: 500; opacity: .8; font-size: .7rem; }
+.chip-level:active { transform: scale(.96); }
+#pilihLevelBox { position: fixed; inset: 0; background: rgba(15,23,42,.55); display: flex; align-items: center;
+    justify-content: center; z-index: 400; padding: 20px; }
+.pl-kartu { background: #fff; border-radius: 22px; padding: 22px 20px; width: 100%; max-width: 360px;
+    box-shadow: 0 24px 60px rgba(15,23,42,.35); }
+.pl-judul { font-weight: 800; font-size: 1.05rem; color: #1f2740; margin-bottom: 4px; }
+.pl-sub { font-size: .84rem; color: #64748b; margin-bottom: 14px; }
+.pl-opsi { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-bottom: 14px; }
+.pl-lv { border: 2px solid #e2e8f0; background: #f8fafc; border-radius: 14px; min-height: 60px;
+    font-weight: 800; font-size: 1.05rem; color: #334155; cursor: pointer; font-family: inherit; }
+.pl-lv.aktif { background: linear-gradient(135deg,#4f46e5,#a21caf); color: #fff; border-color: transparent; }
+.pl-lv:active { transform: scale(.97); }
+.pl-batal { width: 100%; min-height: 44px; border: 0; border-radius: 13px; background: #f1f5f9; color: #475569;
+    font-weight: 700; cursor: pointer; font-family: inherit; }

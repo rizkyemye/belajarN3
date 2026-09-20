@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     
-    <title>Flashcard JLPT N3 - Kalender & Belajar</title>
+    <title>JLPT N5 — Latihan Bahasa Jepang</title>
 <meta name="description" content="Belajar JLPT N3 tiap hari: kosakata, tata bahasa, kanji, dan bacaan — plus kuis harian, kartu hafalan, dan progres belajar yang kelihatan.">
 <meta name="theme-color" content="#4f46e5">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
@@ -43,7 +43,7 @@
 
             <!-- Tombol aksi: grid 2 kolom di HP supaya selalu rapi -->
             <div class="aksi-grid">
-                <a href="quiz.html" class="tombol-aksi utama">📝 Buka Quiz</a>
+                <a href="quiz.html?lv=N5" class="tombol-aksi utama">📝 Buka Quiz</a>
                 <a href="dashboard.html" class="tombol-aksi">📊 Dashboard</a>
                 <a href="review.html" class="tombol-aksi">🔁 Review</a>
                 <a href="tulis.html" class="tombol-aksi">✍️ Latihan tulis kana</a>
@@ -172,7 +172,7 @@
                 <p class="bunpou-subtitle" id="bunpouCount">Memuat data bunpou…</p>
                 <input type="text" id="bunpouSearch" class="bunpou-search" placeholder="🔍 Cari rumus, arti, atau contoh kalimat…">
                 <div class="bunpou-day-chips" id="bunpouDayChips"></div>
-                <a class="action-btn-primary" href="quiz-bunpou.html" style="display:inline-block;margin-top:12px;background-color:#7c3aed;text-decoration:none;">🎓 Latihan Quiz Bunpou (10 soal/hari)</a>
+                <a class="action-btn-primary" href="quiz-bunpou.html" style="display:none" style="display:inline-block;margin-top:12px;background-color:#7c3aed;text-decoration:none;">🎓 Latihan Quiz Bunpou (10 soal/hari)</a>
             </div>
             <div id="bunpouList" class="bunpou-list"></div>
         </div>
@@ -252,7 +252,8 @@
     <!-- Supabase: login + penyimpanan data di server -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="supabase-config.js"></script>
-    <script src="n3-auth.js?v=13"></script>
+    <script>window.N3_LEVEL="N5";</script>
+<script src="n3-auth.js?v=13"></script>
 <script src="level.js"></script>
 <script src="n3-srs.js"></script>
     <script src="n3-kunci.js?v=14"></script>

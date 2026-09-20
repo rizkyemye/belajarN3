@@ -122,6 +122,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="supabase-config.js"></script>
 <script src="n3-auth.js?v=10"></script>
+<script src="level.js"></script>
 <script src="n3-srs.js"></script>
 <script>
 /* ============ REVIEW KOSAKATA ============ */
@@ -341,7 +342,7 @@ document.getElementById("rvAmbang").addEventListener("change", function () {
 /* ==== muat data & sinkron dengan server ==== */
 (async function () {
     try {
-        const r = await fetch("data.json?v=10");
+        const r = await fetch((window.N3BerkasData ? N3BerkasData() : "data.json?v=10"));
         rvData = await r.json();
     } catch (e) { console.warn("gagal muat data.json", e); }
 

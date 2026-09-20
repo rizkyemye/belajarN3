@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan Kana (Kartu &amp; Tulis) — JLPT</title>
+<meta name="description" content="Latihan menulis hiragana dan katakana pakai jari di HP: contoh karakter, urutan goresan, dan papan tulis.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="tema-baru.css">
+<style>
+    .tw-mode { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin: 0 0 14px; }
+    .tw-mode button { min-height: 48px; border-radius: 14px; border: 2px solid #e2e8f0; background: #f8fafc;
+        font-weight: 800; color: #334155; font-size: .95rem; cursor: pointer; font-family: inherit; }
+    .tw-mode button.aktif { background: linear-gradient(135deg,#4f46e5,#a21caf); color: #fff; border-color: transparent; }
+    .tw-papan { background: #fff; border: 1px solid #e6e9f2; border-radius: 22px; padding: 16px; box-shadow: 0 10px 26px rgba(27,32,53,.08); }
+    .tw-atas { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .tw-huruf { font-size: 1.6rem; font-weight: 800; color: #1f2740; line-height: 1.1; }
+    .tw-huruf small { display: block; font-size: .8rem; font-weight: 600; color: #64748b; }
+    .tw-suara { background: #eef2ff; color: #4338ca; border: 0; border-radius: 12px; min-height: 44px; padding: 0 14px;
+        font-weight: 700; cursor: pointer; font-family: inherit; }
+    .tw-kanvas-wrap { position: relative; width: 100%; max-width: 320px; margin: 0 auto; aspect-ratio: 1/1; }
+    .tw-kanvas-wrap { background: #fffdf8; border: 2px dashed #d8dee9; border-radius: 16px; }
+    canvas.tw-kanvas { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 16px;
+        background: transparent; touch-action: none; z-index: 3; }
+    svg.tw-panduan { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+    svg.tw-panduan path { fill: none; stroke: #c7d2fe; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; opacity: 1; }
+    svg.tw-panduan path.hidup { stroke: #6366f1; }
+    .tw-nomor { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .tw-nomor span { position: absolute; font-size: .7rem; font-weight: 800; color: #a5b4fc; }
+    .tw-tombol { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-top: 14px; }
+    .tw-tombol button { min-height: 46px; border: 0; border-radius: 13px; font-weight: 700; font-size: .85rem;
+        cursor: pointer; font-family: inherit; background: #f1f5f9; color: #334155; }
+    .tw-tombol button.utama { background: linear-gradient(135deg,#4f46e5,#a21caf); color: #fff; }
+    .tw-daftar { display: grid; grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)); gap: 8px; margin-top: 16px; }
+    .tw-daftar button { aspect-ratio: 1/1; border-radius: 12px; border: 2px solid #e2e8f0; background: #fff;
+        font-size: 1.35rem; cursor: pointer; font-family: inherit; color: #1f2740; }
+    .tw-daftar button.aktif { border-color: #6366f1; background: #eef2ff; }
+    .tw-daftar button.sudah { background: #dcfce7; border-color: #22c55e; }
+    .tw-alat { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin: 0 0 12px; }
+    .tw-alat button { min-height: 50px; border-radius: 15px; border: 2px solid #e2e8f0; background: #fff;
+        font-weight: 800; color: #334155; font-size: .92rem; cursor: pointer; font-family: inherit; }
+    .tw-alat button.aktif { background: linear-gradient(135deg,#4f46e5,#a21caf); color: #fff; border-color: transparent; }
+    .kf-kartu { background: #fff; border: 1px solid #e6e9f2; border-radius: 22px; box-shadow: 0 10px 26px rgba(27,32,53,.08);
+        min-height: 240px; display: flex; align-items: center; justify-content: center; padding: 22px 18px;
+        cursor: pointer; text-align: center; transition: transform .12s ease; }
+    .kf-kartu:active { transform: scale(.985); }
+    .kf-depan { font-size: 5.4rem; font-weight: 800; color: #1f2740; line-height: 1; }
+    .kf-romaji { font-size: 2.6rem; font-weight: 800; background: linear-gradient(135deg,#4f46e5,#a21caf);
+        -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.1; }
+    .kf-contoh { margin-top: 10px; font-size: 1.05rem; color: #334155; }
+    .kf-contoh b { font-size: 1.35rem; }
+    .kf-contoh span { color: #94a3b8; font-size: .85rem; }
+    .kf-hint { text-align: center; font-size: .78rem; color: #94a3b8; margin: 8px 0 12px; }
+    .kf-tombol { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+    .kf-tombol button { min-height: 52px; border: 0; border-radius: 15px; font-weight: 800; font-size: .92rem;
+        color: #fff; cursor: pointer; font-family: inherit; }
+    .kf-lupa { background: linear-gradient(135deg,#f59e0b,#ea580c); }
+    .kf-ingat { background: linear-gradient(135deg,#10b981,#059669); }
+    .kf-tombol button:active { transform: scale(.96); }
+    .kf-maju { text-align: center; font-size: .82rem; color: #64748b; margin: 12px 0 0; }
+    .kf-reset { background: none; border: 0; color: #6366f1; font-size: .78rem; text-decoration: underline;
+        cursor: pointer; font-family: inherit; padding: 4px; }
+    .tw-kredit { font-size: .75rem; color: #94a3b8; text-align: center; margin: 16px 0 0; }
+</style>
+</head>
+<body>
+<div class="app-container">
+
+    <div class="hero-banner" style="margin-bottom:14px">
+        <div class="hero-baris">
+            <span class="hero-ikon">✍️</span>
+            <div style="min-width:0">
+                <div class="hero-judul">Hiragana &amp; Katakana</div>
+                <div class="hero-sapaan">Hafalkan pakai kartu, tulis pakai jari</div>
+                <div class="hero-pesan">Pilih <b>🃏 Kartu</b> untuk hafalan, <b>✍️ Tulis</b> untuk latihan goresan ♪</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tw-alat">
+        <button type="button" class="aktif" data-alat="kartu">🃏 Kartu hafalan</button>
+        <button type="button" data-alat="tulis">✍️ Latihan tulis</button>
+    </div>
+
+    <div class="kf-wrap" id="kfWrap">
+        <div class="kf-kartu" id="kfKartu">
+            <div class="kf-depan" id="kfDepan">-</div>
+            <div class="kf-belakang" id="kfBelakang" style="display:none">
+                <div class="kf-romaji" id="kfRomaji">-</div>
+                <div class="kf-contoh" id="kfContoh"></div>
+            </div>
+        </div>
+        <p class="kf-hint">Ketuk kartu untuk membalik</p>
+        <div class="kf-tombol">
+            <button type="button" class="kf-lupa" id="kfLupa">🔁 Belum ingat</button>
+            <button type="button" class="kf-ingat" id="kfIngat">✅ Sudah ingat</button>
+        </div>
+        <p class="kf-maju">Sudah hafal: <b id="kfJumlah">0</b> / <span id="kfTotal">71</span> · sisa di sesi ini: <b id="kfSisa">0</b>
+            <button type="button" class="kf-reset" id="kfReset">ulangi dari nol</button></p>
+    </div>
+
+    <div class="tw-wrap" id="twWrap" style="display:none">
+    <div class="tw-mode">
+        <button type="button" class="aktif" data-mode="hira">ひらがな Hiragana</button>
+        <button type="button" data-mode="kata">カタカナ Katakana</button>
+    </div>
+
+    <div class="tw-papan">
+        <div class="tw-atas">
+            <div class="tw-huruf" id="twHuruf">あ<small id="twRomaji">a</small></div>
+            <button class="tw-suara" id="twSuara" type="button">🔊 Dengar</button>
+        </div>
+
+        <div class="tw-kanvas-wrap">
+            <svg class="tw-panduan" id="twPanduan" viewBox="0 0 109 109"></svg>
+            <div class="tw-nomor" id="twNomor"></div>
+            <canvas class="tw-kanvas" id="twKanvas"></canvas>
+        </div>
+
+        <div class="tw-tombol">
+            <button type="button" id="twCara">👀 Cara tulis</button>
+            <button type="button" id="twHapus">🧽 Hapus</button>
+            <button type="button" class="utama" id="twLanjut">Berikutnya ➡️</button>
+        </div>
+
+        <div class="tw-daftar" id="twDaftar"></div>
+    </div>
+
+    </div><!-- /tw-wrap -->
+
+    <p style="text-align:center;margin:14px 0 0">
+        <a href="index.html" style="color:#4f46e5;font-weight:700">← Balik ke halaman belajar</a>
+    </p>
+    <p class="tw-kredit">Urutan goresan dari <b>KanjiVG</b> (CC BY-SA 3.0) — © Ulrich Apel</p>
+</div>
+
+<script>
+(function () {
+    "use strict";
+    const HIRA = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ".split("");
+    const KATA = HIRA.map(function (c) { return String.fromCharCode(c.charCodeAt(0) + 0x60); });
+    let data = null, mode = "hira", kini = 0, sudah = {};
+
+    const elKanvas = document.getElementById("twKanvas");
+    const elPanduan = document.getElementById("twPanduan");
+    const elNomor = document.getElementById("twNomor");
+    const elHuruf = document.getElementById("twHuruf");
+    const elRomaji = document.getElementById("twRomaji");
+    const elDaftar = document.getElementById("twDaftar");
+
+    /* ---------- papan gambar ---------- */
+    const ctx = elKanvas.getContext("2d");
+    let gambar = false, titikTerakhir = null;
+
+    function ukuranKanvas() {
+        const r = elKanvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        const isi = ctx.getImageData ? null : null;
+        const sebelumnya = elKanvas.width ? ctx.getImageData(0, 0, elKanvas.width, elKanvas.height) : null;
+        elKanvas.width = Math.round(r.width * dpr);
+        elKanvas.height = Math.round(r.height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.lineWidth = 12;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.strokeStyle = "#1f2740";
+        if (sebelumnya) { try { ctx.putImageData(sebelumnya, 0, 0); } catch (e) {} }
+    }
+
+    function posisi(e) {
+        const r = elKanvas.getBoundingClientRect();
+        const p = e.touches ? e.touches[0] : e;
+        return { x: p.clientX - r.left, y: p.clientY - r.top };
+    }
+    function mulai(e) { e.preventDefault(); gambar = true; titikTerakhir = posisi(e); }
+    function gerak(e) {
+        if (!gambar) return;
+        e.preventDefault();
+        const p = posisi(e);
+        ctx.beginPath(); ctx.moveTo(titikTerakhir.x, titikTerakhir.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+        titikTerakhir = p;
+    }
+    function henti() { gambar = false; titikTerakhir = null; }
+    elKanvas.addEventListener("pointerdown", mulai);
+    elKanvas.addEventListener("pointermove", gerak);
+    window.addEventListener("pointerup", henti);
+    elKanvas.addEventListener("touchstart", mulai, { passive: false });
+    elKanvas.addEventListener("touchmove", gerak, { passive: false });
+    elKanvas.addEventListener("touchend", henti);
+
+    function hapusKanvas() {
+        ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, elKanvas.width, elKanvas.height);
+        ctx.restore();
+    }
+
+    /* ---------- panduan goresan ---------- */
+    function gambarPanduan() {
+        const k = daftarKini()[kini];
+        const d = data[k] || { s: [], r: "" };
+        elHuruf.firstChild.nodeValue = k;
+        elRomaji.textContent = d.r || "";
+        elPanduan.innerHTML = d.s.map(function (p) { return '<path d="' + p + '"></path>'; }).join("");
+        elNomor.innerHTML = "";
+        hapusKanvas();
+    }
+
+    function animasiGoresan() {
+        const ps = elPanduan.querySelectorAll("path");
+        ps.forEach(function (p) { p.classList.remove("hidup"); p.style.transition = "none"; p.style.opacity = "0"; });
+        let i = 0;
+        (function lanjut() {
+            if (i >= ps.length) {
+                setTimeout(function () { ps.forEach(function (p) { p.style.opacity = "1"; p.style.transition = ""; }); }, 700);
+                return;
+            }
+            const p = ps[i];
+            p.style.transition = "opacity .25s ease";
+            p.style.opacity = "1";
+            p.classList.add("hidup");
+            i++;
+            setTimeout(lanjut, 620);
+        })();
+    }
+
+    function daftarKini() { return mode === "hira" ? HIRA : KATA; }
+
+    function gambarDaftar() {
+        elDaftar.innerHTML = daftarKini().map(function (k, i) {
+            return '<button type="button" data-i="' + i + '" class="' + (i === kini ? "aktif " : "") + (sudah[mode + k] ? "sudah" : "") + '">' + k + "</button>";
+        }).join("");
+    }
+
+    function bicara(k) {
+        try {
+            if (!window.speechSynthesis) return;
+            speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(k);
+            u.lang = "ja-JP"; u.rate = 0.85;
+            speechSynthesis.speak(u);
+        } catch (e) {}
+    }
+
+    /* ---------- kontrol ---------- */
+    document.querySelectorAll(".tw-mode button").forEach(function (b) {
+        b.addEventListener("click", function () {
+            document.querySelectorAll(".tw-mode button").forEach(function (x) { x.classList.remove("aktif"); });
+            b.classList.add("aktif");
+            mode = b.dataset.mode; kini = 0;
+            gambarPanduan(); gambarDaftar(); siapkanDeck();
+        });
+    });
+    elDaftar.addEventListener("click", function (e) {
+        const b = e.target.closest("button");
+        if (!b) return;
+        kini = Number(b.dataset.i) || 0;
+        gambarPanduan(); gambarDaftar();
+    });
+    document.getElementById("twHapus").addEventListener("click", hapusKanvas);
+    document.getElementById("twCara").addEventListener("click", animasiGoresan);
+    document.getElementById("twSuara").addEventListener("click", function () { bicara(daftarKini()[kini]); });
+    document.getElementById("twLanjut").addEventListener("click", function () {
+        sudah[mode + daftarKini()[kini]] = true;
+        kini = (kini + 1) % daftarKini().length;
+        gambarPanduan(); gambarDaftar();
+    });
+
+    window.addEventListener("resize", function () { ukuranKanvas(); });
+    window.addEventListener("orientationchange", function () { setTimeout(ukuranKanvas, 300); });
+
+    /* ==================== 🃏 KARTU HAFALAN KANA ==================== */
+    let contoh = {}, deck = [], kfSekarang = null, kfTerbuka = false;
+
+    function kunciHafal() { return "n3_kana_hafal_" + mode; }
+    function bacaHafal() {
+        try { return JSON.parse(localStorage.getItem(kunciHafal()) || "[]") || []; } catch (e) { return []; }
+    }
+    function simpanHafal(arr) {
+        try { localStorage.setItem(kunciHafal(), JSON.stringify(arr)); } catch (e) {}
+    }
+
+    function kocok(a) {
+        for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const s = a[i]; a[i] = a[j]; a[j] = s; }
+        return a;
+    }
+
+    function siapkanDeck() {
+        const hafal = bacaHafal();
+        deck = kocok(daftarKini().filter(function (k) { return hafal.indexOf(k) === -1; }));
+        document.getElementById("kfTotal").textContent = daftarKini().length;
+        document.getElementById("kfJumlah").textContent = hafal.length;
+        document.getElementById("kfSisa").textContent = deck.length;
+        kartuBerikut(true);
+    }
+
+    function kartuBerikut(pertama) {
+        if (pertama) kfTerbuka = false;
+        else { kfTerbuka = false; }
+        if (!deck.length) {
+            document.getElementById("kfDepan").textContent = "🎉";
+            document.getElementById("kfDepan").style.fontSize = "3rem";
+            document.getElementById("kfBelakang").style.display = "none";
+            document.getElementById("kfRomaji").textContent = "semua sudah hafal!";
+            kfSekarang = null;
+            return;
+        }
+        kfSekarang = deck[0];
+        document.getElementById("kfDepan").style.fontSize = "";
+        document.getElementById("kfDepan").textContent = kfSekarang;
+        document.getElementById("kfBelakang").style.display = "none";
+        document.getElementById("kfDepan").style.display = "";
+        document.getElementById("kfSisa").textContent = deck.length;
+    }
+
+    function balikKartu() {
+        if (!kfSekarang || kfTerbuka) return;
+        const d = data[kfSekarang] || { r: "" };
+        const c = contoh[kfSekarang] || {};
+        document.getElementById("kfRomaji").textContent = d.r || "";
+        document.getElementById("kfContoh").innerHTML = c.kata
+            ? '<b>' + c.kata + '</b> <span>' + (c.baca || "") + "</span><br>" + (c.arti || "")
+            : "";
+        document.getElementById("kfDepan").style.display = "none";
+        document.getElementById("kfBelakang").style.display = "";
+        kfTerbuka = true;
+        bicara(kfSekarang);
+    }
+
+    function nilaiKartu(ingat) {
+        if (!kfSekarang) return;
+        if (ingat) {
+            const hafal = bacaHafal();
+            if (hafal.indexOf(kfSekarang) === -1) hafal.push(kfSekarang);
+            simpanHafal(hafal);
+            document.getElementById("kfJumlah").textContent = hafal.length;
+            deck.shift();
+        } else {
+            const k = deck.shift();
+            deck.splice(Math.min(3, deck.length), 0, k);      // muncul lagi 3 kartu kemudian
+        }
+        kartuBerikut(false);
+    }
+
+    document.getElementById("kfKartu").addEventListener("click", balikKartu);
+    document.getElementById("kfIngat").addEventListener("click", function () { nilaiKartu(true); });
+    document.getElementById("kfLupa").addEventListener("click", function () { nilaiKartu(false); });
+    document.getElementById("kfReset").addEventListener("click", function () {
+        if (!confirm("Hapus tanda hafal untuk " + mode + "? (kartu kembali semua)")) return;
+        simpanHafal([]); siapkanDeck();
+    });
+
+    /* pemilih alat: kartu / tulis */
+    document.querySelectorAll(".tw-alat button").forEach(function (b) {
+        b.addEventListener("click", function () {
+            document.querySelectorAll(".tw-alat button").forEach(function (x) { x.classList.remove("aktif"); });
+            b.classList.add("aktif");
+            const alat = b.dataset.alat;
+            document.getElementById("kfWrap").style.display = (alat === "kartu") ? "" : "none";
+            document.getElementById("twWrap").style.display = (alat === "tulis") ? "" : "none";
+            if (alat === "kartu") siapkanDeck(); else ukuranKanvas();
+        });
+    });
+
+    fetch("kana-svg.json").then(function (r) { return r.json(); }).then(function (d) {
+        data = d; gambarPanduan(); gambarDaftar(); ukuranKanvas(); siapkanDeck();
+    }).catch(function () {
+        elHuruf.innerHTML = "⚠️<small>gagal memuat kana-svg.json — buka lewat server, bukan file://</small>";
+    });
+    fetch("kana-contoh.json").then(function (r) { return r.json(); }).then(function (d) { contoh = d; }).catch(function () {});
+    ukuranKanvas();
+})();
+</script>
+</body>
+</html>
