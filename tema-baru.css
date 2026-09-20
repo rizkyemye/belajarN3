@@ -750,3 +750,31 @@ body.sesi-aktif .aksi-grid { display: none !important; }
 .pl-lv:active { transform: scale(.97); }
 .pl-batal { width: 100%; min-height: 44px; border: 0; border-radius: 13px; background: #f1f5f9; color: #475569;
     font-weight: 700; cursor: pointer; font-family: inherit; }
+
+/* ==========================================================================
+   AUDIT UI/UX (20 Sep 2026) — perbaikan kontras WCAG + focus ring + font 12px
+   Tema sebelumnya: tombol hijau/oranye dengan teks putih hanya 2,1–3,6:1 (gagal
+   ambang 4,5:1) dan teks bantuan pakai #94a3b8 (2,56:1). Blok ini bisa dicabut
+   dengan menghapus barisnya kalau tidak diinginkan.
+   ========================================================================== */
+:focus-visible { outline: 3px solid #4f46e5 !important; outline-offset: 2px; border-radius: 6px; }
+
+/* tombol hijau/oranye: gradasi digelapkan supaya teks putih lulus 4,5:1 */
+.btn-ingat, .kf-ingat {
+    background: linear-gradient(135deg, #047857, #065f46) !important;
+}
+.btn-lupa, .kf-lupa {
+    background: linear-gradient(135deg, #b45309, #9a3412) !important;
+}
+/* ajakan utama tetap identitas indigo (lulus 6,3:1) */
+.tombol-utama-lebar, .aksi-grid .utama, .tw-tombol button.utama, .pl-lv.aktif, .n3-level .n3-lv.aktif {
+    background: linear-gradient(135deg, #4f46e5, #a21caf) !important;
+}
+/* tautan & teks bantuan: naikkan kontras */
+.sapaan-kotak a, .rv-sub a, a { }
+.hero-pesan, .kf-hint, .kf-maju, .tw-kredit, .card-hint, .rv-soal, .rv-badge,
+.rv-label, .rv-sub, .kunci-catatan, #rvRingkas, .pl-sub {
+    color: #64748b !important;
+}
+.rv-soal, .kf-hint small, .tw-kredit { font-size: 12px !important; }
+.kf-contoh span { color: #64748b !important; font-size: 12px !important; }
