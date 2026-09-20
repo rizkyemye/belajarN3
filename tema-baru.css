@@ -778,3 +778,39 @@ body.sesi-aktif .aksi-grid { display: none !important; }
 }
 .rv-soal, .kf-hint small, .tw-kredit { font-size: 12px !important; }
 .kf-contoh span { color: #64748b !important; font-size: 12px !important; }
+
+/* ==========================================================================
+   AUDIT 2 (20 Sep 2026, halaman setelah login) — teks abu-abu muda #94a3b8 /
+   #cbd5e1 / #a5b4fc hanya 1,5–2,6:1 di atas putih (gagal WCAG 4,5:1).
+   Semua diganti #64748b = 4,76:1. Selector diambil dari style.css + inline di
+   HTML; inline ditangkap lewat selector atribut. Cabut blok ini untuk kembali.
+   ========================================================================== */
+.bunpou-empty, .bunpou-ex-label, .card-back .back-example-label, .card-hint,
+.day-cell.level-0 .day-time, .dokkai-kosong, .kanji-kosong, .kanji-legenda,
+.kanji-meta, .n3-gate-note, .vocab-number, #previewVocabList rt,
+.back-example-jp rt, .rv-back rt { color: #64748b !important; }
+
+[style*="color:#94a3b8"], [style*="color: #94a3b8"],
+[style*="color:#cbd5e1"], [style*="color: #cbd5e1"],
+[style*="color:#a5b4fc"], [style*="color: #a5b4fc"] { color: #64748b !important; }
+
+/* ==========================================================================
+   AUDIT 3 (20 Sep 2026) — sisa temuan setelah audit-2:
+   · dashboard `p.catatan`: #94a3b8 di atas PUTIH = 2,56:1 (103 temuan)
+   · tombol "Keluar": putih di #ef4444 = 3,76:1
+   · tombol "Tampilkan semua": putih di #f59e0b = 2,15:1
+   · badge "Selesai": #64748b di kartu abu = 4,2:1
+   ========================================================================== */
+.catatan, p.catatan, .dash-panel p, .dash-card p, .dashboard p { color: #475569 !important; }
+
+[style*="background-color:#ef4444"], [style*="background-color: #ef4444"],
+[style*="background:#ef4444"], [style*="background: #ef4444"] { background-color: #b91c1c !important; }
+
+.kunci-catatan button { background: #b45309 !important; }
+.rv-badge { color: #ffffff !important; background: #475569 !important; }
+
+/* AUDIT 4 (20 Sep 2026): sisa terakhir — <small> abu #94a3b8 di putih (97 di dashboard)
+   dan tombol nilai lama .btn-hard/.btn-medium/.btn-easy (putih di #ef4444 = 3,76:1) */
+small { color: #475569 !important; }
+.btn-hard, .btn-easy { background: linear-gradient(135deg, #b91c1c, #991b1b) !important; color: #fff !important; }
+.btn-medium { background: linear-gradient(135deg, #b45309, #92400e) !important; color: #fff !important; }
