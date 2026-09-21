@@ -18,9 +18,9 @@
        selalu ke halaman pemilih tingkat). */
     function rapikanTombolBeranda() {
         const lv = level();
-        if (!lv) return;
-        const tujuan = "../" + lv.toLowerCase() + "/";
-        /* Halaman fitur memakai <a> DAN <button onclick="...href='../'...">.
+        // kalau tingkat belum diketahui, tetap arahkan ke pemilih tingkat (bukan halaman mati)
+        const tujuan = lv ? "../" + lv.toLowerCase() + "/" : "../";
+                /* Halaman fitur memakai <a> DAN <button onclick="...href='../'...">.
            Dua-duanya diarahkan ke beranda TINGKAT ini. */
         document.querySelectorAll("a, button").forEach(function (el) {
             const teks = (el.textContent || "").trim();
