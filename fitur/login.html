@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masuk / Daftar — JLPT Master</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#4F46E5">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+<link rel="stylesheet" href="../aset/style.css">
+<link rel="stylesheet" href="../aset/tema-baru.css">
+<style>
+/* ==========================================================================
+   Gerbang masuk — satu halaman untuk MASUK & DAFTAR.
+   Susunannya mengikuti referensi: gambar/ilustrasi hangat di atas,
+   kartu putih dengan judul + tombol besar, lalu kotak isian muncul di atasnya.
+   Kotak isiannya sendiri datang dari ../aset/n3-auth.js — di sini hanya ditata ulang.
+   ========================================================================== */
+body.gerbang{
+  margin:0; background:#F5F5FB; color:#0F172A;
+  font-family:"Quicksand","Baloo 2",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+.hp{max-width:460px;margin:0 auto;min-height:100vh;background:#F5F5FB;display:flex;flex-direction:column}
+
+/* ---------- bagian atas: ilustrasi ---------- */
+.hp-atas{
+  position:relative; overflow:hidden; flex:0 0 auto;
+  min-height:52vh; padding:18px 20px 10px; color:#fff;
+  background:linear-gradient(160deg,#4F46E5 0%,#7C3AED 48%,#EC4899 100%);
+}
+.hp-atas .cap{display:flex;align-items:center;gap:8px;font-weight:800;font-size:.98rem;position:relative;z-index:3}
+.hp-atas .cap span{font-size:1.2rem}
+.awal, .awan, .kilau, .bunga{position:absolute;pointer-events:none}
+.awan{border-radius:50%;background:rgba(255,255,255,.18);filter:blur(2px);animation:melayang 9s ease-in-out infinite}
+.awan.a1{width:150px;height:150px;top:-40px;left:-30px}
+.awan.a2{width:110px;height:110px;top:20px;right:-30px;animation-delay:-3s}
+.awan.a3{width:190px;height:190px;bottom:-70px;left:20%;animation-delay:-6s;background:rgba(255,255,255,.13)}
+@keyframes melayang{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.kilau{font-size:14px;opacity:.85;animation:kelip 3s ease-in-out infinite}
+.kilau.k1{top:22%;left:16%}
+.kilau.k2{top:34%;right:22%;animation-delay:-1s;font-size:11px}
+.kilau.k3{top:14%;right:38%;animation-delay:-2s}
+@keyframes kelip{0%,100%{opacity:.25;transform:scale(.9)}50%{opacity:1;transform:scale(1.15)}}
+.bunga{font-size:30px;animation:jatuhPelan 8s ease-in-out infinite}
+.bunga.b1{bottom:16%;left:12%}
+.bunga.b2{bottom:28%;right:14%;font-size:22px;animation-delay:-4s}
+@keyframes jatuhPelan{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(14px) rotate(8deg)}}
+/* tokoh: lingkaran besar sebagai "kepala" ala ilustrasi */
+.tokoh{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);text-align:center;z-index:2}
+.tokoh .kepala{
+  width:150px;height:150px;border-radius:50%;
+  background:radial-gradient(circle at 34% 30%,#FFFFFF 0%,#FDE7F3 55%,#F8CFE6 100%);
+  display:flex;align-items:center;justify-content:center;font-size:76px;
+  box-shadow:0 16px 34px rgba(15,23,42,.22), inset 0 -8px 18px rgba(124,58,237,.12);
+  animation:napas 4.5s ease-in-out infinite;
+}
+@keyframes napas{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+
+/* ---------- bagian bawah: kartu putih ---------- */
+.hp-bawah{
+  flex:1 1 auto; background:#fff; border-radius:28px 28px 0 0;
+  margin-top:-26px; padding:26px 22px 30px; position:relative; z-index:4;
+  box-shadow:0 -10px 30px rgba(15,23,42,.10);
+}
+.hp-bawah h1{font-size:1.5rem;line-height:1.25;margin:0 0 10px;letter-spacing:-.6px}
+.hp-bawah .ket{color:#475569;font-size:.95rem;line-height:1.6;margin:0 0 20px}
+.tombol-besar{
+  display:block;width:100%;border:0;cursor:pointer;color:#fff;font-weight:800;font-size:1.02rem;
+  padding:16px;border-radius:999px;font-family:inherit;
+  background:linear-gradient(100deg,#4F46E5,#7C3AED 55%,#EC4899);
+  box-shadow:0 12px 26px rgba(79,70,229,.32);
+  transition:transform .16s ease, box-shadow .16s ease;
+}
+.tombol-besar:hover{transform:translateY(-2px);box-shadow:0 18px 34px rgba(79,70,229,.38)}
+.tombol-besar:active{transform:translateY(0)}
+.pisah{display:flex;align-items:center;gap:12px;color:#94a3b8;font-size:.82rem;margin:20px 0 14px}
+.pisah::before,.pisah::after{content:"";flex:1;height:1px;background:#E2E8F0}
+.tombol-samar{
+  display:block;width:100%;text-align:center;text-decoration:none;font-weight:700;font-size:.95rem;
+  color:#4F46E5;border:2px solid #E0E7FF;background:#fff;padding:14px;border-radius:999px;
+  transition:transform .16s, box-shadow .16s;
+}
+.tombol-samar:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(79,70,229,.16)}
+.kecil{color:#64748b;font-size:.78rem;line-height:1.6;margin:18px 0 0;text-align:center}
+.kecil a{color:#4F46E5;font-weight:700;text-decoration:none}
+.lencana{
+  display:inline-block;background:#EEF2FF;color:#4338CA;font-weight:800;font-size:.8rem;
+  padding:6px 14px;border-radius:999px;margin-bottom:14px;
+}
+
+/* ---------- tampilan kotak isian (dari n3-auth.js) disamakan dengan referensi ---------- */
+body.gerbang #n3Gerbang, body.gerbang [id^="n3Gerbang"]{font-family:inherit}
+body.gerbang .n3-kotak, body.gerbang .n3-card{
+  border-radius:26px !important; padding:22px 20px !important;
+  box-shadow:0 26px 60px rgba(15,23,42,.28) !important;
+}
+body.gerbang .n3-tab{
+  font-family:inherit !important; font-weight:800 !important; font-size:.95rem !important;
+  border-radius:999px !important; padding:10px 4px !important; transition:color .16s !important;
+}
+body.gerbang .n3-input{
+  font-family:inherit !important; width:100% !important; border-radius:14px !important;
+  border:1.5px solid #E2E8F0 !important; background:#F8FAFC !important; padding:14px 15px !important;
+  font-size:.98rem !important; color:#0F172A !important;
+}
+body.gerbang .n3-input:focus{border-color:#7C3AED !important; background:#fff !important; outline:none !important}
+body.gerbang .n3-level-wrap button, body.gerbang .n3-level-wrap label{
+  font-family:inherit !important; border-radius:12px !important;
+}
+body.gerbang button.n3-kirim, body.gerbang .n3-kirim{
+  font-family:inherit !important; font-weight:800 !important; border-radius:999px !important;
+  padding:15px !important; border:0 !important; color:#fff !important;
+  background:linear-gradient(100deg,#4F46E5,#7C3AED 55%,#EC4899) !important;
+  box-shadow:0 12px 26px rgba(79,70,229,.30) !important;
+}
+@media (min-width:900px){
+  .hp{max-width:920px;flex-direction:row;min-height:640px;border-radius:30px;overflow:hidden;margin:5vh auto;box-shadow:0 30px 70px rgba(15,23,42,.16)}
+  .hp-atas{flex:1 1 46%;min-height:auto;border-radius:0}
+  .hp-bawah{flex:1 1 54%;margin-top:0;border-radius:0;display:flex;flex-direction:column;justify-content:center;padding:38px 40px}
+  .tokoh .kepala{width:190px;height:190px;font-size:96px}
+  .hp-bawah h1{font-size:1.9rem}
+}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body class="gerbang">
+<div class="hp">
+  <div class="hp-atas">
+    <div class="awal"></div>
+    <div class="awan a1"></div><div class="awan a2"></div><div class="awan a3"></div>
+    <span class="kilau k1">✦</span><span class="kilau k2">✦</span><span class="kilau k3">✧</span>
+    <span class="bunga b1">🌸</span><span class="bunga b2">🌸</span>
+    <div class="cap"><span>🌸</span> JLPT Master</div>
+    <div class="tokoh"><div class="kepala">🌸</div></div>
+  </div>
+
+  <div class="hp-bawah">
+    <div>
+      <span class="lencana" id="lencanaTingkat" style="display:none"></span>
+      <h1>Belajar Jepang, satu hari satu kartu.</h1>
+      <p class="ket">Masuk dulu ya — progresmu tersimpan di akun, jadi bisa dilanjutkan kapan saja dan dari HP mana pun.</p>
+    </div>
+
+    <button id="bukaKotak" class="tombol-besar" type="button">Masuk / Daftar sekarang</button>
+
+    <div class="pisah">atau</div>
+    <a class="tombol-samar" href="../">← Lihat-lihat dulu di halaman depan</a>
+
+    <p class="kecil">Progresmu otomatis disimpan. Sandi tidak pernah kami lihat — yang menyimpan itu Supabase.<br>
+      <a href="./kredit.html">Sumber data &amp; kredit</a></p>
+  </div>
+</div>
+
+<script src="../aset/supabase-config.js"></script>
+<script src="../aset/n3-auth.js?v=16"></script>
+<script>
+/* Satu halaman untuk MASUK & DAFTAR kotak isiannya dari n3-auth.js.
+   · login.html?daftar=1  → kotak langsung terbuka di tab "Daftar Baru"
+   · login.html?level=N5  → kotak terbuka, tingkat N5 sudah dipilih
+   · login.html           → tampil halaman dulu, kotak dibuka lewat tombol */
+(function () {
+  var p = new URLSearchParams(location.search);
+  var lv = (p.get("level") || "").toUpperCase();
+  if (["N5", "N4", "N3"].indexOf(lv) < 0) lv = "";
+  var mauBuka = p.get("daftar") === "1" || !!lv;
+  var mauDaftar = p.get("daftar") === "1" || !!lv;
+
+  if (lv) {
+    var lencana = document.getElementById("lencanaTingkat");
+    lencana.textContent = "Tingkat pilihanmu: " + lv;
+    lencana.style.display = "inline-block";
+    try { localStorage.setItem("n3_level", lv); } catch (e) {}
+  }
+
+  function bukaKotak() { if (window.N3TampilkanGerbang) { try { window.N3TampilkanGerbang(true); } catch (e) {} } }
+
+  function tabDaftar() {
+    return document.querySelector('[data-mode="daftar"]') ||
+      [].slice.call(document.querySelectorAll("button, a, [role=tab], .tab"))
+        .filter(function (b) { return /^daftar\s*baru$/i.test((b.textContent || "").trim()); })[0] || null;
+  }
+  function pilihTingkat(nilai) {
+    var wadah = document.getElementById("n3LevelWrap");
+    if (!wadah || !nilai) return;
+    var kandidat = [].slice.call(wadah.querySelectorAll("button, a, label, option, input"));
+    var cocok = kandidat.filter(function (e) {
+      var t = (e.value || e.getAttribute("data-level") || e.textContent || "").trim().toUpperCase();
+      return t === nilai || t.indexOf(nilai) === 0;
+    })[0];
+    if (cocok) { try { cocok.click(); } catch (e) {} }
+  }
+
+  function bereskan() {
+    if (window.N3 && N3.pengguna) {           // sudah masuk → langsung ke beranda tingkatnya
+      location.replace("../" + String(N3.level ? N3.level() : (localStorage.getItem("n3_level") || "N3")).toLowerCase() + "/");
+      return;
+    }
+    if (mauBuka) bukaKotak();
+    if (mauDaftar) { var t = tabDaftar(); if (t && !/aktif/.test(t.className)) { try { t.click(); } catch (e) {} } }
+    if (lv) { pilihTingkat(lv); }
+  }
+
+  var tombol = document.getElementById("bukaKotak");
+  if (tombol) tombol.addEventListener("click", function () { bukaKotak(); bereskan(); });
+
+  if (mauBuka) {
+    if (document.readyState === "complete") setTimeout(bereskan, 150);
+    else window.addEventListener("load", function () { setTimeout(bereskan, 150); });
+  }
+  if (window.MutationObserver) {
+    var pemantau = new MutationObserver(function () {
+      if (document.getElementById("n3LevelWrap") || document.getElementById("n3User")) {
+        bereskan(); pemantau.disconnect();
+      }
+    });
+    pemantau.observe(document.body, { childList: true, subtree: true });
+  }
+  var coba = 0;
+  var pengulang = setInterval(function () { coba++; bereskan(); if (coba > 12) clearInterval(pengulang); }, 500);
+})();
+</script>
+</body>
+</html>
