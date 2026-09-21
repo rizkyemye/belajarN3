@@ -1,0 +1,37 @@
+name: Hapus berkas lama (struktur folder)
+
+# Cara pakai:
+#   1. Unggah berkas ini ke repo, di folder .github/workflows/
+#   2. Buka tab "Actions" -> pilih "Hapus berkas lama (struktur folder)" -> Run workflow
+#   3. Tunggu ~30 detik -> 43 berkas lama di akar repo terhapus sendiri
+#
+# Aman: daftar berkas ditulis satu per satu (tanpa pola), yang tidak ada dilewati.
+# Berkas baru (index.html, README.md, robots.txt, sitemap.xml, srs-setup.sql) dan
+# folder aset/, fitur/, n3/, n4/, n5/ TIDAK disentuh.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  hapus:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Hapus berkas lama
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for f in app.js bunpou_quiz-n4.json bunpou_quiz-n5.json bunpou_quiz.json bunpou_rumus.json dashboard.html data-n4.json data-n5.json data.json data.json.bak data.json.bak2 data.json.bak3 dengar.js dokkai-n4.json dokkai-n5.json dokkai.json kana-contoh.json kana-svg.json kanji-contoh.json kanji-svg.json kanji.json kredit.html level.js mulai.html n3-auth.js n3-dokkai.js n3-kanji.js n3-kunci.js n3-srs.js n4.html n5.html og-image.png quiz-bunpou.html quiz-bunpou.js quiz.html quiz.js review.html sapaan.js style.css style_live.css supabase-config.js tema-baru.css tulis.html; do
+            git rm -q --ignore-unmatch "$f" || true
+          done
+          if git diff --cached --quiet; then
+            echo "Tidak ada yang perlu dihapus - sudah bersih"
+          else
+            git commit -m "Hapus berkas lama setelah rombak folder"
+            git push
+            echo "Selesai - berkas lama sudah dihapus."
+          fi
