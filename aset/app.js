@@ -912,6 +912,19 @@ function updateCard() {
         completionScreen.style.display = "block";
         
         resultText.innerHTML = `Hebat! Sesi <b>${currentSession.toUpperCase()}</b> selesai dalam <b>${formatTime(secondsElapsed)}</b>.<br>Waktu belajar telah dicatat ke kalender hari ini 🎉`;
+
+        /* ringkasan tiap kartu: nilai ditentukan sistem */
+        try {
+            pasangGayaRingkasan();
+            let wadah = document.getElementById("ringkasanSesi");
+            if (!wadah) {
+                wadah = document.createElement("div");
+                wadah.id = "ringkasanSesi";
+                completionScreen.appendChild(wadah);
+            }
+            wadah.innerHTML = ringkasanHTML();
+            sesiIni = [];                       // sesi berikutnya mulai dari kosong lagi
+        } catch (e) { console.warn("ringkasan sesi gagal:", e); }
         return;
     }
 
@@ -933,7 +946,85 @@ flashcard.addEventListener("click", () => {
 let hitungBelum = {};                 // berapa kali kartu ditandai "belum ingat" di sesi ini
 let waktuKartu = Date.now();          // kapan kartu yang tampil sekarang mulai dilihat
 
+
+/* ===== RINGKASAN AKHIR SESI =====
+   Tiap kartu dinilai OTOMATIS oleh sistem (Again/Hard/Good/Easy) dari hasil + lamanya menjawab.
+   Datanya sudah lama direkam (benar/salah/detik) — di sini hanya ditampilkan. */
+let sesiIni = [];                     // catatan kartu di sesi yang sedang berjalan
+
+function nilaiKartu(ingat, detik) {
+    const d = Number(detik) || 0;
+    if (!ingat) return { kode: "again", label: "Again", ikon: "🔴", warna: "#DC2626" };
+    if (d > 20) return { kode: "hard", label: "Hard", ikon: "🟠", warna: "#D97706" };
+    if (d >= 8) return { kode: "good", label: "Good", ikon: "🔵", warna: "#2563EB" };
+    return { kode: "easy", label: "Easy", ikon: "🟢", warna: "#059669" };
+}
+
+function bersihkan(teks) {
+    const d = document.createElement("div");
+    d.innerHTML = String(teks || "");
+    return (d.textContent || "").replace(/\s+/g, " ").trim();
+}
+
+function ringkasanHTML() {
+    if (!sesiIni.length) return "";
+    const hitung = { again: 0, hard: 0, good: 0, easy: 0 };
+    let detikTotal = 0;
+    const baris = sesiIni.map(function (x) {
+        const n = nilaiKartu(x.ingat, x.detik);
+        hitung[n.kode]++;
+        detikTotal += Number(x.detik) || 0;
+        return '<li class="n3r-baris">'
+            + '<span class="n3r-kata"><b>' + x.kata + '</b><small>' + bersihkan(x.arti) + '</small></span>'
+            + '<span class="n3r-nilai" style="color:' + n.warna + ';background:' + n.warna + '1a">'
+            + n.ikon + ' ' + n.label + ' <em>' + (Number(x.detik) || 0) + 's</em></span>'
+            + '</li>';
+    }).join("");
+    const ringkas = [["easy", "Easy"], ["good", "Good"], ["hard", "Hard"], ["again", "Again"]]
+        .filter(function (r) { return hitung[r[0]]; })
+        .map(function (r) { return r[1] + " " + hitung[r[0]]; }).join(" · ");
+    return '<div class="n3r-bungkus">'
+        + '<div class="n3r-kepala"><b>Ringkasan sesi</b><span>' + sesiIni.length
+        + ' kartu · ' + Math.round(detikTotal / Math.max(1, sesiIni.length)) + ' detik rata-rata</span></div>'
+        + '<p class="n3r-legenda">' + ringkas + ' — nilai ini ditentukan sistem dari hasil &amp; kecepatanmu ✓</p>'
+        + '<ul class="n3r-daftar">' + baris + '</ul></div>';
+}
+
+/* CSS-nya disuntik sekali saja */
+function pasangGayaRingkasan() {
+    if (document.getElementById("n3r-gaya")) return;
+    const s = document.createElement("style");
+    s.id = "n3r-gaya";
+    s.textContent = ".n3r-bungkus{background:#fff;border:1px solid #E2E8F0;border-radius:18px;padding:16px;margin:16px 0;text-align:left}"
+        + ".n3r-kepala{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px}"
+        + ".n3r-kepala b{font-size:1.02rem}.n3r-kepala span{color:#475569;font-size:.82rem}"
+        + ".n3r-legenda{color:#475569;font-size:.82rem;line-height:1.5;margin:0 0 12px}"
+        + ".n3r-daftar{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}"
+        + ".n3r-baris{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#F8FAFC;border-radius:12px;padding:10px 12px}"
+        + ".n3r-kata b{display:block;font-size:1rem}.n3r-kata small{color:#475569;font-size:.82rem}"
+        + ".n3r-nilai{font-weight:800;font-size:.8rem;padding:5px 10px;border-radius:999px;white-space:nowrap}"
+        + ".n3r-nilai em{font-style:normal;opacity:.85;font-weight:700}"
+        + "@media (max-width:400px){.n3r-nilai{font-size:.74rem;padding:4px 8px}}";
+    document.head.appendChild(s);
+}
+
+/* dipakai halaman ringkasan/uji: render ke elemen mana pun */
+window.N3Ringkasan = {
+    nilaimu: nilaiKartu,
+    html: function (daftar) { const lama = sesiIni; sesiIni = daftar || []; const h = ringkasanHTML(); sesiIni = lama; return h; },
+    ke: function (el, daftar) { pasangGayaRingkasan(); el.innerHTML = window.N3Ringkasan.html(daftar); }
+};
+
 function catatKartu(card, ingat, durasi) {
+    // catat untuk ringkasan akhir sesi (kata + arti + hasil + detik)
+    try {
+        sesiIni.push({
+            kata: card && card.front ? card.front : "-",
+            arti: card && card.back ? card.back : "",
+            ingat: !!ingat,
+            detik: Math.round(Number(durasi) || 0)
+        });
+    } catch (e) {}
     // dicatat ke server supaya masuk halaman Review Kosakata
     try {
         if (window.N3 && N3.catatKata && card && card.front) {
