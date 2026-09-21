@@ -33,7 +33,79 @@
 
     function simpan(d) {
         try { localStorage.setItem(kunci(), JSON.stringify(d)); } catch (e) {}
+        try { dorong(d); } catch (e) {}
     }
+
+    /* ---------- sinkron ke akun (biar jadwal ikut pindah HP) ---------- */
+    let klienSrs = null, dorongTimer = null, sinkronSiap = false;
+
+    function klien() {
+        if (klienSrs) return klienSrs;
+        try {
+            const cfg = window.N3_SUPABASE;
+            if (!cfg || !window.supabase || !cfg.url || !cfg.anonKey) return null;
+            klienSrs = window.supabase.createClient(cfg.url, cfg.anonKey);
+            return klienSrs;
+        } catch (e) { return null; }
+    }
+
+    /* Aturan gabung dua catatan: kotak lebih tinggi menang; kalau kotaknya sama,
+       tanggal jatuh tempo yang lebih jauh menang.
+       ponytail: tidak ada penyelesaian per-ulasan. Kalau nanti salah di kasus nyata,
+       simpan log ulasan per baris (tabel srs_log) lalu hitung ulang. */
+    function gabung(a, b) {
+        const out = {};
+        Object.keys(a).concat(Object.keys(b)).forEach(function (k) {
+            const x = a[k], y = b[k];
+            if (!x) { out[k] = y; return; }
+            if (!y) { out[k] = x; return; }
+            const kx = Number(x.k) || 0, ky = Number(y.k) || 0;
+            if (kx !== ky) { out[k] = kx > ky ? x : y; return; }
+            out[k] = String(x.t || "") >= String(y.t || "") ? x : y;
+        });
+        return out;
+    }
+
+    function dorong(d) {
+        if (dorongTimer) clearTimeout(dorongTimer);
+        dorongTimer = setTimeout(function () {
+            const sb = klien();
+            if (!sb || !sinkronSiap) return;
+            sb.auth.getUser().then(function (r) {
+                const uid = r && r.data && r.data.user ? r.data.user.id : null;
+                if (!uid) return;
+                const baris = Object.keys(d).map(function (k) {
+                    return { user_id: uid, kata: k, kotak: Number(d[k].k) || 0, n: Number(d[k].n) || 0,
+                             salah: Number(d[k].salah) || 0, t: d[k].t || null };
+                });
+                if (baris.length) sb.from("srs").upsert(baris, { onConflict: "user_id,kata" });
+            });
+        }, 8000);
+    }
+
+    function sinkron() {
+        const sb = klien();
+        if (!sb) return Promise.resolve(false);
+        return sb.auth.getUser().then(function (r) {
+            const uid = r && r.data && r.data.user ? r.data.user.id : null;
+            if (!uid) return false;
+            return sb.from("srs").select("kata,kotak,n,salah,t").then(function (res) {
+                if (res.error) return false;
+                const server = {};
+                (res.data || []).forEach(function (x) { server[x.kata] = { k: x.kotak, n: x.n, salah: x.salah, t: x.t }; });
+                const gab = gabung(baca(), server);
+                simpan(gab);
+                sinkronSiap = true;
+                dorong(gab);
+                return true;
+            });
+        }).catch(function () { return false; });
+    }
+
+    document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "hidden") dorong(baca());
+    });
+    setTimeout(sinkron, 1500);
 
     function hariIni() {
         const d = new Date();
@@ -129,6 +201,8 @@
         kataTerdekat: kataTerdekat,
         lupakanSemua: lupakanSemua,
         HARI_KOTAK: HARI_KOTAK,
-        MAKS_SESI: MAKS_SESI
+        MAKS_SESI: MAKS_SESI,
+        sinkron: sinkron,
+        _gabung: gabung
     };
 })();

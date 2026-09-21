@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rizkyemye.github.io/belajarN3/sitemap.xml
