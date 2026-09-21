@@ -13,6 +13,26 @@
     const DAFTAR = ["N5", "N4", "N3"];
     const HALAMAN = { N5: "../n5/", N4: "../n4/", N3: "../n3/" };   // folder per tingkat
 
+    /* Tombol "Beranda" di halaman /fitur/ harus kembali ke beranda TINGKAT ini
+       (halaman /fitur/ melayani semua tingkat, jadi tautannya tidak boleh
+       selalu ke halaman pemilih tingkat). */
+    function rapikanTombolBeranda() {
+        const lv = level();
+        if (!lv) return;
+        const tujuan = "../" + lv.toLowerCase() + "/";
+        document.querySelectorAll("a").forEach(function (a) {
+            if (!/beranda|home|ホーム/i.test(a.textContent || "")) return;
+            a.setAttribute("href", tujuan);
+            a.setAttribute("data-beranda", lv);
+        });
+    }
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", rapikanTombolBeranda);
+    } else {
+        rapikanTombolBeranda();
+    }
+    window.N3Beranda = rapikanTombolBeranda;   // bisa dipanggil ulang setelah login
+
     function level() {
         if (window.N3_LEVEL) {
             const lv = String(window.N3_LEVEL).toUpperCase();
