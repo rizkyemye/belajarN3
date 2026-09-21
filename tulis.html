@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Latihan Kana (Kartu &amp; Tulis) — JLPT</title>
+<title>Latihan Kana & Kanji — Kartu & Tulis — JLPT</title>
 <meta name="description" content="Latihan menulis hiragana dan katakana pakai jari di HP: contoh karakter, urutan goresan, dan papan tulis.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
 <link rel="stylesheet" href="style.css">
@@ -71,8 +71,8 @@
         <div class="hero-baris">
             <span class="hero-ikon">✍️</span>
             <div style="min-width:0">
-                <div class="hero-judul">Hiragana &amp; Katakana</div>
-                <div class="hero-sapaan">Hafalkan pakai kartu, tulis pakai jari</div>
+                <div class="hero-judul">Kana &amp; Kanji</div>
+                <div class="hero-sapaan">Hafalkan pakai kartu, tulis pakai jari (kana 142 huruf + kanji 824)</div>
                 <div class="hero-pesan">Pilih <b>🃏 Kartu</b> untuk hafalan, <b>✍️ Tulis</b> untuk latihan goresan ♪</div>
             </div>
         </div>
@@ -104,6 +104,7 @@
     <div class="tw-mode">
         <button type="button" class="aktif" data-mode="hira">ひらがな Hiragana</button>
         <button type="button" data-mode="kata">カタカナ Katakana</button>
+            <button type="button" data-mode="kanji">漢字 Kanji</button>
     </div>
 
     <div class="tw-papan">
@@ -139,6 +140,7 @@
 (function () {
     "use strict";
     const HIRA = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ".split("");
+    const KANJI = "中主予係倒備共内切力功加努化単味囲基増変失安定実容対将少張影待得心必想意慣慮成戦択挑敗明期本束来検標気決況済減満準状現理由画発的目相真確礎簡約納経絡緊締習表複要見解計討認説談足通連遠選配関際集雑雰面響験争件任企会価保信借入典出判利制協原収合品営因報場契存徴情態手技投損支料断方書条果査格業模機段消特申界登益研税究競策管範組結給続織者術製規記証評調請責貯費資金針録開限階頼事交人住候党全再則助危反台告和回国地境外天害家察展平府律拠挙捕援政故文材染民汚治法注源災然犯球環生産用社罪罰自被裁警護逮違避防険難電震風体健分労勇医夢希師康復患感望栄疲病症療看眠睡神笑精薬長顔養不大学宿徒才授教校留知科績義育能試課論講識部題乗光到刻動口名土延往思急換旅時景案泊片物着移窓符色行観転遅運道館修値割員商好店引提流質返作充削効受密導接操新更率秘純索設送除障上下仕休僚先司同履後採日昇有歴残職議輩退進個冷印厳固性悲慎我所極楽正温直短積素胆親誠象重静頑魅喜妬嫉寂怒恥悔懐泣絶誇謝驚付務問域寄度権献祉票福立貢仮宇宙工未析構造伝公写創劇及史批持映普演統美芸賞鑑音具取団宅室寝屋布干廊応快房掃整暖暮根沿洗活濯熱狭玄畳落賃越近適間騒卓噌器堂弁当惣旬油漬濃炒煮菜蒸郷醤食香鮮一古在売小幣座庫払括振数札次沢浪稼第算節紙蓄財買贅込過釣銭領伴免券勤号客席改横歩混渋滞荷許距路踏車輸速達離駅凍吹四圧夕妻季寒差恐晴暑曇梅水波洪湿溶濡猛稲紅葉雨雪雷霜勢吸呼姿射救欲疫痛皮筋肉肥肩脈腰膚血診身院頭骨仲優別友夫婚婦尊尽恋悩惚愛敬焼白絆縁誤途世働児叱娘子守居息抗担春母父甘祖祝褒話誕負赤丁冗句寧打拶挨沈渉潔翻聞言訳語辞遣黙刷噂宣広強掲放番編聴視訂誌読載園山岩岸巣恵昆木林枯森植殖海渡湖滅滝漠火獣珍砂種繁草虫谷野類飼餌鳥久勝北審憩点監督練訓趣鍛図巡念撮泉港眺程空訪跡迷遺七俳儀初卒参太寺式拝月浴盆祈祭継花衣詣踊飾鼓乱処前善困惑慌慢探替省苦邪順魔剣可叶向就志悟憧抱指描揮独覚諦乏互傾役徐斉昧曖深激背著豊貴哀悪握扱暗以位依偉委異維隠永衛鋭央王穏何暇歌菓嘩介怪絵穫刈勘勧完含奇嬉紀宜去京供叫仰曲僅区偶刑型喧嫌幸考克今伺使刺士始姉止詞似釈周宗秀十瞬女奨粧常伸臣星石占線双奏層測他多代叩奪置致停抵哲吐等二匂博半版般否服便補包宝冒吠妹万妙命勿夜厄唯裕余与様陽陸了両令列劣".split("");
     const KATA = HIRA.map(function (c) { return String.fromCharCode(c.charCodeAt(0) + 0x60); });
     let data = null, mode = "hira", kini = 0, sudah = {};
 
@@ -224,7 +226,7 @@
         })();
     }
 
-    function daftarKini() { return mode === "hira" ? HIRA : KATA; }
+    function daftarKini() { return mode === "hira" ? HIRA : (mode === "kata" ? KATA : KANJI); }
 
     function gambarDaftar() {
         elDaftar.innerHTML = daftarKini().map(function (k, i) {
@@ -248,6 +250,7 @@
             document.querySelectorAll(".tw-mode button").forEach(function (x) { x.classList.remove("aktif"); });
             b.classList.add("aktif");
             mode = b.dataset.mode; kini = 0;
+            if (mode === "kanji") muatKanji();
             gambarPanduan(); gambarDaftar(); siapkanDeck();
         });
     });
@@ -362,13 +365,27 @@
         });
     });
 
+    let dataKanji = false;
+    function muatKanji() {
+        if (dataKanji) return Promise.resolve();
+        return Promise.all([
+            fetch("kanji-svg.json").then(function (r) { return r.json(); }),
+            fetch("kanji-contoh.json").then(function (r) { return r.json(); })
+        ]).then(function (g) {
+            data = Object.assign(data || {}, g[0]);
+            contoh = Object.assign(contoh || {}, g[1]);
+            dataKanji = true; gambarPanduan(); gambarDaftar(); siapkanDeck();
+        }).catch(function () { elHuruf.innerHTML = "⚠️<small>gagal memuat kanji-svg.json</small>"; });
+    }
     fetch("kana-svg.json").then(function (r) { return r.json(); }).then(function (d) {
-        data = d; gambarPanduan(); gambarDaftar(); ukuranKanvas(); siapkanDeck();
+        data = Object.assign(data || {}, d) || d; gambarPanduan(); gambarDaftar(); ukuranKanvas(); siapkanDeck();
     }).catch(function () {
         elHuruf.innerHTML = "⚠️<small>gagal memuat kana-svg.json — buka lewat server, bukan file://</small>";
     });
     fetch("kana-contoh.json").then(function (r) { return r.json(); }).then(function (d) { contoh = d; }).catch(function () {});
     ukuranKanvas();
+    const mUrl = new URLSearchParams(location.search).get("mode");
+    if (mUrl === "kanji") { const bk = document.querySelector('.tw-mode button[data-mode="kanji"]'); if (bk) bk.click(); }
 })();
 </script>
 </body>
