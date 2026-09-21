@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Belajar — JLPT N3 Master</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 16px 12px 40px;
+    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    background: #f4f6f9; color: #1e293b;
+  }
+  .wrap { max-width: 700px; margin: 0 auto; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .topbar h1 { font-size: 1.2rem; margin: 0; }
+  .btn {
+    display: inline-block; padding: 9px 14px; border-radius: 10px; border: none;
+    font-family: inherit; font-size: 0.85rem; font-weight: 700; cursor: pointer;
+    background: #e2e8f0; color: #334155; text-decoration: none;
+  }
+  .btn.utama { background: #4f46e5; color: #fff; }
+  .btn.bahaya { background: #fee2e2; color: #b91c1c; }
+  .card {
+    background: #fff; border: 1px solid #eef2f7; border-radius: 16px;
+    padding: 18px; margin-bottom: 14px; box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+  }
+  .kartu-aku { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .kode-besar {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 26px; font-weight: 800;
+    letter-spacing: 2px; text-align: center; color: #0f766e; background: #ecfdf5;
+    border: 2px dashed #0f766e; border-radius: 12px; padding: 14px 8px; margin: 10px 0;
+    user-select: all; -webkit-user-select: all;
+  }
+  .avatar { font-size: 2.2rem; width: 58px; height: 58px; border-radius: 50%; background: #eef2ff; display: flex; align-items: center; justify-content: center; }
+  .nama { font-size: 1.15rem; font-weight: 800; margin: 0; }
+  .level { display: inline-block; margin-top: 4px; padding: 4px 12px; border-radius: 999px; background: #4f46e5; color: #fff; font-size: 0.78rem; font-weight: 700; }
+  .bar-luar { height: 10px; border-radius: 999px; background: #eef2ff; overflow: hidden; margin-top: 10px; }
+  .bar-dalam { height: 100%; background: linear-gradient(90deg, #6366f1, #8b5cf6); width: 0%; transition: width .5s; }
+  .bar-teks { font-size: 0.78rem; color: #64748b; margin-top: 6px; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
+  .kotak { background: #fff; border: 1px solid #eef2f7; border-radius: 14px; padding: 14px; text-align: center; }
+  .kotak .angka { font-size: 1.5rem; font-weight: 800; color: #0f172a; }
+  .kotak .label { font-size: 0.75rem; color: #64748b; margin-top: 4px; }
+  h2 { font-size: 1rem; margin: 0 0 12px; }
+  .rank { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px dashed #eef2f7; }
+  .rank:last-child { border-bottom: none; }
+  .rank .pos { width: 30px; font-weight: 800; color: #94a3b8; text-align: center; }
+  .rank .nm { flex: 1; font-weight: 700; font-size: 0.92rem; }
+  .rank .nm small { display: block; font-weight: 500; color: #94a3b8; font-size: 0.72rem; }
+  .rank .xp { font-weight: 800; color: #4f46e5; font-size: 0.85rem; text-align: right; }
+  .rank.aku { background: #eef2ff; border-radius: 10px; padding: 10px 8px; }
+  .nl-row { display: flex; gap: 8px; }
+  .nl-input {
+    flex: 1 1 0; min-width: 0; padding: 11px 12px; border: 1.5px solid #e2e8f0; border-radius: 10px;
+    font-family: inherit; font-size: 16px; background: #f8fafc; color: #1e293b; outline: none;
+  }
+  .nl-input:focus { border-color: #6366f1; background: #fff; }
+  .kosong { text-align: center; color: #94a3b8; font-size: 0.9rem; padding: 26px; line-height: 1.7; }
+  .catatan { font-size: 0.72rem; color: #94a3b8; line-height: 1.7; margin-top: 14px; }
+
+  /* ===== RESPONSIVE (HP) — v7 ===== */
+  @media (max-width: 640px) {
+    body { padding: 12px max(12px, env(safe-area-inset-left)) 30px max(12px, env(safe-area-inset-right)); }
+    .topbar { gap: 8px; }
+    .topbar h1 { font-size: 1.05rem; }
+    .btn { min-height: 40px; padding: 9px 12px; font-size: 0.8rem; }
+    .grid { gap: 8px; }
+    .kotak { padding: 12px 8px; }
+    .kotak .angka { font-size: 1.3rem; }
+    .card { padding: 14px; border-radius: 14px; }
+    .rank { gap: 8px; padding: 9px 0; }
+    .rank .pos { width: 24px; }
+    .rank .xp { font-size: 0.78rem; }
+    .rank .nm { font-size: 0.88rem; }
+    .avatar { width: 48px; height: 48px; font-size: 1.8rem; }
+    .nama { font-size: 1.05rem; }
+  }
+  @media (max-width: 380px) {
+    .grid { grid-template-columns: 1fr; }
+    .rank .nm small { font-size: 0.68rem; }
+    .bar-teks { font-size: 0.72rem; }
+  }
+</style>
+    <link rel="stylesheet" href="../aset/tema-baru.css?v=1">
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <h1>📊 Dashboard Belajar</h1>
+    <div>
+      <a class="btn" href="../">⬅️ Belajar</a>
+      <button class="btn" id="btnSandi" style="display:none">🔑 Ganti sandi</button>
+      <button class="btn bahaya" id="btnKeluar" style="display:none">Keluar</button>
+    </div>
+  </div>
+
+  <div class="card" id="kartuAku">
+    <div class="kosong" id="pesanMuat">Memuat data…</div>
+  </div>
+
+  <div class="grid" id="gridStat" style="display:none">
+    <div class="kotak"><div class="angka" id="sJam">0</div><div class="label">total jam belajar</div></div>
+    <div class="kotak"><div class="angka" id="sHari">0</div><div class="label">hari materi disentuh</div></div>
+    <div class="kotak"><div class="angka" id="sSelesai">0</div><div class="label">sesi selesai</div></div>
+    <div class="kotak"><div class="angka" id="sAkurasi">–</div><div class="label">akurasi kuis</div></div>
+  </div>
+
+  <div class="card" id="kartuImpor" style="display:none">
+    <h2>⬆️ Data lama di HP ini</h2>
+    <p class="catatan" id="imporTeks" style="margin-top:0"></p>
+    <button class="btn utama" id="btnImpor" style="width:100%">Kirim ke server (sekali saja)</button>
+  </div>
+
+  <div class="card" id="kartuNilai" style="display:none">
+    <h2>✍️ Input nilai kuis lama</h2>
+    <p class="catatan" style="margin-top:0">
+      Kuis yang kamu kerjakan sebelum web tersambung ke server belum tercatat nilainya.
+      Masukkan di sini — aman dikirim berulang, yang dipakai selalu nilai tertinggi.
+    </p>
+    <div class="nl-row">
+      <input id="nlHari" class="nl-input" type="number" min="1" max="31" inputmode="numeric" placeholder="Hari">
+      <input id="nlBenar" class="nl-input" type="number" min="0" inputmode="numeric" placeholder="Benar">
+      <input id="nlTotal" class="nl-input" type="number" min="1" inputmode="numeric" placeholder="Total soal">
+    </div>
+    <button class="btn utama" id="btnNilai" style="width:100%; margin-top:10px">Simpan nilai kuis</button>
+  </div>
+
+  <div class="card" id="kartuKode">
+    <h2>🔑 Kode pemulihan</h2>
+    <p class="catatan" id="kodeAku" style="margin-top:0">Memuat…</p>
+    <div id="kodeHasil" style="display:none"></div>
+    <button class="btn utama" id="btnKodeBaru" style="width:100%">Buat / ganti kode pemulihan</button>
+    <p class="catatan">
+      Kalau nanti lupa sandi: buka halaman masuk → <b>🔑 Lupa sandi?</b> → isi username + kode ini → langsung bisa bikin sandi baru.
+      Nggak perlu email, dan Tzuyu nggak perlu turun tangan 🙂
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>🏆 Papan Peringkat</h2>
+    <div id="papan"><div class="kosong">Memuat…</div></div>
+    <p class="catatan">
+      XP = (jam belajar × 10) + (hari selesai × 5) + (jawaban benar).<br>
+      Level: 初心者 → 見習い → 学習者 → 中級者 → 上級者 → 達人 (0 / 100 / 300 / 700 / 1500 / 3000 / 6000 XP).
+    </p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../aset/supabase-config.js?v=13"></script>
+<script src="../aset/n3-auth.js?v=13"></script>
+<script src="../aset/level.js"></script>
+<script>
+(function () {
+  const TINGKAT = [
+    { min: 6000, no: 7, nama: "達人 (Ahli)" },
+    { min: 3000, no: 6, nama: "上級者 (Mahir)" },
+    { min: 1500, no: 5, nama: "中級者 (Menengah)" },
+    { min:  700, no: 4, nama: "学習者 (Pembelajar)" },
+    { min:  300, no: 3, nama: "見習い (Serius)" },
+    { min:  100, no: 2, nama: "初心者+ (Pemula maju)" },
+    { min:    0, no: 1, nama: "初心者 (Pemula)" }
+  ];
+  function tingkatDari(xp) {
+    for (const t of TINGKAT) if (xp >= t.min) return t;
+    return TINGKAT[TINGKAT.length - 1];
+  }
+  function tingkatBerikut(xp) {
+    const naik = TINGKAT.slice().reverse().find(t => t.min > xp);
+    return naik || null;
+  }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, c =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+  function jam(n) { return (Math.round((Number(n) || 0) * 10) / 10).toLocaleString("id-ID"); }
+
+  // --- data lama yang masih cuma ada di HP ini ---
+  function dataLamaDiHP(user) {
+    const pre = "study_time_" + user + "_";
+    const tanggal = [];
+    let detik = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (!k || k.indexOf(pre) !== 0) continue;
+      const d = parseInt(localStorage.getItem(k)) || 0;
+      if (d > 0) { tanggal.push({ tanggal: k.slice(pre.length), detik: d }); detik += d; }
+    }
+    return { tanggal: tanggal, detik: detik };
+  }
+
+  async function tampilkanImpor(aku) {
+    if (!aku) return;
+    const lokal = dataLamaDiHP(aku.username);
+    const hari = (N3.hariSelesai ? N3.hariSelesai() : []);
+    if (!lokal.detik && !hari.length) return;
+
+    const kartu = document.getElementById("kartuImpor");
+    kartu.style.display = "block";
+    document.getElementById("imporTeks").innerHTML =
+      "Ada <b>" + jam(lokal.detik / 3600) + " jam</b> belajar" +
+      (lokal.tanggal.length ? " (" + lokal.tanggal.length + " tanggal)" : "") +
+      " dan <b>" + hari.length + " hari</b> yang masih tersimpan di HP ini, belum terkirim ke server.<br>" +
+      "Kirim sekali biar muncul di Dashboard. Aman dikirim berkali-kali — tidak akan dobel.";
+
+    document.getElementById("btnImpor").onclick = async function () {
+      this.disabled = true;
+      this.textContent = "Mengirim…";
+      let hasil = { kirim: 0, gagal: 0 };
+      try { hasil = await N3.imporWaktuLama(lokal.tanggal); } catch (e) { hasil = { kirim: 0, gagal: lokal.tanggal.length, error: e.message }; }
+      for (const d of hari) { try { N3.tandaiHariKuis(d, 0, 0); } catch (e) {} }
+      await new Promise(function (r) { setTimeout(r, 900); });
+      alert("Selesai!\nTerkirim: " + hasil.kirim + " tanggal" + (hasil.gagal ? "\nGagal: " + hasil.gagal + " (pastikan SQL baru sudah dijalankan)" : "") + "\nHalaman akan dimuat ulang.");
+      location.reload();
+    };
+  }
+
+  function siapkanInputNilai() {
+    const kartu = document.getElementById("kartuNilai");
+    if (!kartu) return;
+    kartu.style.display = "block";
+    document.getElementById("btnNilai").onclick = async function () {
+      const hari = parseInt(document.getElementById("nlHari").value);
+      const benar = parseInt(document.getElementById("nlBenar").value);
+      const total = parseInt(document.getElementById("nlTotal").value);
+
+      if (!hari || hari < 1 || hari > 31) { alert("Isi hari materi (1–31) dulu ya"); return; }
+      if (isNaN(benar) || benar < 0) { alert("Isi jumlah jawaban benar"); return; }
+      if (!total || total < 1) { alert("Isi jumlah soal"); return; }
+      if (benar > total) { alert("Jawaban benar tidak boleh lebih besar dari total soal"); return; }
+
+      this.disabled = true;
+      this.textContent = "Menyimpan…";
+      try {
+        if (window.N3 && N3.tandaiHariKuis) N3.tandaiHariKuis(hari, benar, total);
+        await new Promise(function (r) { setTimeout(r, 900); });
+        alert("Tersimpan!\nHari " + hari + " → " + benar + "/" + total + "\nHalaman akan dimuat ulang.");
+        location.reload();
+      } catch (e) {
+        this.disabled = false;
+        this.textContent = "Simpan nilai kuis";
+        alert("Gagal menyimpan: " + (e && e.message ? e.message : e));
+      }
+    };
+  }
+
+  async function jalan() {
+    const elPesan = document.getElementById("pesanMuat");
+    const elPapan = document.getElementById("papan");
+
+    if (!window.N3 || !N3.aktif) {
+      elPesan.innerHTML = "Web ini masih <b>mode lokal</b> — Supabase belum diisi di <code>supabase-config.js</code>.";
+      elPapan.innerHTML = '<div class="kosong">Papan peringkat aktif setelah tersambung ke server.</div>';
+      return;
+    }
+    await N3.tungguSiap();
+    const aku = N3.pengguna;
+    if (!aku) {
+      elPesan.innerHTML = 'Kamu belum masuk. <a href="../">Masuk dulu di halaman belajar</a> ya〜';
+      elPapan.innerHTML = '<div class="kosong">Belum ada data.</div>';
+      return;
+    }
+
+    document.getElementById("btnKeluar").style.display = "inline-block";
+    document.getElementById("btnKeluar").onclick = function () { N3.keluar(); };
+
+    // ganti sandi (berguna kalau sandi lama sempat ditulis di chat)
+    const btnSandi = document.getElementById("btnSandi");
+    btnSandi.style.display = "inline-block";
+    btnSandi.onclick = async function () {
+      const baru = prompt("Sandi baru (minimal 6 karakter):");
+      if (baru === null) return;
+      if (!baru || baru.length < 6) { alert("Sandi minimal 6 karakter."); return; }
+      const ulang = prompt("Ulangi sandi baru:");
+      if (ulang !== baru) { alert("Sandi tidak sama, coba lagi."); return; }
+      btnSandi.disabled = true;
+      try {
+        await N3.gantiSandi(baru);
+        alert("Sandi berhasil diganti ✅\nMulai sekarang pakai sandi baru untuk masuk ya.");
+      } catch (e) {
+        alert("Gagal ganti sandi: " + (e && e.message ? e.message : e));
+      } finally {
+        btnSandi.disabled = false;
+      }
+    };
+
+    const st = await N3.statistik();
+    const xp = st ? Number(st.xp) || 0 : 0;
+    const tv = tingkatDari(xp);
+    const next = tingkatBerikut(xp);
+
+    document.getElementById("kartuAku").innerHTML =
+      '<div class="kartu-aku">' +
+        '<div class="avatar">' + esc(st && st.avatar || "🙂") + '</div>' +
+        '<div style="flex:1;min-width:180px">' +
+          '<p class="nama">' + esc(aku.nama || aku.username) + '</p>' +
+          '<span class="level">Lv ' + tv.no + ' · ' + esc(tv.nama) + '</span>' +
+          '<div class="bar-luar"><div class="bar-dalam" id="barXp"></div></div>' +
+          '<div class="bar-teks">' + xp.toLocaleString("id-ID") + ' XP' +
+            (next ? ' · ' + (next.min - xp).toLocaleString("id-ID") + ' XP lagi ke ' + esc(next.nama) : ' · level tertinggi! 🎉') +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    const mulai = tv.min, akhir = next ? next.min : tv.min;
+    const persen = next ? Math.min(100, Math.round(((xp - mulai) / (akhir - mulai)) * 100)) : 100;
+    setTimeout(function () { document.getElementById("barXp").style.width = persen + "%"; }, 60);
+
+    document.getElementById("gridStat").style.display = "grid";
+    document.getElementById("sJam").textContent = jam(st && st.total_jam);
+    document.getElementById("sHari").textContent = (st && st.hari_dipelajari) || 0;
+    document.getElementById("sSelesai").textContent = (st && st.hari_selesai) || 0;
+    const soal = st ? Number(st.soal_total) || 0 : 0;
+    document.getElementById("sAkurasi").textContent =
+      soal > 0 ? Math.round((Number(st.benar_total) / soal) * 100) + "%" : "–";
+
+    tampilkanImpor(aku);
+    siapkanInputNilai();
+    siapkanKodePemulihan();
+
+    const papan = await N3.papanPeringkat(50);
+    if (!papan.length) { elPapan.innerHTML = '<div class="kosong">Belum ada yang belajar. Jadi yang pertama yuk! 🌸</div>'; return; }
+
+    const medali = { 0: "🥇", 1: "🥈", 2: "🥉" };
+    elPapan.innerHTML = papan.map(function (r, i) {
+      const tv2 = tingkatDari(Number(r.xp) || 0);
+      const akuSendiri = aku && r.id === aku.id;
+      return '<div class="rank' + (akuSendiri ? ' aku' : '') + '">' +
+        '<div class="pos">' + (medali[i] || (i + 1)) + '</div>' +
+        '<div class="nm">' + esc(r.display_name || r.username) +
+          '<small>Lv ' + tv2.no + ' · ' + esc(tv2.nama) + ' · ' + jam(r.total_jam) + ' jam</small></div>' +
+        '<div class="xp">' + (Number(r.xp) || 0).toLocaleString("id-ID") + ' XP</div>' +
+      '</div>';
+    }).join("");
+  }
+
+  // ---------------- kode pemulihan (buat lupa sandi) ----------------
+  async function muatStatusKode() {
+    const el = document.getElementById("kodeAku");
+    if (!el || !N3.statusKode) return;
+    try {
+      const st = await N3.statusKode();
+      if (!st) { el.textContent = "Belum bisa dibaca (fitur belum aktif di server)."; return; }
+      el.innerHTML = st.ada
+        ? '✅ Kode pemulihan <b>sudah dibuat</b>' +
+          (st.dibuat ? ' (' + new Date(st.dibuat).toLocaleDateString('id-ID') + ')' : '') +
+          '. Kalau lupa kodenya, tekan tombol di bawah untuk buat yang baru.'
+        : '⚠️ Kamu <b>belum punya</b> kode pemulihan. Buat sekarang ya, biar nggak terkunci kalau lupa sandi.';
+    } catch (e) {
+      el.textContent = "Status kode belum bisa dibaca.";
+    }
+  }
+
+  function siapkanKodePemulihan() {
+    const btn = document.getElementById("btnKodeBaru");
+    if (!btn || !N3.pasangKodeBaru) return;
+    btn.onclick = async function () {
+      btn.disabled = true;
+      btn.textContent = "Membuat kode…";
+      try {
+        const kode = await N3.pasangKodeBaru();
+        const box = document.getElementById("kodeHasil");
+        box.style.display = "block";
+        box.innerHTML =
+          '<div class="kode-besar" id="kodeTeks">' + kode + '</div>' +
+          '<button class="btn" id="btnSalinKode" style="width:100%">📋 Salin kode</button>' +
+          '<p class="catatan"><b>Screenshot / tulis sekarang</b> — kode ini cuma muncul sekali. ' +
+          'Pakai kalau lupa sandi (halaman masuk → 🔑 Lupa sandi?).</p>';
+        const salin = document.getElementById("btnSalinKode");
+        if (salin) salin.onclick = function () {
+          try { if (navigator.clipboard) navigator.clipboard.writeText(kode); salin.textContent = "✅ Tersalin!"; }
+          catch (e) { salin.textContent = "Salin manual ya"; }
+        };
+        await muatStatusKode();
+      } catch (e) {
+        alert("Gagal membuat kode: " + (e && e.message ? e.message : e));
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Buat / ganti kode pemulihan";
+      }
+    };
+    muatStatusKode();
+  }
+
+  jalan();
+})();
+</script>
+</body>
+</html>
