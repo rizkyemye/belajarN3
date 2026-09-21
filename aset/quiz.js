@@ -441,7 +441,7 @@ function resumeQuizAfterBreak() {
 }
 
 function goHomeFromBreak() {
-    window.location.href = 'index.html';
+    window.location.href = '../';
 }
 
 function finishQuizCompletion() {
