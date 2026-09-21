@@ -20,10 +20,20 @@
         const lv = level();
         if (!lv) return;
         const tujuan = "../" + lv.toLowerCase() + "/";
-        document.querySelectorAll("a").forEach(function (a) {
-            if (!/beranda|home|ホーム/i.test(a.textContent || "")) return;
-            a.setAttribute("href", tujuan);
-            a.setAttribute("data-beranda", lv);
+        /* Halaman fitur memakai <a> DAN <button onclick="...href='../'...">.
+           Dua-duanya diarahkan ke beranda TINGKAT ini. */
+        document.querySelectorAll("a, button").forEach(function (el) {
+            const teks = (el.textContent || "").trim();
+            const onclick = el.getAttribute("onclick") || "";
+            const iniBeranda = /beranda|home|ホーム/i.test(teks) || /'(\.\.\/|index\.html)'/.test(onclick);
+            if (!iniBeranda) return;
+            el.setAttribute("data-beranda", lv);
+            if (el.tagName === "A") {
+                el.setAttribute("href", tujuan);
+            } else {
+                el.removeAttribute("onclick");                       // buang pengalihan lama
+                el.onclick = function (e) { e.preventDefault(); location.href = tujuan; };
+            }
         });
     }
     if (document.readyState === "loading") {
@@ -75,8 +85,13 @@
         }
     }
 
-    /* ---------- yang daftar sebagai N5/N4 otomatis diarahkan ke halamannya ---------- */
+    /* ---------- (DINONAKTIFKAN) pengalihan otomatis lama ----------
+       Dulu: kalau tingkat tersimpan N5/N4, halaman di luar halaman tingkat otomatis
+       dilempar ke beranda tingkat itu. Sekarang halaman /fitur/ (kuis, review,
+       dashboard) harus tetap di tempat — jadi arahkan() tidak dipakai lagi. */
     function arahkan() {
+        return;                       // ponytail: sisa fitur "ganti tingkat" yang sudah dihapus
+        /* eslint-disable no-unreachable */
         if (window.N3_LEVEL) return;                 // sudah di halaman level yang benar
         let lv = "";
         try {
