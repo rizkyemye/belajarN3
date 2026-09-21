@@ -698,8 +698,38 @@
     }
 
     /* ================= jalan ================= */
+    /* Pustaka Supabase diambil dari CDN. Kalau jaringannya lemot atau CDN-nya
+       diblokir, window.supabase belum ada saat baris ini jalan — dulu itu bikin
+       "TypeError: Cannot read properties of undefined (reading 'createClient')"
+       dan halaman mati tanpa pesan. Sekarang: tunggu sampai ~10 detik, lalu
+       kalau tetap tidak ada, jalan dalam mode lokal + kasih tahu pengguna. */
+    function gagalMuat(pesan) {
+        if (document.getElementById("n3CdnError")) return;
+        const d = document.createElement("div");
+        d.id = "n3CdnError";
+        d.style.cssText = "position:fixed;left:10px;right:10px;top:10px;z-index:9999;background:#7f1d1d;color:#fff;"
+            + "padding:12px 14px;border-radius:12px;font:600 14px/1.4 system-ui,sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.25)";
+        d.innerHTML = "⚠️ " + pesan + ' <button type="button" style="margin-left:8px;padding:6px 10px;border:0;border-radius:8px;font:700 13px system-ui;cursor:pointer">Muat ulang</button>';
+        d.querySelector("button").addEventListener("click", function () { location.reload(); });
+        document.body.appendChild(d);
+    }
+
     function mulai() {
         if (!AKTIF) { console.info("[N3] supabase-config.js belum diisi — jalan mode lokal."); selesaiSiap(); return; }
+
+        if (!window.supabase) {
+            let n = 0;
+            const tunggu = setInterval(function () {
+                if (window.supabase) { clearInterval(tunggu); mulai(); return; }
+                if (++n > 40) {                     // 40 x 250ms = 10 detik
+                    clearInterval(tunggu);
+                    console.warn("[N3] pustaka Supabase gagal dimuat (CDN lambat / diblokir). Halaman jalan mode lokal.");
+                    gagalMuat("Data akun tidak bisa dimuat (jaringan). Progresmu tetap aman di perangkat ini.");
+                    selesaiSiap();
+                }
+            }, 250);
+            return;
+        }
 
         sb = window.supabase.createClient(CFG.url, CFG.anonKey);
         N3.siap = true;
