@@ -343,11 +343,11 @@ function selectQuizAnswer(buttonElement, selectedAnswer, correctAnswer) {
     const benarJawaban = (selectedAnswer === correctAnswer);
 
     // === Untuk fitur Review Kosakata ===
-    // Kata dicatat sebagai "perlu diulang" kalau dijawab SALAH atau LAMA (> 30 detik).
+    // Kata dicatat sebagai "perlu diulang" kalau dijawab SALAH (Again) atau LAMA (> 20 detik, Hard).
     try {
         const soalKata = (currentSessionQuestions && currentSessionQuestions[currentQuestionIndex]) || null;
         if (window.N3 && N3.catatKata && soalKata) {
-            N3.catatKata(soalKata.front, selectedDay, benarJawaban, answerDuration, 3);  // jawab >3 detik = masuk review
+            N3.catatKata(soalKata.front, selectedDay, benarJawaban, answerDuration, 20); // >20 detik (Hard) atau salah (Again) = masuk Review Kosakata
         }
     } catch (e) { console.warn("gagal catat kata:", e); }
 
