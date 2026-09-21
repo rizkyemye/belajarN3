@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://rizkyemye.github.io/belajarN3/</loc><changefreq>weekly</changefreq></url>
-  <url><loc>https://rizkyemye.github.io/belajarN3/n5.html</loc><changefreq>weekly</changefreq></url>
-  <url><loc>https://rizkyemye.github.io/belajarN3/n4.html</loc><changefreq>weekly</changefreq></url>
-  <url><loc>https://rizkyemye.github.io/belajarN3/tulis.html</loc><changefreq>weekly</changefreq></url>
-  <url><loc>https://rizkyemye.github.io/belajarN3/review.html</loc><changefreq>weekly</changefreq></url>
-  <url><loc>https://rizkyemye.github.io/belajarN3/dashboard.html</loc><changefreq>weekly</changefreq></url>
-  <url><loc>https://rizkyemye.github.io/belajarN3/quiz.html</loc><changefreq>weekly</changefreq></url>
-  <url><loc>https://rizkyemye.github.io/belajarN3/mulai.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://rizkyemye.github.io/belajarN3/</loc><priority>1.0</priority></url>
+  <url><loc>https://rizkyemye.github.io/belajarN3/n5/</loc><priority>0.9</priority></url>
+  <url><loc>https://rizkyemye.github.io/belajarN3/n4/</loc><priority>0.9</priority></url>
+  <url><loc>https://rizkyemye.github.io/belajarN3/n3/</loc><priority>0.9</priority></url>
+  <url><loc>https://rizkyemye.github.io/belajarN3/fitur/quiz.html</loc><priority>0.7</priority></url>
+  <url><loc>https://rizkyemye.github.io/belajarN3/fitur/tulis.html</loc><priority>0.7</priority></url>
+  <url><loc>https://rizkyemye.github.io/belajarN3/fitur/quiz-bunpou.html</loc><priority>0.7</priority></url>
 </urlset>
