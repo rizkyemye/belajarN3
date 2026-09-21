@@ -212,6 +212,20 @@
     }
 
     /* ---------- panduan goresan ---------- */
+    function barisInfo(judul, isi) {
+        if (!isi) return "";
+        return '<div style="display:flex;gap:8px;margin:3px 0;font-size:0.95rem;line-height:1.3">'
+            + '<span style="min-width:74px;font-weight:800;color:#8A639C">' + judul + "</span>"
+            + '<span style="flex:1">' + isi + "</span></div>";
+    }
+
+    (function pasangInfo() {
+        const kotak = document.createElement("div");
+        kotak.id = "twInfo";
+        kotak.style.cssText = "display:none;margin:10px 0 0;padding:10px 12px;border-radius:12px;background:#FBF7FC;border:1px solid #E9DCEF";
+        if (elKanvas && elKanvas.parentNode) elKanvas.parentNode.appendChild(kotak);
+    })();
+
     function gambarPanduan() {
         const k = daftarKini()[kini];
         const d = data[k] || { s: [], r: "" };
@@ -220,6 +234,18 @@
         elPanduan.innerHTML = d.s.map(function (p) { return '<path d="' + p + '"></path>'; }).join("");
         elNomor.innerHTML = "";
         hapusKanvas();
+        const kotak = document.getElementById("twInfo");
+        if (kotak) {
+            if (mode === "kanji") {
+                const info = contoh[k] || {};
+                kotak.style.display = "";
+                kotak.innerHTML = barisInfo("音読み", info.on) + barisInfo("訓読み", info.kun)
+                    + barisInfo("arti", info.artiKata)
+                    + (info.kata || []).map(function (x) {
+                        return barisInfo("kosakata", "<b>" + x.w + "</b> — " + x.a);
+                    }).join("");
+            } else { kotak.style.display = "none"; }
+        }
     }
 
     function animasiGoresan() {
@@ -247,6 +273,13 @@
             b.classList.toggle("aktif", b.dataset.lv === tingkat);
         });
         /* hiragana & katakana hanya untuk N5 — N4/N3 disembunyikan */
+        /* kanji: tidak pakai kartu hafalan, langsung latihan tulis */
+        var btKartu = document.querySelector('.tw-alat button[data-alat="kartu"]');
+        if (btKartu) btKartu.style.display = (mode === "kanji") ? "none" : "";
+        if (mode === "kanji") {
+            var btTulis = document.querySelector('.tw-alat button[data-alat="tulis"]');
+            if (btTulis && !btTulis.classList.contains("aktif")) btTulis.click();
+        }
         const kana = document.querySelectorAll('.tw-mode button[data-mode="hira"], .tw-mode button[data-mode="kata"]');
         kana.forEach(function (b) { b.style.display = (tingkat === "N5") ? "" : "none"; });
         if (tingkat !== "N5" && (mode === "hira" || mode === "kata")) {
@@ -421,6 +454,7 @@
     });
     fetch("kana-contoh.json").then(function (r) { return r.json(); }).then(function (d) { contoh = d; }).catch(function () {});
     if (tingkat !== "N5") { const bk = document.querySelector('.tw-mode button[data-mode="kanji"]'); if (bk) bk.click(); }
+    tandaiTingkat();
     tandaiTingkat();
     ukuranKanvas();
     const mUrl = new URLSearchParams(location.search).get("mode");
