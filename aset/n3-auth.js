@@ -491,7 +491,7 @@
         g.id = "n3Gate";
         g.innerHTML = [
             '<div class="n3-gate-card">',
-            '  <div class="n3-gate-logo">⚡ JLPT N3 Master</div>',
+            '  <div class="n3-gate-logo">🌸 JLPT Master</div>',
             '  <p class="n3-gate-sub">Masuk dulu ya biar jam belajar & progress kamu tersimpan di server 👇</p>',
             '  <div class="n3-gate-tabs">',
             '    <button class="n3-tab aktif" data-mode="masuk">Masuk</button>',
@@ -718,14 +718,42 @@
         if (!AKTIF) { console.info("[N3] ../aset/supabase-config.js belum diisi — jalan mode lokal."); selesaiSiap(); return; }
 
         if (!window.supabase) {
+            /* Salinan LOKAL didahulukan: tidak perlu internet, jadi tidak bisa diblokir jaringan.
+               Kalau berkas lokal tidak ada (belum diunggah), baru pakai CDN cadangan. */
+            if (!window.__n3CdnCadangan) {
+                window.__n3CdnCadangan = true;
+                const muat = function (src, lanjut) {
+                    const s = document.createElement("script");
+                    s.src = src;
+                    s.onload = function () { console.info("[N3] pustaka Supabase dimuat:", src); };
+                    s.onerror = function () { console.warn("[N3] gagal memuat:", src); if (lanjut) lanjut(); };
+                    document.head.appendChild(s);
+                };
+                muat("../aset/supabase-js.js", function () {
+                    muat("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js", function () {
+                        muat("https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js");
+                    });
+                });
+            }
             let n = 0;
             const tunggu = setInterval(function () {
                 if (window.supabase) { clearInterval(tunggu); mulai(); return; }
-                if (++n > 40) {                     // 40 x 250ms = 10 detik
+                if (++n > 100) {                    // 100 x 250ms = 25 detik
                     clearInterval(tunggu);
                     console.warn("[N3] pustaka Supabase gagal dimuat (CDN lambat / diblokir). Halaman jalan mode lokal.");
-                    gagalMuat("Data akun tidak bisa dimuat (jaringan). Progresmu tetap aman di perangkat ini.");
-                    selesaiSiap();
+                    const pesan = "Koneksi ke server sedang lambat. Coba tekan Muat ulang sebentar lagi — progresmu tetap aman di perangkat ini.";
+                    const k = document.querySelector(".n3-gate-card") || document.body;
+                    if (k && !document.getElementById("n3CatatanJaringan")) {
+                        const d = document.createElement("p");
+                        d.id = "n3CatatanJaringan";
+                        d.className = "n3-gate-note";
+                        d.style.cssText = "margin:10px 0 0;color:#64748b;font-size:.82rem;line-height:1.55;text-align:center";
+                        d.innerHTML = pesan + ' <a href="#" style="color:#4F46E5;font-weight:700">Muat ulang</a>';
+                        d.querySelector("a").addEventListener("click", function (e) { e.preventDefault(); location.reload(); });
+                        k.appendChild(d);
+                    }
+                    console.warn("[N3] supabase gagal dimuat, dicatat di kartu (tanpa bilah merah).");
+                    selesaiMuat();
                 }
             }, 250);
             return;
