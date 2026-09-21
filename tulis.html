@@ -214,8 +214,8 @@
     /* ---------- panduan goresan ---------- */
     function barisInfo(judul, isi) {
         if (!isi) return "";
-        return '<div style="display:flex;gap:8px;margin:3px 0;font-size:0.95rem;line-height:1.3">'
-            + '<span style="min-width:74px;font-weight:800;color:#8A639C">' + judul + "</span>"
+        return '<div style="display:flex;gap:6px;margin:2px 0;font-size:0.9rem;line-height:1.35;align-items:flex-start">'
+            + '<span style="min-width:66px;font-weight:800;color:#8A639C">' + judul + "</span>"
             + '<span style="flex:1">' + isi + "</span></div>";
     }
 
@@ -223,7 +223,9 @@
         const kotak = document.createElement("div");
         kotak.id = "twInfo";
         kotak.style.cssText = "display:none;margin:10px 0 0;padding:10px 12px;border-radius:12px;background:#FBF7FC;border:1px solid #E9DCEF";
-        if (elKanvas && elKanvas.parentNode) elKanvas.parentNode.appendChild(kotak);
+        var kotakTulis = elKanvas ? elKanvas.parentNode : null;   // kotak garis putus-putus
+        if (kotakTulis && kotakTulis.parentNode) kotakTulis.parentNode.insertBefore(kotak, kotakTulis.nextSibling);
+        else if (kotakTulis) kotakTulis.appendChild(kotak);
     })();
 
     function gambarPanduan() {
