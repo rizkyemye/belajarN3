@@ -65,7 +65,7 @@ body.gerbang{
 .hp-bawah h1{font-size:1.5rem;line-height:1.25;margin:0 0 10px;letter-spacing:-.6px}
 .hp-bawah .ket{color:#475569;font-size:.95rem;line-height:1.6;margin:0 0 20px}
 .tombol-besar{
-  display:block;width:100%;border:0;cursor:pointer;color:#fff;font-weight:800;font-size:1.02rem;
+  display:block;text-align:center;text-decoration:none;width:100%;border:0;cursor:pointer;color:#fff;font-weight:800;font-size:1.02rem;
   padding:16px;border-radius:999px;font-family:inherit;
   background:linear-gradient(100deg,#4F46E5,#7C3AED 55%,#EC4899);
   box-shadow:0 12px 26px rgba(79,70,229,.32);
@@ -246,12 +246,35 @@ body.gerbang .n3-pesan{font-size:.88rem !important}
     return true;
   }
 
+  var sudahDialihkan = false;
+
   function bereskan() {
     pindahkanKotak();
-    if (window.N3 && N3.pengguna) {           // sudah masuk → langsung ke beranda tingkatnya
-      location.replace("../" + String(N3.level ? N3.level() : (localStorage.getItem("n3_level") || "N3")).toLowerCase() + "/");
+
+    var g = document.getElementById("n3Gate");
+
+    /* 1. Kalau sudah masuk: jangan tampilkan form, langsung ke beranda tingkatnya. */
+    if (window.N3 && N3.pengguna) {
+      var lv = String(localStorage.getItem("n3_level") || "N3").toUpperCase();
+      if (["N5", "N4", "N3"].indexOf(lv) < 0) lv = "N3";
+      if (!sudahDialihkan) {
+        sudahDialihkan = true;
+        try { location.replace("../" + lv.toLowerCase() + "/"); } catch (e) {}
+        /* kalau pengalihan diblokir, beri tombol supaya tidak mentok */
+        var wadah2 = document.getElementById("kotakLogin");
+        if (wadah2) {
+          wadah2.innerHTML = '<div style="text-align:center;padding:6px 0 2px">'
+            + '<p style="margin:0 0 12px;color:#475569;font-size:.95rem">Kamu sudah masuk ✓</p>'
+            + '<a class="tombol-besar" style="display:block;text-decoration:none;text-align:center" href="../'
+            + lv.toLowerCase() + '/">Lanjut belajar ' + lv + ' →</a></div>';
+        }
+      }
       return;
     }
+
+    /* 2. Belum masuk: form WAJIB tampil (jangan sampai disembunyikan jadi kosong). */
+    if (g && g.style.display === "none") g.style.display = "block";
+
     if (mauBuka) bukaKotak();
     if (mauDaftar) { var t = tabDaftar(); if (t && !/aktif/.test(t.className)) { try { t.click(); } catch (e) {} } }
     if (lv) { pilihTingkat(lv); }
@@ -271,7 +294,7 @@ body.gerbang .n3-pesan{font-size:.88rem !important}
     pemantau.observe(document.body, { childList: true, subtree: true });
   }
   var coba = 0;
-  var pengulang = setInterval(function () { coba++; pindahkanKotak(); bereskan(); if (coba > 24) clearInterval(pengulang); }, 500);
+  var pengulang = setInterval(function () { coba++; pindahkanKotak(); bereskan(); if (coba > 60) clearInterval(pengulang); }, 500);
 })();
 </script>
 </body>
