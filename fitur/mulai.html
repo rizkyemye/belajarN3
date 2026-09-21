@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mulai dari sini — JLPT N3 Master</title>
+<meta name="description" content="Panduan singkat memulai belajar JLPT N3: isi nama, pilih target harian, tes kecil 10 soal, lalu mulai Hari 1.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+<link rel="stylesheet" href="../aset/style.css">
+<link rel="stylesheet" href="../aset/tema-baru.css">
+<style>
+    .langkah-kartu{background:#fff;border:1px solid #e6e9f2;border-radius:20px;padding:18px 16px;margin:0 0 14px;box-shadow:0 6px 18px rgba(27,32,53,.06);display:none}
+    .langkah-kartu.tampil{display:block;animation:naik .35s ease}
+    .langkah-no{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;
+        background:linear-gradient(135deg,#4f46e5,#a21caf);color:#fff;font-weight:800;font-size:.85rem;margin-right:8px}
+    .langkah-judul{font-size:1.05rem;font-weight:800;color:#1f2740;margin:0 0 10px;display:flex;align-items:center}
+    .input-nama{width:100%;padding:14px 14px;border:2px solid #e2e8f0;border-radius:14px;font-size:1rem;font-family:inherit}
+    .input-nama:focus{outline:none;border-color:#6366f1}
+    .pilihan-target{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:4px 0 12px}
+    .target-pil{background:#f8fafc;border:2px solid #e2e8f0;border-radius:14px;padding:14px 10px;text-align:center;
+        font-weight:700;color:#334155;cursor:pointer;min-height:56px}
+    .target-pil.aktif{background:linear-gradient(135deg,#4f46e5,#a21caf);color:#fff;border-color:transparent}
+    .tombol-utama-lebar{width:100%;min-height:50px;border:0;border-radius:15px;color:#fff;font-weight:800;font-size:1rem;
+        background:linear-gradient(135deg,#4f46e5,#a21caf);cursor:pointer;box-shadow:0 8px 20px rgba(79,70,229,.25)}
+    .tombol-utama-lebar:active{transform:scale(.98)}
+    .tombol-utama-lebar:disabled{opacity:.5;box-shadow:none}
+    .soal-kotak{background:#f8fafc;border-radius:14px;padding:14px;margin-bottom:12px}
+    .soal-kata{font-size:1.5rem;font-weight:800;color:#1f2740;text-align:center;margin:2px 0 12px}
+    .opsi-jawab{display:block;width:100%;text-align:left;background:#fff;border:2px solid #e2e8f0;border-radius:12px;
+        padding:12px;margin-bottom:8px;font-size:.92rem;color:#334155;cursor:pointer;min-height:46px}
+    .opsi-jawab.benar{background:#dcfce7;border-color:#22c55e;color:#14532d;font-weight:700}
+    .opsi-jawab.salah{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+    .bar-maju{height:8px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin:6px 0 12px}
+    .bar-maju span{display:block;height:100%;width:0;background:linear-gradient(90deg,#4f46e5,#ec4899);transition:width .3s ease}
+    .skor-besar{font-size:2.6rem;font-weight:800;text-align:center;margin:6px 0;color:#4f46e5}
+</style>
+</head>
+<body>
+<div class="app-container">
+
+    <div class="header-container header-kecil" style="margin-bottom:16px">
+        <div class="header-title">
+            <span class="calendar-icon">🌸</span>
+            <h1>Mulai dari Sini</h1>
+        </div>
+    </div>
+
+    <div class="hero-banner" style="margin-bottom:16px">
+        <div class="hero-baris">
+            <span class="hero-ikon">🚀</span>
+            <div style="min-width:0">
+                <div class="hero-judul">Selamat datang!</div>
+                <div class="hero-sapaan">3 langkah singkat, lalu mulai belajar</div>
+                <div class="hero-pesan">Belajar 1 materi baru tiap hari · kosakata, bunpou, kanji, dokkai</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LANGKAH 1 -->
+    <div class="langkah-kartu tampil" id="langkah1">
+        <div class="langkah-judul"><span class="langkah-no">1</span> Siapa namamu?</div>
+        <p style="color:#64748b;font-size:.9rem;margin:0 0 12px">Buat sapaan di halaman utama terasa lebih akrab.</p>
+        <input class="input-nama" id="namaPanggilan" type="text" maxlength="20" placeholder="contoh: Rizky">
+        <div style="height:12px"></div>
+        <button class="tombol-utama-lebar" id="keLangkah2">Lanjut →</button>
+    </div>
+
+    <!-- LANGKAH 2 -->
+    <div class="langkah-kartu" id="langkah2">
+        <div class="langkah-judul"><span class="langkah-no">2</span> Berapa kata sehari?</div>
+        <p style="color:#64748b;font-size:.9rem;margin:0 0 12px">Pilih yang realistis — yang penting konsisten tiap hari.</p>
+        <div class="pilihan-target" id="pilihanTarget">
+            <div class="target-pil" data-nilai="5">5 kata<br><span style="font-size:.75rem;font-weight:500">santai</span></div>
+            <div class="target-pil aktif" data-nilai="10">10 kata<br><span style="font-size:.75rem;font-weight:500">standar</span></div>
+            <div class="target-pil" data-nilai="15">15 kata<br><span style="font-size:.75rem;font-weight:500">serius</span></div>
+            <div class="target-pil" data-nilai="20">20 kata<br><span style="font-size:.75rem;font-weight:500">ngebut</span></div>
+        </div>
+        <button class="tombol-utama-lebar" id="keLangkah3">Lanjut →</button>
+    </div>
+
+    <!-- LANGKAH 3 -->
+    <div class="langkah-kartu" id="langkah3">
+        <div class="langkah-judul"><span class="langkah-no">3</span> Tes kecil dulu (10 soal)</div>
+        <p style="color:#64748b;font-size:.9rem;margin:0 0 8px">Cuma untuk tahu posisimu — tidak dinilai, tidak disimpan.</p>
+        <div class="bar-maju"><span id="barTes"></span></div>
+        <div id="kotakSoal"></div>
+    </div>
+
+    <!-- LANGKAH 4 -->
+    <div class="langkah-kartu" id="langkah4">
+        <div class="langkah-judul"><span class="langkah-no">✓</span> Siap mulai!</div>
+        <div class="skor-besar" id="skorTes">0/10</div>
+        <p id="pesanTes" style="color:#475569;font-size:.92rem;text-align:center;margin:0 0 14px"></p>
+        <p style="color:#64748b;font-size:.88rem;margin:0 0 14px">
+            Mulai hari ini kamu masuk <b>Hari 1</b>. Besok Hari 2, lusa Hari 3, dan seterusnya —
+            <b>1 hari = 1 materi baru</b>. Materi lama tetap bisa dibuka kapan saja.
+        </p>
+        <button class="tombol-utama-lebar" id="tombolMulai">🚀 Mulai Hari 1</button>
+    </div>
+
+    <p style="text-align:center;margin:18px 0">
+        <a href="../" style="color:#64748b;font-size:.88rem">Lewati dulu → langsung ke halaman belajar</a>
+    </p>
+</div>
+
+<script src="../aset/n3-kunci.js"></script>
+<script>
+(function () {
+    "use strict";
+    const $ = function (id) { return document.getElementById(id); };
+    let nama = "", target = 10, soal = [], idx = 0, benar = 0;
+
+    function tampil(no) {
+        ["langkah1", "langkah2", "langkah3", "langkah4"].forEach(function (id, i) {
+            $(id).classList.toggle("tampil", i === no - 1);
+        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    /* ---- langkah 1 ---- */
+    $("keLangkah2").addEventListener("click", function () {
+        nama = ($("namaPanggilan").value || "").trim().slice(0, 20);
+        if (nama) { try { localStorage.setItem("n3_nama_panggilan", nama); } catch (e) {} }
+        tampil(2);
+    });
+    $("namaPanggilan").addEventListener("keydown", function (e) { if (e.key === "Enter") $("keLangkah2").click(); });
+
+    /* ---- langkah 2 ---- */
+    $("pilihanTarget").addEventListener("click", function (e) {
+        const pil = e.target.closest(".target-pil");
+        if (!pil) return;
+        this.querySelectorAll(".target-pil").forEach(function (p) { p.classList.remove("aktif"); });
+        pil.classList.add("aktif");
+        target = Number(pil.dataset.nilai) || 10;
+    });
+    $("keLangkah3").addEventListener("click", async function () {
+        try { localStorage.setItem("n3_target_harian", String(target)); } catch (e) {}
+        $("keLangkah3").disabled = true;
+        $("keLangkah3").textContent = "Menyiapkan soal…";
+        tampil(3);
+        await siapkanSoal();
+    });
+
+    /* ---- langkah 3: tes kecil dari ../aset/data.json ---- */
+    async function siapkanSoal() {
+        try {
+            const r = await fetch("../aset/data.json");
+            const semua = await r.json();
+            const kandidat = semua.filter(function (x) {
+                const arti = String(x.back || "").split("\n")[0].trim();
+                return x.front && arti && arti.length < 40;
+            });
+            const pilih = [];
+            const dipakai = {};
+            while (pilih.length < 10 && Object.keys(dipakai).length < kandidat.length) {
+                const i = Math.floor(Math.random() * kandidat.length);
+                if (dipakai[i]) continue;
+                dipakai[i] = 1;
+                pilih.push(kandidat[i]);
+            }
+            soal = pilih.map(function (x) {
+                const benarTeks = String(x.back).split("\n")[0].trim();
+                const salah = [];
+                while (salah.length < 3) {
+                    const y = kandidat[Math.floor(Math.random() * kandidat.length)];
+                    const t = String(y.back).split("\n")[0].trim();
+                    if (t !== benarTeks && salah.indexOf(t) < 0) salah.push(t);
+                }
+                const opsi = salah.concat([benarTeks]).sort(function () { return Math.random() - 0.5; });
+                return { tanya: x.front, benar: benarTeks, opsi: opsi };
+            });
+            idx = 0; benar = 0; gambarSoal();
+        } catch (e) {
+            $("kotakSoal").innerHTML = '<p style="color:#b91c1c;font-size:.9rem">Gagal memuat soal (butuh koneksi). Kamu bisa langsung mulai kok 👇</p>';
+            $("barTes").style.width = "100%";
+            setTimeout(function () { $("skorTes").textContent = "—"; $("pesanTes").textContent = "Tes dilewati. Langsung mulai saja!"; tampil(4); }, 900);
+        }
+    }
+
+    function gambarSoal() {
+        if (idx >= soal.length) {
+            $("skorTes").textContent = benar + "/" + soal.length;
+            const p = benar >= 8 ? "Mantap! Dasar N3-mu sudah kuat — mulai Hari 1 sambil ngebut ya 🔥"
+                : benar >= 5 ? "Bagus! Kamu di jalur yang pas untuk mulai Hari 1 👍"
+                    : "Tidak masalah sama sekali — justru bagus mulai dari Hari 1 pelan-pelan 🌱";
+            $("pesanTes").textContent = p;
+            tampil(4);
+            return;
+        }
+        const s = soal[idx];
+        $("barTes").style.width = Math.round((idx / soal.length) * 100) + "%";
+        let html = '<div class="soal-kotak"><div style="font-size:.8rem;color:#94a3b8;text-align:center">Soal ' + (idx + 1) + " dari " + soal.length + "</div>" +
+            '<div class="soal-kata">' + s.tanya + "</div>";
+        s.opsi.forEach(function (o) {
+            html += '<button type="button" class="opsi-jawab">' + o + "</button>";
+        });
+        html += "</div>";
+        $("kotakSoal").innerHTML = html;
+        $("kotakSoal").querySelectorAll(".opsi-jawab").forEach(function (b) {
+            b.addEventListener("click", function () {
+                const tepat = b.textContent === s.benar;
+                $("kotakSoal").querySelectorAll(".opsi-jawab").forEach(function (x) {
+                    x.disabled = true;
+                    if (x.textContent === s.benar) x.classList.add("benar");
+                });
+                if (!tepat) b.classList.add("salah");
+                if (tepat) benar++;
+                idx++;
+                setTimeout(gambarSoal, 620);
+            });
+        });
+    }
+
+    /* ---- langkah 4 ---- */
+    $("tombolMulai").addEventListener("click", function () {
+        try {
+            if (window.N3Unlock && N3Unlock.setTanggalMulai) {
+                const d = new Date();
+                N3Unlock.setTanggalMulai(d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"));
+            }
+            localStorage.setItem("n3_onboarding_selesai", "1");
+        } catch (e) {}
+        location.href = "../";
+    });
+
+    // kalau nama sudah pernah diisi, isikan otomatis
+    try {
+        const n = localStorage.getItem("n3_nama_panggilan");
+        if (n) { $("namaPanggilan").value = n; }
+        const t = localStorage.getItem("n3_target_harian");
+        if (t) {
+            $("pilihanTarget").querySelectorAll(".target-pil").forEach(function (p) {
+                p.classList.toggle("aktif", p.dataset.nilai === t);
+            });
+            target = Number(t);
+        }
+    } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Review - Flashcard JLPT N3</title>
+    <link rel="stylesheet" href="../aset/style.css?v=12">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* --- EXP dari Dashboard + animasi naik --- */
+        .xp-baris { width: 100%; height: 10px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin-bottom: 6px; }
+        .xp-isi { height: 100%; width: 0%; border-radius: 999px; background: linear-gradient(90deg, #6366f1, #a855f7); transition: width .7s cubic-bezier(.22,1,.36,1); }
+        .xp-teks { font-size: .78rem; color: #64748b; text-align: center; margin-bottom: 18px; }
+        @keyframes expNaik {
+            0%   { opacity: 0; transform: translateY(10px) scale(.85); }
+            18%  { opacity: 1; transform: translateY(0)    scale(1.05); }
+            100% { opacity: 0; transform: translateY(-52px) scale(1.15); }
+        }
+        .exp-naik {
+            position: fixed; top: 58px; right: 18px; z-index: 999;
+            background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff;
+            font-weight: 800; font-size: .95rem; padding: 8px 14px; border-radius: 999px;
+            box-shadow: 0 6px 18px rgba(22,163,74,.35); pointer-events: none;
+            animation: expNaik 1.1s ease-out forwards;
+        }
+        @keyframes badgePulse {
+            0% { transform: scale(1); } 40% { transform: scale(1.18); } 100% { transform: scale(1); }
+        }
+        .badge-pulse { animation: badgePulse .55s ease; }
+        @keyframes levelNaik {
+            0% { opacity: 0; transform: translateY(14px) scale(.8); }
+            20% { opacity: 1; transform: translateY(0) scale(1.08); }
+            85% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-30px) scale(1); }
+        }
+        .level-naik {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;
+            background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; font-weight: 900;
+            font-size: 1.05rem; padding: 14px 22px; border-radius: 16px; text-align: center;
+            box-shadow: 0 10px 30px rgba(239,68,68,.4); pointer-events: none;
+            animation: levelNaik 2.3s ease-out forwards;
+        }
+    </style>
+    <link rel="stylesheet" href="../aset/tema-baru.css?v=1">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <div class="header-container header-kecil">
+            <div class="header-title">
+                <span class="calendar-icon">📝</span>
+                <h1>Quiz Review N3</h1>
+
+            </div>
+
+        </div>
+
+        <!-- STATS / EXP BAR -->
+        <!-- STATS / XP — satu sumber dengan Dashboard -->
+        <div class="stats-bar" style="margin-bottom: 10px;">
+            <div class="stat-badge jlpt">⭐ Level <span id="userLevel">1</span> · <span id="namaLevel">初心者</span></div>
+            <div class="stat-badge" id="badgeXp">⚡ <span id="userExp">0</span> XP <span id="nextLevelExp" style="display:none">100</span></div>
+            <div class="stat-badge" id="badgeSumber" style="font-size:0.72rem; opacity:0.85;">📊 dari Dashboard</div>
+        </div>
+        <div class="xp-baris"><div class="xp-isi" id="barXp"></div></div>
+        <div class="xp-teks" id="xpTeks">Memuat EXP dari Dashboard…</div>
+
+        <!-- QUIZ SELECTION CARD -->
+        <div id="quizSelectionCard" class="study-hub-card">
+            <div class="study-hub-header">
+                <h2>🎯 Pilih Target Hari Quiz</h2>
+                                            
+                <p>Uji pemahaman kosakata dari hari yang sudah terbuka.</p>
+            </div>
+            
+            <div class="study-selection-box">
+                <label for="quizDaySelect"><strong>Target Hari:</strong></label>
+                <select id="quizDaySelect" class="study-select">
+                    <!-- Diisi otomatis via JavaScript -->
+                </select>
+                <button class="action-btn-primary" onclick="startQuiz()">Mulai Quiz Sekarang ⚡</button>
+                <button class="action-btn-primary" onclick="window.location.href='quiz-bunpou.html'" style="background-color:#7c3aed;">🎓 Quiz Bunpou</button>
+                <button class="action-btn-primary" onclick="window.location.href='review.html'" style="background-color:#4f46e5;">🔁 Review Kosakata</button>
+                <button class="action-btn-primary" onclick="window.location.href='../'">🏠 Beranda</button>
+            </div>
+        </div>
+
+        <!-- QUIZ QUESTION AREA -->
+        <div id="quizArea" class="learning-card" style="display: none; margin-top: 0;">
+            <div class="learning-top-bar">
+                <button class="back-calendar-btn" onclick="exitQuiz()">⬅️ Keluar Quiz</button>
+                <div class="info-bar" id="quizInfoBar">
+                    <span id="quizCounter">Sesi 1/8 | Soal: 1/8</span>
+                    <span id="quizScore">Benar: 0</span>
+                </div>
+            </div>
+
+            <!-- Kotak Pertanyaan -->
+            <div class="quiz-question-container" style="margin-bottom: 20px;">
+                <div class="card-face card-front" style="position: relative; height: 160px; font-size: 2rem;" id="quizQuestionText">
+                    -
+                </div>
+            </div>
+
+            <!-- Opsi Pilihan Ganda -->
+            <div class="quiz-options-grid" id="quizOptions" style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- Tombol pilihan ganda di-generate via JS -->
+            </div>
+        </div>
+
+        <!-- SCREEN JEDA / REHAT ANTAR SESI -->
+        <div class="completion-screen" id="quizBreakScreen" style="display: none; margin-top: 20px;">
+            <div class="completion-card">
+                <h2>☕ Rehat Sebentar Yuk!</h2>
+                <p id="breakText">Sesi selesai. Tarik napas sejenak sebelum lanjut ke sesi berikutnya.</p>
+                
+                <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
+                    <button class="action-btn-primary" onclick="resumeQuizAfterBreak()">Lanjut Sesi 🚀</button>
+                    <button class="action-btn-primary" onclick="goHomeFromBreak()" style="background-color: #64748b;">🏠 Beranda</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN SELESAI QUIZ -->
+        <div class="completion-screen" id="quizCompletionScreen" style="display: none; margin-top: 20px;">
+            <div class="completion-card">
+                <h2>🎉 Quiz Selesai!</h2>
+                <p id="quizResultText">Semua sesi hari ini telah selesai ditinjau.</p>
+                <button class="restart-btn" onclick="backToQuizSelection()">Pilih Hari Lain 📚</button>
+            </div>
+        </div>
+    </div>
+<!-- CUSTOM POPUP KONFIRMASI KELUAR QUIZ -->
+<div id="customExitModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 24px; border-radius: 12px; max-width: 320px; width: 90%; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
+        <h3 style="margin-bottom: 12px; color: #1e293b; font-size: 1.25rem;">Mau kemana? 🏃‍♂️</h3>
+        <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">Masih ada soal kuis nih, yakin mau ditinggal?</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button id="cancelExitBtn" style="padding: 10px 16px; background: #e2e8f0; color: #334155; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1;">Batal</button>
+            <button id="confirmExitBtn" style="padding: 10px 16px; background: #ef4444; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1;">Keluar</button>
+        </div>
+    </div>
+</div>
+    <!-- Supabase: login + pencatatan kata (untuk Review Kosakata) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="../aset/supabase-config.js"></script>
+    <script src="../aset/n3-auth.js?v=10"></script>
+<script src="../aset/level.js"></script>
+<script src="../aset/n3-srs.js"></script>
+    <script src="../aset/quiz.js?v=10"></script>
+    <script src="../aset/dengar.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cara pakai & Kredit — JLPT N3 Master</title>
+<meta name="description" content="Cara pakai situs belajar JLPT N3, sumber data, lisensi, serta keterangan data pribadi.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+<link rel="stylesheet" href="../aset/style.css">
+<link rel="stylesheet" href="../aset/tema-baru.css">
+<style>
+    .info-kartu{background:#fff;border:1px solid #e6e9f2;border-radius:20px;padding:18px 16px;margin:0 0 14px;box-shadow:0 6px 18px rgba(27,32,53,.06)}
+    .info-kartu h2{font-size:1.05rem;font-weight:800;color:#1f2740;margin:0 0 10px;display:flex;align-items:center;gap:8px}
+    .info-kartu p,.info-kartu li{color:#475569;font-size:.92rem;line-height:1.6}
+    .info-kartu ul{padding-left:20px;margin:6px 0}
+    .info-kartu code{background:#f1f5f9;padding:1px 6px;border-radius:6px;font-size:.85rem;color:#334155}
+    .langkah-pakai{counter-reset:l;list-style:none;padding-left:0}
+    .langkah-pakai li{position:relative;padding-left:34px;margin-bottom:10px}
+    .langkah-pakai li::before{counter-increment:l;content:counter(l);position:absolute;left:0;top:-1px;width:24px;height:24px;
+        display:flex;align-items:center;justify-content:center;border-radius:50%;color:#fff;font-weight:800;font-size:.8rem;
+        background:linear-gradient(135deg,#4f46e5,#a21caf)}
+    .label-sumber{display:inline-block;background:#eef2ff;color:#4338ca;font-weight:700;font-size:.75rem;padding:2px 8px;border-radius:99px;margin-left:6px}
+</style>
+</head>
+<body>
+<div class="app-container">
+
+    <div class="header-container header-kecil" style="margin-bottom:16px">
+        <div class="header-title">
+            <span class="calendar-icon">📖</span>
+            <h1>Cara Pakai &amp; Kredit</h1>
+        </div>
+    </div>
+
+    <div class="info-kartu">
+        <h2>🚀 Cara pakai (5 langkah)</h2>
+        <ol class="langkah-pakai">
+            <li><b>Mulai dari sini</b> — isi nama, pilih target harian, kerjakan tes kecil 10 soal. <a href="mulai.html">Buka halaman Mulai →</a></li>
+            <li>Setiap hari buka halaman utama. Materi baru (<b>1 hari = 1 materi</b>) otomatis terbuka di tab <b>📖 Belajar</b>.</li>
+            <li>Hafalkan kosakata pakai kartu (<b>Sudah ingat / Belum ingat</b>). Kata yang "belum ingat" muncul lagi di sesi itu.</li>
+            <li>Latih sisi lain: <b>Bunpou</b> (tata bahasa), <b>漢字 Kanji</b>, <b>読解 Dokkai</b> (bacaan), lalu <b>📝 Buka Quiz</b> untuk kuis harian.</li>
+            <li>Cek <b>📊 Dashboard</b> untuk lihat progres, dan <b>🔁 Review</b> untuk mengulang kata yang pernah salah.</li>
+        </ol>
+    </div>
+
+    <div class="info-kartu">
+        <h2>📚 Sumber data &amp; lisensi</h2>
+        <ul>
+            <li><b>Kosakata, contoh kalimat, tata bahasa, bacaan (dokkai)</b><span class="label-sumber">disusun untuk situs ini</span><br>
+                Disusun khusus untuk materi belajar di situs ini, dipakai untuk keperluan belajar pribadi.</li>
+            <li><b>Data kanji (音読み / 訓読み, 824 kanji)</b><span class="label-sumber">MIT</span><br>
+                Bersumber dari <b>KANJIDIC</b> (Electronic Dictionary Research and Development Group / EDRDG) melalui dataset terbuka <b>kanji-data</b>.</li>
+            <li><b>Furigana</b> (bacaan di atas kanji)<br>
+                Ditanam langsung pada materi (mis. <code>日本（にほん）</code>) dan pada data bacaan.</li>
+            <li><b>Urutan goresan kanji</b><span class="label-sumber">rencana</span><br>
+                Dipakai untuk panduan goresan: <b>142 huruf kana</b> dan <b>824 kanji</b> (urutan goresan asli). Sumber: <a href="https://kanjivg.tagaini.net/" target="_blank" rel="noopener">KanjiVG</a> oleh Ulrich Apel — lisensi <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>. KanjiVG boleh dipakai &amp; diubah, termasuk untuk keperluan komersial, dengan syarat menyebut sumber dan memakai lisensi yang sama.</li>
+            <li><b>Ikon &amp; tampilan</b><br>
+                Font sistem, ilham desain dari Material Design. Tidak memakai aset berbayar.</li>
+        </ul>
+        <p style="margin:10px 0 0">Materi di situs ini untuk <b>belajar pribadi</b> — mohon tidak diperjualbelikan.</p>
+    </div>
+
+    <div class="info-kartu">
+        <h2>🔐 Data &amp; privasi (singkat)</h2>
+        <ul>
+            <li>Yang disimpan: <b>nama pengguna</b>, <b>jam belajar</b> per hari, dan <b>hasil latihan/kuis</b> (jumlah benar-salah).</li>
+            <li>Tidak ada iklan, tidak ada pelacak pihak ketiga, tidak ada data pembayaran.</li>
+            <li>Data disimpan di <b>Supabase</b> dan hanya bisa dibuka oleh akunmu sendiri.</li>
+            <li>Ingin data akunmu dihapus? Kirim pesan ke pemilik situs — akan dihapus, tidak ada yang disimpan sebagai cadangan.</li>
+        </ul>
+    </div>
+
+    <div class="info-kartu">
+        <h2>💡 Tips belajar</h2>
+        <ul>
+            <li>Baca dulu, <b>lalu tutup artinya</b> dan coba tebak sendiri — jauh lebih nempel daripada membaca berulang.</li>
+            <li>Perhatikan <b>長音</b> (bunyi panjang): よてい・えんちょう・しょう… sering jadi jebakan.</li>
+            <li>Kata yang susah jangan dipaksa hafal sekali jadi — biarkan muncul di <b>Review</b> beberapa hari kemudian.</li>
+            <li>Cukup 10–15 menit sehari, tetapi <b>tiap hari</b>. Konsisten mengalahkan lama belajar.</li>
+        </ul>
+    </div>
+
+    <p style="text-align:center;margin:18px 0">
+        <a href="../" style="color:#4f46e5;font-weight:700">← Balik ke halaman belajar</a>
+    </p>
+</div>
+</body>
+</html>
