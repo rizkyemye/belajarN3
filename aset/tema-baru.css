@@ -814,3 +814,80 @@ body.sesi-aktif .aksi-grid { display: none !important; }
 small { color: #475569 !important; }
 .btn-hard, .btn-easy { background: linear-gradient(135deg, #b91c1c, #991b1b) !important; color: #fff !important; }
 .btn-medium { background: linear-gradient(135deg, #b45309, #92400e) !important; color: #fff !important; }
+
+
+/* ==========================================================================
+   DASHBOARD — tata letak DESKTOP (bento 6 kolom). Hanya berlaku di
+   dashboard.html (body.dash). Di HP tetap menumpuk ke bawah seperti semula.
+   ========================================================================== */
+body.dash .wrap { max-width: 1200px; }
+
+@media (min-width: 900px) {
+  body.dash .wrap {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+  body.dash .topbar   { grid-column: 1 / -1; margin-bottom: 0;
+                        display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  body.dash #kartuAku { grid-column: span 4; }
+  body.dash #gridStat { grid-column: span 2; }
+  body.dash #kartuImpor, body.dash #kartuNilai, body.dash #kartuKode { grid-column: span 2; }
+  body.dash #papan    { grid-column: 1 / -1; }
+  body.dash #pesanMuat{ grid-column: 1 / -1; }
+
+  /* kartu profil jadi "hero" berwarna */
+  body.dash #kartuAku {
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 55%, #A855F7 100%);
+    border: none; color: #fff;
+    box-shadow: 0 18px 40px rgba(79, 70, 229, .28);
+    min-height: 232px;
+  }
+  body.dash #kartuAku * { color: #fff; }
+  body.dash #kartuAku .bar-luar { background: rgba(255,255,255,.28); }
+  body.dash #kartuAku .bar-dalam { background: #fff; }
+  body.dash #kartuAku .avatar { box-shadow: 0 0 0 4px rgba(255,255,255,.35); }
+
+  /* statistik: 2 x 2 di kolom kanan, angka besar */
+  body.dash #gridStat {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    background: transparent; border: none; padding: 0; box-shadow: none;
+  }
+  body.dash #gridStat .kotak {
+    background: #fff; border: 1px solid #E2E8F0; border-top: 3px solid #4F46E5;
+    border-radius: 16px; padding: 14px 12px; text-align: left;
+    box-shadow: 0 2px 10px rgba(15,23,42,.05);
+    transition: transform .16s ease, box-shadow .16s ease;
+  }
+  body.dash #gridStat .kotak:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(79,70,229,.14); }
+  body.dash #gridStat .angka { font-size: 1.65rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  body.dash #gridStat .label { font-size: .74rem; }
+
+  /* kartu alat: lebih ringkas, ikon sejajar judul */
+  body.dash #kartuImpor, body.dash #kartuNilai, body.dash #kartuKode {
+    min-height: 150px; background: #fff; border: 1px solid #E2E8F0;
+    border-radius: 16px; padding: 16px;
+    transition: transform .16s ease, box-shadow .16s ease;
+  }
+  body.dash #kartuImpor:hover, body.dash #kartuNilai:hover, body.dash #kartuKode:hover {
+    transform: translateY(-3px); box-shadow: 0 12px 24px rgba(79,70,229,.13);
+  }
+  body.dash .kode-besar { font-size: 1.5rem; letter-spacing: 2px; }
+
+  /* papan peringkat: 3 teratas dapat penanda */
+  body.dash #papan .nl-row { border-radius: 10px; padding: 6px 10px;
+                             display: flex; gap: 10px; align-items: center; }
+  body.dash #papan .nl-row .nm { flex: 1; }
+  body.dash #papan .nl-row .pos { min-width: 1.4em; }
+  body.dash #papan .nl-row:nth-child(1) { background: linear-gradient(90deg,#FEF3C7,rgba(254,243,199,0)); }
+  body.dash #papan .nl-row:nth-child(2) { background: linear-gradient(90deg,#E2E8F0,rgba(226,232,240,0)); }
+  body.dash #papan .nl-row:nth-child(3) { background: linear-gradient(90deg,#FDE4D3,rgba(253,228,211,0)); }
+  body.dash #papan .nl-row:nth-child(1) .pos::after { content: " 🥇"; }
+  body.dash #papan .nl-row:nth-child(2) .pos::after { content: " 🥈"; }
+  body.dash #papan .nl-row:nth-child(3) .pos::after { content: " 🥉"; }
+}
+
+@media (min-width: 1300px) {
+  body.dash .wrap { max-width: 1320px; gap: 22px; }
+}
