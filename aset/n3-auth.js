@@ -3,10 +3,10 @@
    Login pakai USERNAME + SANDI (tanpa email), data belajar disimpan di server.
 
    Cara pakai: file ini dimuat SEBELUM app.js.
-   Kalau supabase-config.js belum diisi, file ini tidak mengubah apa pun —
+   Kalau ../aset/supabase-config.js belum diisi, file ini tidak mengubah apa pun —
    web tetap jalan seperti sekarang (mode lokal).
 
-   Yang dipakai dari app.js (kompatibel, tidak diubah formatnya):
+   Yang dipakai dari ../aset/app.js (kompatibel, tidak diubah formatnya):
      study_time_<username>_<YYYY-MM-DD>      -> detik belajar per hari (cache lokal)
      session_done_<username>_day_<n>_<sesi>  -> penanda sesi selesai (cache lokal)
    ========================================================================== */
@@ -35,8 +35,8 @@
     function kunciHari(u, tanggal) { return "study_time_" + u + "_" + tanggal; }
     function kunciSesi(u, day, sesi) { return "session_done_" + u + "_day_" + day + "_" + sesi; }
 
-    /* ================= pemulihan sesi (sinkron, sebelum app.js jalan) =========
-       Supaya app.js langsung melihat "sudah login" tanpa nunggu jaringan.      */
+    /* ================= pemulihan sesi (sinkron, sebelum ../aset/app.js jalan) =========
+       Supaya ../aset/app.js langsung melihat "sudah login" tanpa nunggu jaringan.      */
     (function pulihkanCepat() {
         if (!AKTIF) return;
         const u = localStorage.getItem(KUNCI_USER);
@@ -98,7 +98,7 @@
         pengguna: null,
         siap: false,
 
-        // dipanggil app.js saat ada sesi belajar selesai
+        // dipanggil ../aset/app.js saat ada sesi belajar selesai
         kirimDetik: function (day, session, detik) {
             if (!AKTIF || !detik || detik <= 0) return;
             const item = { jenis: "detik", day: Number(day) || 0, session: String(session || ""), detik: Math.round(detik) };
@@ -106,7 +106,7 @@
             kirimKeServer(item).then(function (ok) { if (!ok) antre(item); });
         },
 
-        // dipanggil app.js saat satu sesi (pagi/siang/malam) ditandai selesai
+        // dipanggil ../aset/app.js saat satu sesi (pagi/siang/malam) ditandai selesai
         kirimSelesai: function (day, session, benar, total) {
             if (!AKTIF) return;
             const item = {
@@ -317,7 +317,7 @@
         semua[k] = s;
         simpanKata(semua);
 
-        // 3) jadwal ulang (SRS) — kalau modul n3-srs.js dimuat di halaman ini
+        // 3) jadwal ulang (SRS) — kalau modul ../aset/n3-srs.js dimuat di halaman ini
         try { if (window.N3SRS && N3SRS.catat) N3SRS.catat(k, !!benar, !!benar && d >= amb); } catch (e) {}
 
         // 2) kirim ke server
@@ -392,7 +392,7 @@
         return hari.sort(function (a, b) { return a - b; });
     }
 
-    // dipanggil quiz.js saat satu hari selesai dikerjakan
+    // dipanggil ../aset/quiz.js saat satu hari selesai dikerjakan
     function tandaiHariKuis(day, benar, total) {
         if (!day) return;
         try {
@@ -715,7 +715,7 @@
     }
 
     function mulai() {
-        if (!AKTIF) { console.info("[N3] supabase-config.js belum diisi — jalan mode lokal."); selesaiSiap(); return; }
+        if (!AKTIF) { console.info("[N3] ../aset/supabase-config.js belum diisi — jalan mode lokal."); selesaiSiap(); return; }
 
         if (!window.supabase) {
             let n = 0;

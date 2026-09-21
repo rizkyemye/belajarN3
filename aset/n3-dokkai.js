@@ -1,6 +1,6 @@
 /* ==========================================================================
    TAB DOKKAI (読解) — bacaan + soal pemahaman, temanya sesuai hari belajar
-   Data: dokkai.json (dibuat otomatis; furigana sudah tertanam sebagai <ruby>)
+   Data: ../aset/dokkai.json (dibuat otomatis; furigana sudah tertanam sebagai <ruby>)
    ========================================================================== */
 (function () {
     "use strict";
@@ -200,15 +200,15 @@
         fetch((function () {                       /* berkas bacaan mengikuti tingkat halaman */
         const lv = String(window.N3_LEVEL || "").toUpperCase()
             || String(localStorage.getItem("n3_level") || "").toUpperCase() || "N3";
-        return lv === "N5" ? "dokkai-n5.json?v=1"
-             : lv === "N4" ? "dokkai-n4.json?v=1"
-             : "dokkai.json?v=12";
+        return lv === "N5" ? "../aset/dokkai-n5.json?v=1"
+             : lv === "N4" ? "../aset/dokkai-n4.json?v=1"
+             : "../aset/dokkai.json?v=12";
     })())
             .then((r) => (r.ok ? r.json() : {}))
             .then((json) => {
                 semua = json && Object.keys(json).length ? json : {};
                 if (!Object.keys(semua).length) {
-                    $("#isiDokkai").innerHTML = '<div class="dokkai-kosong">Materi dokkai belum tersedia 😢<br>Pastikan dokkai.json sudah di-upload.</div>';
+                    $("#isiDokkai").innerHTML = '<div class="dokkai-kosong">Materi dokkai belum tersedia 😢<br>Pastikan ../aset/dokkai.json sudah di-upload.</div>';
                     return;
                 }
                 const terakhir = Number(localStorage.getItem(KUNCI_TERAKHIR) || 0);
@@ -220,7 +220,7 @@
             .catch((e) => {
                 console.warn("[dokkai] gagal muat:", e);
                 const w = $("#isiDokkai");
-                if (w) w.innerHTML = '<div class="dokkai-kosong">Gagal memuat dokkai.json 😢</div>';
+                if (w) w.innerHTML = '<div class="dokkai-kosong">Gagal memuat ../aset/dokkai.json 😢</div>';
             });
     }
 

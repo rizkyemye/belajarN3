@@ -1,10 +1,10 @@
 /* ==========================================================================
-   level.js — level ditentukan oleh HALAMAN (tanpa fitur ganti level)
+   ../aset/level.js — level ditentukan oleh HALAMAN (tanpa fitur ganti level)
    --------------------------------------------------------------------------
    · index.html  → N3   (materi: data.json)
    · n5.html     → N5   (materi: data-n5.json)
    · n4.html     → N4   (materi: data-n4.json)
-   Halaman level menuliskan:  <script>window.N3_LEVEL="N5";</script>  sebelum level.js
+   Halaman level menuliskan:  <script>window.N3_LEVEL="N5";</script>  sebelum ../aset/level.js
    Kalau berkas ini dihapus, semua halaman otomatis pakai N3 (data.json).
    ========================================================================== */
 (function () {
@@ -29,9 +29,9 @@
 
     function berkasData() {
         const lv = level();
-        if (lv === "N5") return "data-n5.json?v=10";
-        if (lv === "N4") return "data-n4.json?v=10";
-        return "data.json?v=10";
+        if (lv === "N5") return "../aset/data-n5.json?v=10";
+        if (lv === "N4") return "../aset/data-n4.json?v=10";
+        return "../aset/data.json?v=10";
     }
 
     /* ---------- tampilan: judul ikut level, tab khusus N3 disembunyikan ---------- */

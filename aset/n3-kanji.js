@@ -1,12 +1,12 @@
 /* ==========================================================================
    TAB KANJI (漢字) — 音読み / 訓読み + contoh kata dari materi sendiri
-   Dimuat oleh index.html. Data: kanji.json (824 kanji, sumber KANJIDIC via
+   Dimuat oleh index.html. Data: ../aset/kanji.json (824 kanji, sumber KANJIDIC via
    dataset kanji-data, lisensi MIT).
    ========================================================================== */
 (function () {
     "use strict";
 
-    let semuaKanji = [];      // array dari kanji.json
+    let semuaKanji = [];      // array dari ../aset/kanji.json
     let sudahMuat = false;
     let q = "";
     let filterHari = "all";
@@ -173,7 +173,7 @@
     window.initKanjiUI = function () {
         if (sudahMuat) { pasangKontrol(); tampilkanDaftar(); return; }
         sudahMuat = true;
-        fetch("kanji.json")
+        fetch("../aset/kanji.json")
             .then(function (r) { return r.ok ? r.json() : {}; })
             .then(function (json) {
                 semuaKanji = Object.keys(json || {}).map(function (k) { return json[k]; });
@@ -182,9 +182,9 @@
                 tampilkanDaftar();
             })
             .catch(function (e) {
-                console.warn("gagal muat kanji.json", e);
+                console.warn("gagal muat ../aset/kanji.json", e);
                 const list = document.getElementById("kanjiList");
-                if (list) list.innerHTML = '<div class="kanji-kosong">Gagal memuat kanji.json 😢<br>Pastikan file itu sudah di-upload ya.</div>';
+                if (list) list.innerHTML = '<div class="kanji-kosong">Gagal memuat ../aset/kanji.json 😢<br>Pastikan file itu sudah di-upload ya.</div>';
             });
     };
 })();

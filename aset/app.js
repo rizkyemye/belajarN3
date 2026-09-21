@@ -91,7 +91,7 @@ const counter = document.getElementById("counter");
 const timerDisplay = document.getElementById("timerDisplay");
 const resultText = document.getElementById("resultText");
 
-fetch((window.N3BerkasData ? N3BerkasData() : 'data.json?v=10'))
+fetch((window.N3BerkasData ? N3BerkasData() : '../aset/data.json?v=10'))
     .then(response => response.json())
     .then(data => {
         allData = data;
@@ -178,7 +178,7 @@ function onDayDropdownChange() {
 const BUNPOU_MARK = "【Contoh Kalimat】";
 
 function isBunpouItem(item) {
-    // entri tata bahasa di data.json selalu diawali tanda gelombang (〜 / ～)
+    // entri tata bahasa di ../aset/data.json selalu diawali tanda gelombang (〜 / ～)
     return /^[\u301c\uff5e〜～]/.test(String(item.front || "").trim());
 }
 

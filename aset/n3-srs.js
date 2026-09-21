@@ -1,5 +1,5 @@
 /* ==========================================================================
-   n3-srs.js — JADWAL ULANG KATA (spaced repetition) untuk halaman Review
+   ../aset/n3-srs.js — JADWAL ULANG KATA (spaced repetition) untuk halaman Review
    --------------------------------------------------------------------------
    Cara kerja (kotak Leitner):
        kotak 0 → ulang besok         kotak 3 → 14 hari lagi

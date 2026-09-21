@@ -1,7 +1,7 @@
 /* ==========================================================================
-   sapaan.js — sapaan hangat di header
+   ../aset/sapaan.js — sapaan hangat di header
    Menyesuaikan waktu (pagi/siang/malam) + nama pengguna + pesan harian.
-   Dipasang di index.html. Kalau ingin dimatikan: hapus <script src="sapaan.js">
+   Dipasang di index.html. Kalau ingin dimatikan: hapus <script src="../aset/sapaan.js">
    ========================================================================== */
 (function () {
     "use strict";

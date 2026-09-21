@@ -1,6 +1,6 @@
 /* ==========================================================================
    QUIZ BUNPOU N3 — 10 soal tata bahasa per hari
-   Soal diambil dari bunpou_quiz.json (dibuat oleh bikin_kuis_bunpou.py):
+   Soal diambil dari ../aset/bunpou_quiz.json (dibuat oleh bikin_kuis_bunpou.py):
      { "1": [ {jenis, soal, opsi[4], jawab, pola, arti, rumus, contoh, terjemah, petunjuk}, ... ] }
    Aturan buka hari sama dengan halaman lain: hari ke-1 mulai tanggal 5.
    ========================================================================== */
@@ -123,7 +123,7 @@
             o.textContent =
                 location.protocol === "file:"
                     ? "⚠️ Dibuka dari berkas komputer — data soal tidak bisa dimuat"
-                    : "⚠️ Gagal memuat soal — pastikan bunpou_quiz.json sudah di-upload";
+                    : "⚠️ Gagal memuat soal — pastikan ../aset/bunpou_quiz.json sudah di-upload";
             sel.appendChild(o);
             // beri penjelasan tambahan kalau dibuka sebagai berkas lokal
             if (location.protocol === "file:" && !document.getElementById("peringatanFile")) {
@@ -293,9 +293,9 @@
         fetch((function () {                       /* berkas soal mengikuti tingkat halaman */
         const lv = String(window.N3_LEVEL || "").toUpperCase()
             || String(localStorage.getItem("n3_level") || "").toUpperCase() || "N3";
-        return lv === "N5" ? "bunpou_quiz-n5.json?v=1"
-             : lv === "N4" ? "bunpou_quiz-n4.json?v=1"
-             : "bunpou_quiz.json?v=1";
+        return lv === "N5" ? "../aset/bunpou_quiz-n5.json?v=1"
+             : lv === "N4" ? "../aset/bunpou_quiz-n4.json?v=1"
+             : "../aset/bunpou_quiz.json?v=1";
     })())
             .then(function (r) { return r.json(); })
             .then(function (data) {

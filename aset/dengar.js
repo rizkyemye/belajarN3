@@ -1,11 +1,11 @@
 /* ==========================================================================
-   dengar.js — tap kata/kalimat → dengar pengucapan (Web Speech API, gratis)
+   ../aset/dengar.js — tap kata/kalimat → dengar pengucapan (Web Speech API, gratis)
    Yang dipasangi tombol 🔊:
      • kartu utama (#cardFront)
      • daftar kata hari ini (.vocab-front)
      • soal kuis (#quizQuestionText, #bunpouQuestionText)
    Kalau HP belum punya suara Jepang, muncul pesan kecil (bukan error).
-   Matikan dengan: hapus <script src="dengar.js"> dari halaman.
+   Matikan dengan: hapus <script src="../aset/dengar.js"> dari halaman.
    ========================================================================== */
 (function () {
     "use strict";
@@ -127,7 +127,7 @@
         pasangSemua();
     }
 
-    // daftar kata & soal digambar ulang oleh app.js → pantau perubahan
+    // daftar kata & soal digambar ulang oleh ../aset/app.js → pantau perubahan
     try {
         var pengamat = new MutationObserver(function () { pasangSemua(); });
         pengamat.observe(document.body, { childList: true, subtree: true });
