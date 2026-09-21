@@ -25,7 +25,7 @@ body.gerbang{
 /* ---------- bagian atas: ilustrasi ---------- */
 .hp-atas{
   position:relative; overflow:hidden; flex:0 0 auto;
-  min-height:52vh; padding:18px 20px 10px; color:#fff;
+  min-height:34vh; padding:18px 20px 10px; color:#fff;
   background:linear-gradient(160deg,#4F46E5 0%,#7C3AED 48%,#EC4899 100%);
 }
 .hp-atas .cap{display:flex;align-items:center;gap:8px;font-weight:800;font-size:.98rem;position:relative;z-index:3}
@@ -88,31 +88,73 @@ body.gerbang{
   padding:6px 14px;border-radius:999px;margin-bottom:14px;
 }
 
-/* ---------- tampilan kotak isian (dari n3-auth.js) disamakan dengan referensi ---------- */
-body.gerbang #n3Gerbang, body.gerbang [id^="n3Gerbang"]{font-family:inherit}
-body.gerbang .n3-kotak, body.gerbang .n3-card{
-  border-radius:26px !important; padding:22px 20px !important;
-  box-shadow:0 26px 60px rgba(15,23,42,.28) !important;
+/* ---------- kotak isian (dari n3-auth.js) disamakan dengan referensi ---------- */
+/* kotak isian DISATUKAN ke halaman — tidak lagi melayang sebagai popup */
+body.gerbang #n3Gate{
+  position:static !important; inset:auto !important;
+  background:none !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
+  padding:0 !important; display:block !important; z-index:auto !important;
+  font-family:inherit !important;
+}
+body.gerbang #n3Gate > *{margin:0 auto !important}
+/* kepala & kalimat pembuka dari kotak disembunyikan: halaman sudah punya sendiri */
+body.gerbang .n3-gate-logo, body.gerbang .n3-gate-sub{display:none !important}
+body.gerbang .n3-gate-card > *:first-child{margin-top:0 !important}
+body.gerbang .n3-gate-card{
+  border-radius:0 !important; padding:0 !important; box-shadow:none !important;
+  background:none !important; max-width:100% !important; width:100% !important;
+  display:block !important;
+}
+body.gerbang .n3-gate-logo{font-size:1.05rem !important; font-weight:800 !important; letter-spacing:-.2px}
+body.gerbang .n3-gate-sub{font-size:.9rem !important; line-height:1.55 !important}
+body.gerbang .n3-gate-tabs{
+  background:#F1F5F9 !important; border-radius:999px !important; padding:4px !important; gap:4px !important;
+  border:0 !important;
 }
 body.gerbang .n3-tab{
-  font-family:inherit !important; font-weight:800 !important; font-size:.95rem !important;
-  border-radius:999px !important; padding:10px 4px !important; transition:color .16s !important;
+  font-family:inherit !important; font-weight:800 !important; font-size:.94rem !important;
+  border-radius:999px !important; padding:10px 6px !important; border:0 !important;
+  background:transparent !important; color:#475569 !important; transition:background .16s, color .16s !important;
+}
+body.gerbang .n3-tab.aktif{
+  background:#fff !important; color:#4F46E5 !important;
+  box-shadow:0 4px 12px rgba(15,23,42,.10) !important;
 }
 body.gerbang .n3-input{
   font-family:inherit !important; width:100% !important; border-radius:14px !important;
-  border:1.5px solid #E2E8F0 !important; background:#F8FAFC !important; padding:14px 15px !important;
-  font-size:.98rem !important; color:#0F172A !important;
+  border:1.5px solid #E2E8F0 !important; background:#F8FAFC !important;
+  padding:14px 15px !important; font-size:.97rem !important; color:#0F172A !important;
 }
-body.gerbang .n3-input:focus{border-color:#7C3AED !important; background:#fff !important; outline:none !important}
-body.gerbang .n3-level-wrap button, body.gerbang .n3-level-wrap label{
-  font-family:inherit !important; border-radius:12px !important;
+body.gerbang .n3-input:focus{
+  border-color:#7C3AED !important; background:#fff !important; outline:none !important;
+  box-shadow:0 0 0 4px rgba(124,58,237,.12) !important;
 }
-body.gerbang button.n3-kirim, body.gerbang .n3-kirim{
-  font-family:inherit !important; font-weight:800 !important; border-radius:999px !important;
-  padding:15px !important; border:0 !important; color:#fff !important;
+body.gerbang .n3-level-judul{font-size:.86rem !important; line-height:1.5 !important}
+body.gerbang .n3-level{display:grid !important; grid-template-columns:repeat(3,1fr) !important; gap:8px !important}
+body.gerbang .n3-lv{
+  font-family:inherit !important; padding:12px 6px !important; border-radius:14px !important;
+  border:1.5px solid #E2E8F0 !important; background:#fff !important; cursor:pointer !important;
+  display:flex !important; flex-direction:column !important; align-items:center !important; gap:2px !important;
+  transition:transform .14s, border-color .14s, box-shadow .14s !important;
+}
+body.gerbang .n3-lv b{font-size:1.05rem !important}
+body.gerbang .n3-lv span{font-size:.72rem !important; color:#64748b !important}
+body.gerbang .n3-lv:hover{transform:translateY(-2px) !important}
+body.gerbang .n3-lv.aktif, body.gerbang .n3-lv.terpilih{
+  border-color:#7C3AED !important; box-shadow:0 0 0 4px rgba(124,58,237,.14) !important;
+  background:linear-gradient(160deg,#F5F3FF,#EDE9FE) !important;
+}
+body.gerbang .n3-btn{
+  font-family:inherit !important; font-weight:800 !important; font-size:1.02rem !important;
+  border-radius:999px !important; padding:16px !important; border:0 !important; color:#fff !important; cursor:pointer !important;
   background:linear-gradient(100deg,#4F46E5,#7C3AED 55%,#EC4899) !important;
-  box-shadow:0 12px 26px rgba(79,70,229,.30) !important;
+  box-shadow:0 12px 26px rgba(79,70,229,.32) !important;
+  transition:transform .16s, box-shadow .16s !important;
 }
+body.gerbang .n3-btn:hover{transform:translateY(-2px) !important; box-shadow:0 18px 34px rgba(79,70,229,.38) !important}
+body.gerbang .n3-gate-note{font-size:.78rem !important; line-height:1.6 !important; color:#64748b !important}
+body.gerbang .n3-lupa{font-family:inherit !important; font-weight:700 !important; font-size:.88rem !important}
+body.gerbang .n3-pesan{font-size:.88rem !important}
 @media (min-width:900px){
   .hp{max-width:920px;flex-direction:row;min-height:640px;border-radius:30px;overflow:hidden;margin:5vh auto;box-shadow:0 30px 70px rgba(15,23,42,.16)}
   .hp-atas{flex:1 1 46%;min-height:auto;border-radius:0}
@@ -138,10 +180,9 @@ body.gerbang button.n3-kirim, body.gerbang .n3-kirim{
     <div>
       <span class="lencana" id="lencanaTingkat" style="display:none"></span>
       <h1>Belajar Jepang, satu hari satu kartu.</h1>
-      <p class="ket">Masuk dulu ya — progresmu tersimpan di akun, jadi bisa dilanjutkan kapan saja dan dari HP mana pun.</p>
+      <p class="ket">Masuk atau daftar dulu ya — progresmu tersimpan di akun, jadi bisa dilanjutkan kapan saja dan dari HP mana pun.</p>
+      <div id="kotakLogin"></div>
     </div>
-
-    <button id="bukaKotak" class="tombol-besar" type="button">Masuk / Daftar sekarang</button>
 
     <div class="pisah">atau</div>
     <a class="tombol-samar" href="../">← Lihat-lihat dulu di halaman depan</a>
@@ -190,7 +231,23 @@ body.gerbang button.n3-kirim, body.gerbang .n3-kirim{
     if (cocok) { try { cocok.click(); } catch (e) {} }
   }
 
+  /* Pindahkan kotak isian ke dalam halaman supaya tampil sebagai bagian halaman,
+     bukan melayang di atas layar. */
+  function pindahkanKotak() {
+    var g = document.getElementById("n3Gate");
+    var wadah = document.getElementById("kotakLogin");
+    if (!g || !wadah) return false;
+    if (g.parentNode !== wadah) {
+      g.style.position = "static";
+      g.style.background = "none";
+      g.style.display = "block";
+      wadah.appendChild(g);
+    }
+    return true;
+  }
+
   function bereskan() {
+    pindahkanKotak();
     if (window.N3 && N3.pengguna) {           // sudah masuk → langsung ke beranda tingkatnya
       location.replace("../" + String(N3.level ? N3.level() : (localStorage.getItem("n3_level") || "N3")).toLowerCase() + "/");
       return;
@@ -209,14 +266,12 @@ body.gerbang button.n3-kirim, body.gerbang .n3-kirim{
   }
   if (window.MutationObserver) {
     var pemantau = new MutationObserver(function () {
-      if (document.getElementById("n3LevelWrap") || document.getElementById("n3User")) {
-        bereskan(); pemantau.disconnect();
-      }
+      if (document.getElementById("n3Gate")) { pindahkanKotak(); bereskan(); }
     });
     pemantau.observe(document.body, { childList: true, subtree: true });
   }
   var coba = 0;
-  var pengulang = setInterval(function () { coba++; bereskan(); if (coba > 12) clearInterval(pengulang); }, 500);
+  var pengulang = setInterval(function () { coba++; pindahkanKotak(); bereskan(); if (coba > 24) clearInterval(pengulang); }, 500);
 })();
 </script>
 </body>
