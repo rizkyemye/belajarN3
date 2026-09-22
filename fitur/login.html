@@ -210,7 +210,7 @@ body.gerbang .n3-pesan{font-size:.88rem !important}
     var lencana = document.getElementById("lencanaTingkat");
     lencana.textContent = "Tingkat pilihanmu: " + lv;
     lencana.style.display = "inline-block";
-    try { localStorage.setItem("n3_level", lv); } catch (e) {}
+    if (window.simpanTingkat) window.simpanTingkat(lv); else { try { localStorage.setItem("n3_level", lv); } catch (e) {} }
   }
 
   function bukaKotak() { if (window.N3TampilkanGerbang) { try { window.N3TampilkanGerbang(true); } catch (e) {} } }
