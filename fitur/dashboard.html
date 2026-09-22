@@ -138,7 +138,7 @@
   </div>
 
   <div class="card">
-    <h2>🏆 Papan Peringkat</h2>
+    <h2>🏆 10 Besar</h2>
     <div id="papan"><div class="kosong">Memuat…</div></div>
     <p class="catatan">
       XP = (jam belajar × 10) + (hari selesai × 5) + (jawaban benar).<br>
@@ -319,7 +319,7 @@
     siapkanInputNilai();
     siapkanKodePemulihan();
 
-    const papan = await N3.papanPeringkat(50);
+    const papan = await N3.papanPeringkat(10);
     if (!papan.length) { elPapan.innerHTML = '<div class="kosong">Belum ada yang belajar. Jadi yang pertama yuk! 🌸</div>'; return; }
 
     const medali = { 0: "🥇", 1: "🥈", 2: "🥉" };
