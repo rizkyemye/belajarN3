@@ -25,7 +25,10 @@
         document.querySelectorAll("a, button").forEach(function (el) {
             const teks = (el.textContent || "").trim();
             const onclick = el.getAttribute("onclick") || "";
-            const iniBeranda = /beranda|home|ホーム/i.test(teks) || /'(\.\.\/|index\.html)'/.test(onclick);
+                        // semua tombol "kembali ke halaman belajar" di /fitur/ juga diperbaiki
+            const iniBeranda = /beranda|home|ホーム|belajar|balik|kembali/i.test(teks)
+                || /'(\.\.\/|index\.html)'/.test(onclick)
+                || (el.getAttribute("href") === "../");
             if (!iniBeranda) return;
             el.setAttribute("data-beranda", lv);
             if (el.tagName === "A") {
