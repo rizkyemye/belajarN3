@@ -458,6 +458,7 @@ function initBunpouUI() {
         });
     }
     injectBunpouLegend();
+    pasangPopupBunpou();
     buildBunpouFilters();
     renderBunpou();
 }
@@ -1047,4 +1048,44 @@ function rateCard(action) {
     }
 
     updateCard();
+}
+
+/* ===== POPUP BUNPOU =====
+   Klik satu pola bunpou -> muncul penjelasan + rumus + contoh kalimatnya.
+   Isi popup diambil dari kartu yang diklik sendiri, jadi tidak ada data baru. */
+function bukaPopupBunpou(kartu) {
+    const isi = kartu.cloneNode(true);
+    const chip = isi.querySelector(".bunpou-days");
+    if (chip) chip.remove();                       // buang label "Hari ..."
+    let tutupLama = document.getElementById("popupBunpou");
+    if (tutupLama) tutupLama.remove();
+    const wadah = document.createElement("div");
+    wadah.id = "popupBunpou";
+    wadah.className = "popup-bunpou-latar";
+    wadah.innerHTML =
+        '<div class="popup-bunpou-kotak" role="dialog" aria-modal="true">' +
+        '  <button class="popup-bunpou-x" aria-label="Tutup">✕</button>' +
+        '  <div class="popup-bunpou-isi"></div>' +
+        '  <button class="popup-bunpou-tutup">Tutup</button>' +
+        '</div>';
+    wadah.querySelector(".popup-bunpou-isi").appendChild(isi);
+    document.body.appendChild(wadah);
+    document.body.style.overflow = "hidden";
+    function tutup() { wadah.remove(); document.body.style.overflow = ""; }
+    wadah.addEventListener("click", function (e) {
+        if (e.target === wadah || e.target.classList.contains("popup-bunpou-x") || e.target.classList.contains("popup-bunpou-tutup")) tutup();
+    });
+    document.addEventListener("keydown", function esc(e) {
+        if (e.key === "Escape") { tutup(); document.removeEventListener("keydown", esc); }
+    });
+}
+
+function pasangPopupBunpou() {
+    const list = document.getElementById("bunpouList");
+    if (!list || list.dataset.popupSiap) return;
+    list.dataset.popupSiap = "1";
+    list.addEventListener("click", function (e) {
+        const kartu = e.target.closest(".bunpou-item");
+        if (kartu) bukaPopupBunpou(kartu);
+    });
 }

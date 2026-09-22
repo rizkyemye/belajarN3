@@ -612,22 +612,7 @@ h1, h2, h3 { letter-spacing: -0.02em; }
         transform: translateY(-2px);
         box-shadow: 0 12px 24px rgba(79, 70, 229, 0.22) !important;
     }
-/* pembungkus #papan yang harus dilebarkan */
-body.dash #kartuPapan { grid-column: 1 / -1; width: 100%; }
-body.dash #papan { grid-column: auto; width: 100%; min-width: 0; padding: 26px 24px 30px; }
-body.dash #papan .nl-row { display:flex; align-items:center; gap:16px; padding:20px; margin-bottom:12px; font-size:1.15rem; border-radius:18px; background:#F8FAFC; }
-body.dash #papan .nl-row .pos { flex:0 0 auto; min-width:2.4em; height:2.4em; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:1.2rem; color:#475569; background:#fff; border:3px solid #E2E8F0; border-radius:999px; }
-body.dash #papan .nl-row .nm { flex:1 1 auto; font-weight:800; font-size:1.15rem; }
-body.dash #papan .nl-row:nth-child(1), body.dash #papan .nl-row:nth-child(2), body.dash #papan .nl-row:nth-child(3) { padding:24px 20px; font-size:1.3rem; margin-bottom:14px; }
-body.dash #papan .nl-row:nth-child(1) .pos { background:#FEF3C7; border-color:#FCD34D; color:#92400E; font-size:1.5rem; }
-body.dash #papan .nl-row:nth-child(2) .pos { background:#E2E8F0; border-color:#CBD5E1; color:#334155; font-size:1.4rem; }
-body.dash #papan .nl-row:nth-child(3) .pos { background:#FDE4D3; border-color:#FDBA74; color:#9A3412; font-size:1.4rem; }
-@media (max-width:899px){
-  body.dash #kartuPapan { grid-column: 1 / -1; }
-  body.dash #papan { padding: 18px 16px 22px; }
-  body.dash #papan .nl-row { padding:16px 14px; font-size:1.05rem; gap:12px; margin-bottom:9px; }
-  body.dash #papan .nl-row .pos { min-width:2.1em; height:2.1em; font-size:1.05rem; }
-}
+
     .calendar-card:hover,
     .study-hub-card:hover,
     .bunpou-item:hover,
@@ -907,39 +892,65 @@ body.dash .wrap { max-width: 1200px; }
   body.dash .wrap { max-width: 1320px; gap: 22px; }
 }
 
-
 /* ============================================================
-   PAPAN PERINGKAT — DIPERBESAR (berlaku di HP & desktop)
-   Ditulis SETELAH blok bento, jadi menang urutan untuk semua ukuran.
+   PAPAN PERINGKAT — VERSI BESAR (2). Berlaku HP & desktop.
+   Ditulis paling akhir supaya menang urutan.
    ============================================================ */
-body.dash #papan { padding: 20px 18px 22px; }
-body.dash #papan h2 { font-size: 1.28rem; margin-bottom: 4px; }
+/* #papan ada DI DALAM kotak .card, jadi yang harus dilebarkan = pembungkusnya */
+body.dash #kartuPapan { grid-column: 1 / -1; width: 100%; }
+body.dash #papan {
+    grid-column: auto;
+    width: 100%;
+    min-width: 0;
+    padding: 26px 24px 30px;
+}
+body.dash #papan h2 { font-size: 1.5rem; margin-bottom: 6px; }
 body.dash #papan .nl-row {
-    display: flex; align-items: center; gap: 12px;
-    padding: 14px 14px; margin-bottom: 8px;
-    font-size: 1.02rem; line-height: 1.35;
-    border-radius: 14px; background: #F8FAFC;
-    box-shadow: 0 1px 2px rgba(15,23,42,.05);
+    display: flex; align-items: center; gap: 16px;
+    padding: 20px 20px; margin-bottom: 12px;
+    font-size: 1.15rem; line-height: 1.4;
+    border-radius: 18px; background: #F8FAFC;
+    box-shadow: 0 2px 6px rgba(15,23,42,.06);
 }
 body.dash #papan .nl-row .pos {
-    flex: 0 0 auto; min-width: 2.1em; height: 2.1em;
+    flex: 0 0 auto; min-width: 2.4em; height: 2.4em;
     display: inline-flex; align-items: center; justify-content: center;
-    font-weight: 800; font-size: 1.05rem; color: #475569;
-    background: #fff; border: 2px solid #E2E8F0; border-radius: 999px;
+    font-weight: 800; font-size: 1.2rem; color: #475569;
+    background: #fff; border: 3px solid #E2E8F0; border-radius: 999px;
 }
-body.dash #papan .nl-row .nm { flex: 1 1 auto; font-weight: 700; }
-/* tombol/muatan lebih lega */
-body.dash #papan button, body.dash #papan .btn { padding: 12px 18px; font-size: 1rem; }
-/* tiga teratas: badge lebih besar + baris lebih menonjol */
-body.dash #papan .nl-row:nth-child(1),
-body.dash #papan .nl-row:nth-child(2),
-body.dash #papan .nl-row:nth-child(3) { padding: 16px 14px; font-size: 1.08rem; }
-body.dash #papan .nl-row:nth-child(1) .pos { background: #FEF3C7; border-color: #FCD34D; color: #92400E; font-size: 1.2rem; }
-body.dash #papan .nl-row:nth-child(2) .pos { background: #E2E8F0; border-color: #CBD5E1; color: #334155; font-size: 1.15rem; }
-body.dash #papan .nl-row:nth-child(3) .pos { background: #FDE4D3; border-color: #FDBA74; color: #9A3412; font-size: 1.15rem; }
-/* di HP: tetap lega, jarak sedikit lebih rapat biar 10 baris tidak kepanjangan */
+body.dash #papan .nl-row .nm { flex: 1 1 auto; font-weight: 800; font-size: 1.15rem; }
+body.dash #papan .nl-row .avatar { width: 46px; height: 46px; }
+/* tiga teratas makin menonjol */
+body.dash #papan .nl-row:nth-child(1), body.dash #papan .nl-row:nth-child(2), body.dash #papan .nl-row:nth-child(3) {
+    padding: 24px 20px; font-size: 1.3rem; margin-bottom: 14px;
+}
+body.dash #papan .nl-row:nth-child(1) .pos { background:#FEF3C7; border-color:#FCD34D; color:#92400E; font-size:1.5rem; }
+body.dash #papan .nl-row:nth-child(2) .pos { background:#E2E8F0; border-color:#CBD5E1; color:#334155; font-size:1.4rem; }
+body.dash #papan .nl-row:nth-child(3) .pos { background:#FDE4D3; border-color:#FDBA74; color:#9A3412; font-size:1.4rem; }
+body.dash #papan .nl-row:nth-child(1) .nm, body.dash #papan .nl-row:nth-child(2) .nm, body.dash #papan .nl-row:nth-child(3) .nm { font-size: 1.3rem; }
+
 @media (max-width: 899px) {
-    body.dash #papan { padding: 16px 14px 18px; }
-    body.dash #papan .nl-row { padding: 12px 12px; font-size: .98rem; margin-bottom: 7px; gap: 10px; }
-    body.dash #papan .nl-row:nth-child(1), body.dash #papan .nl-row:nth-child(2), body.dash #papan .nl-row:nth-child(3) { padding: 14px 12px; }
+    body.dash #papan { padding: 18px 16px 22px; }
+    body.dash #papan h2 { font-size: 1.3rem; }
+    body.dash #papan .nl-row { padding: 16px 14px; font-size: 1.05rem; gap: 12px; margin-bottom: 9px; }
+    body.dash #papan .nl-row .pos { min-width: 2.1em; height: 2.1em; font-size: 1.05rem; }
+    body.dash #papan .nl-row .nm { font-size: 1.05rem; }
+    body.dash #papan .nl-row .avatar { width: 36px; height: 36px; }
+    body.dash #papan .nl-row:nth-child(1), body.dash #papan .nl-row:nth-child(2), body.dash #papan .nl-row:nth-child(3) { padding: 18px 14px; }
+    body.dash #papan .nl-row:nth-child(1) .nm, body.dash #papan .nl-row:nth-child(2) .nm, body.dash #papan .nl-row:nth-child(3) .nm { font-size: 1.15rem; }
 }
+
+/* ===== POPUP BUNPOU ===== */
+.popup-bunpou-latar { position: fixed; inset: 0; background: rgba(15,23,42,.55); display: flex;
+    align-items: center; justify-content: center; padding: 16px; z-index: 9999; }
+.popup-bunpou-kotak { background: #fff; border-radius: 18px; max-width: 560px; width: 100%;
+    max-height: 86vh; overflow: auto; padding: 20px 20px 16px; position: relative;
+    box-shadow: 0 20px 50px rgba(15,23,42,.3); }
+.popup-bunpou-x { position: absolute; top: 10px; right: 12px; border: 0; background: #f1f5f9;
+    border-radius: 999px; width: 34px; height: 34px; font-size: 1rem; cursor: pointer; }
+.popup-bunpou-isi .bunpou-pattern { font-size: 1.5rem; font-weight: 800; color: #4f46e5; }
+.popup-bunpou-isi .bunpou-rumus { font-size: 1.05rem; }
+.popup-bunpou-isi .bunpou-meaning { font-size: 1.05rem; }
+.popup-bunpou-isi .bunpou-jp, .popup-bunpou-isi .bunpou-example { font-size: 1.05rem; line-height: 1.6; }
+.popup-bunpou-tutup { display: block; width: 100%; margin-top: 14px; padding: 13px;
+    border: 0; border-radius: 12px; background: #4f46e5; color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer; }
