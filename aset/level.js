@@ -43,11 +43,13 @@
     }
     window.N3Beranda = rapikanTombolBeranda;   // bisa dipanggil ulang setelah login
 
+
+
     function level() {
         if (window.N3_LEVEL) {
             const lv = String(window.N3_LEVEL).toUpperCase();
             // simpan supaya halaman /fitur/ (kuis, dashboard, review) ikut tingkat ini
-            try { localStorage.setItem("n3_level", lv); } catch (e) {}
+            if (window.simpanTingkat) window.simpanTingkat(lv); else { try { localStorage.setItem("n3_level", lv); } catch (e) {} }
             if (DAFTAR.indexOf(lv) >= 0) return lv;
         }
         const m = /[?&]lv=(N[345])/i.exec(location.search);

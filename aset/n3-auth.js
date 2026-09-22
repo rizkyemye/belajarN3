@@ -53,7 +53,27 @@
     function simpanPending(arr) {
         try { localStorage.setItem(KUNCI_PENDING, JSON.stringify(arr.slice(-300))); } catch (e) {}
     }
-    function antre(item) { const a = bacaPending(); a.push(item); simpanPending(a); }
+    // tingkat aktif (N5/N4/N3) — dipakai supaya data tidak tercampur
+    // Kunci lokal yang isinya khusus satu tingkat. Kalau pengguna PINDAH tingkat,
+    // kunci ini dibersihkan supaya progres N5 tidak terbawa ke N4
+    // (data aslinya tetap aman di server, sudah dipisah per level).
+    const KUNCI_SENSITIF = ["completed_quiz_days","bunpou_selesai","saved_day_sessions",
+                            "saved_correct_count","saved_quiz_day","saved_session_idx","n3_hari_kuis"];
+    window.bersihkanKunciTingkatLama = function () {
+        try { KUNCI_SENSITIF.forEach(function (k) { localStorage.removeItem(k); }); } catch (e) {}
+    };
+    // setItem n3_level yang aman: bersihkan dulu kalau tingkatnya BERUBAH
+    window.simpanTingkat = function (lv) {
+        try {
+            const lama = localStorage.getItem("n3_level");
+            if (lama && String(lama).toUpperCase() !== String(lv).toUpperCase()) window.bersihkanKunciTingkatLama();
+            localStorage.setItem("n3_level", lv);
+        } catch (e) {}
+    };
+
+    function levelKini() { return String(localStorage.getItem("n3_level") || "N3").toUpperCase(); }
+
+    function antre(item) { if (!item.level) item.level = levelKini(); const a = bacaPending(); a.push(item); simpanPending(a); }
 
     async function kirimAntrean() {
         if (!sb || !pengguna) return;
@@ -69,7 +89,8 @@
         try {
             if (it.jenis === "detik") {
                 const { error } = await sb.rpc("add_study_seconds", {
-                    p_day: it.day, p_session: it.session, p_seconds: it.detik
+                    p_day: it.day, p_session: it.session, p_seconds: it.detik,
+                    p_level: it.level || levelKini()
                 });
                 return !error;
             }
@@ -77,14 +98,15 @@
                 const { error } = await sb.rpc("catat_kata", {
                     p_kata: it.kata, p_day: it.day,
                     p_benar: !!it.benar, p_detik: Math.round(it.detik || 0),
-                    p_ambang: it.ambang || 30
+                    p_ambang: it.ambang || 30, p_level: it.level || levelKini()
                 });
                 return !error;
             }
             if (it.jenis === "selesai") {
                 const { error } = await sb.rpc("mark_session_done", {
                     p_day: it.day, p_session: it.session,
-                    p_benar: it.benar || 0, p_total: it.total || 0
+                    p_benar: it.benar || 0, p_total: it.total || 0,
+                    p_level: it.level || levelKini()
                 });
                 return !error;
             }
@@ -233,7 +255,7 @@
         pengguna = { id: user.id, username: username || ("user_" + String(user.id).slice(0, 6)), nama: nama || username, level: lv || "" };
         N3.pengguna = pengguna;
         try {
-            if (lv) { localStorage.setItem("n3_level", lv); localStorage.setItem("n3_level_" + String(pengguna.username).toLowerCase(), lv); }
+            if (lv) { (window.simpanTingkat ? window.simpanTingkat(lv) : localStorage.setItem("n3_level", lv)); localStorage.setItem("n3_level_" + String(pengguna.username).toLowerCase(), lv); }
         } catch (e) {}
     }
 
@@ -241,8 +263,8 @@
     async function sinkronData() {
         if (!sb || !pengguna) return;
         try {
-            const ses = await sb.from("study_sessions").select("tanggal,day_no,session,detik").eq("user_id", pengguna.id);
-            const prg = await sb.from("progress").select("day_no,session,selesai").eq("user_id", pengguna.id);
+            const ses = await sb.from("study_sessions").select("tanggal,day_no,session,detik").eq("user_id", pengguna.id).eq("level", levelKini());
+            const prg = await sb.from("progress").select("day_no,session,selesai").eq("user_id", pengguna.id).eq("level", levelKini());
 
             if (ses.data) {
                 const perTanggal = {};
@@ -330,7 +352,7 @@
     async function muatHariKuisDariServer() {
         if (!sb || !pengguna) return;
         try {
-            const { data } = await sb.from("progress").select("day_no").eq("user_id", pengguna.id).eq("session", "kuis").eq("selesai", true);
+            const { data } = await sb.from("progress").select("day_no").eq("user_id", pengguna.id).eq("level", levelKini()).eq("session", "kuis").eq("selesai", true);
             if (!data || !data.length) return;
             let arr = [];
             try { arr = JSON.parse(localStorage.getItem("n3_hari_kuis")) || []; } catch (e) { arr = []; }
@@ -346,7 +368,7 @@
         await muatHariKuisDariServer();
         try {
             const { data } = await sb.from("word_stats")
-                .select("kata,day_no,benar,salah,lambat,detik_total,terakhir").eq("user_id", pengguna.id);
+                .select("kata,day_no,benar,salah,lambat,detik_total,terakhir").eq("user_id", pengguna.id).eq("level", levelKini());
             if (!data) return;
             const lokal = bacaKata();
             data.forEach(function (r) {
@@ -575,7 +597,7 @@
                     }
                     kodeBaru = await daftar(elUser.value, elPass.value, elNama.value, levelDipilih);
                     try {
-                        localStorage.setItem("n3_level", levelDipilih);
+                        if (window.simpanTingkat) window.simpanTingkat(levelDipilih); else localStorage.setItem("n3_level", levelDipilih);
                         localStorage.setItem("n3_level_" + String(elUser.value).trim().toLowerCase(), levelDipilih);
                     } catch (e) {}
                 } else {
