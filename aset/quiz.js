@@ -347,7 +347,8 @@ function selectQuizAnswer(buttonElement, selectedAnswer, correctAnswer) {
     try {
         const soalKata = (currentSessionQuestions && currentSessionQuestions[currentQuestionIndex]) || null;
         if (window.N3 && N3.catatKata && soalKata) {
-            N3.catatKata(soalKata.front, selectedDay, benarJawaban, answerDuration, 20); // >20 detik (Hard) atau salah (Again) = masuk Review Kosakata
+            N3.catatKata(soalKata.front, selectedDay, benarJawaban, answerDuration, 20);
+            catatKuisSesi(soalKata, benarJawaban, answerDuration); // >20 detik (Hard) atau salah (Again) = masuk Review Kosakata
         }
     } catch (e) { console.warn("gagal catat kata:", e); }
 
@@ -445,6 +446,7 @@ function goHomeFromBreak() {
 }
 
 function finishQuizCompletion() {
+    tampilkanRingkasanKuis();
     // XP: kirim nilai ke server (menambah "hari selesai" + "jawaban benar" di dashboard)
     try {
         const totalHari = allQuizData.filter(function (i) { return i.day === selectedDay && i.jenis !== 'bunpou'; }).length;
@@ -564,4 +566,55 @@ function shuffleArray(array) {
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+}
+
+
+/* ===== RINGKASAN SESI KUIS (dipindah dari tab Belajar) =====
+   Tiap soal dinilai otomatis: salah = Again · benar >20 dtk = Hard ·
+   benar 8-20 dtk = Good · benar <8 dtk = Easy. */
+let sesiKuis = [];
+
+function nilaiKuis(ingat, detik) {
+    const d = Number(detik) || 0;
+    if (!ingat) return { kode: "again", label: "Again", warna: "#b91c1c", bg: "rgba(185,28,28,.12)" };
+    if (d > 20) return { kode: "hard", label: "Hard", warna: "#b45309", bg: "rgba(180,83,9,.12)" };
+    if (d >= 8) return { kode: "good", label: "Good", warna: "#0369a1", bg: "rgba(3,105,161,.12)" };
+    return { kode: "easy", label: "Easy", warna: "#047857", bg: "rgba(4,120,87,.12)" };
+}
+
+function catatKuisSesi(soal, benar, detik) {
+    if (!soal) return;
+    const n = nilaiKuis(benar, detik);
+    sesiKuis.push({ kata: soal.front || "-", arti: soal.back || "", nilai: n.label, warna: n.warna, bg: n.bg, detik: Math.round(Number(detik) || 0) });
+}
+
+function ringkasanKuisHTML() {
+    if (!sesiKuis.length) return "";
+    const rata = Math.round(sesiKuis.reduce((s, x) => s + x.detik, 0) / sesiKuis.length);
+    const urut = { Again: 0, Hard: 1, Good: 2, Easy: 3 };
+    const daftar = sesiKuis.slice().sort((a, b) => (urut[a.nilai] - urut[b.nilai]) || (b.detik - a.detik));
+    let html = '<div style="margin-top:18px;text-align:left;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;">' +
+        '<b style="font-size:1.05rem;">Ringkasan sesi</b>' +
+        '<span style="color:#64748b;font-size:.82rem;">' + sesiKuis.length + ' soal · ' + rata + ' detik rata-rata</span></div>' +
+        '<div style="color:#64748b;font-size:.78rem;margin:2px 0 10px;">Nilai ini ditentukan sistem dari hasil &amp; kecepatanmu</div>';
+    daftar.forEach(function (x) {
+        html += '<div style="display:flex;align-items:center;gap:10px;padding:9px 10px;margin-bottom:6px;border:1px solid #e2e8f0;border-radius:10px;background:#fff;">' +
+            '<div style="flex:1;min-width:0;">' +
+            '<b style="font-size:.98rem;">' + x.kata + '</b> <span style="color:#64748b;font-size:.85rem;">' + x.arti + '</span></div>' +
+            '<span style="flex:0 0 auto;font-size:.78rem;font-weight:700;color:' + x.warna + ';background:' + x.bg + ';padding:4px 10px;border-radius:999px;">' + x.nilai + ' ' + x.detik + 's</span></div>';
+    });
+    html += '<div style="color:#64748b;font-size:.78rem;margin-top:6px;">Yang <b>Again</b> (salah) &amp; <b>Hard</b> (&gt;20 detik) otomatis masuk <b>Review Kosakata</b></div></div>';
+    return html;
+}
+
+function tampilkanRingkasanKuis() {
+    try {
+        const layar = document.getElementById("quizCompletionScreen");
+        if (!layar) return;
+        let wadah = document.getElementById("ringkasanKuisSesi");
+        if (!wadah) { wadah = document.createElement("div"); wadah.id = "ringkasanKuisSesi"; layar.appendChild(wadah); }
+        wadah.innerHTML = ringkasanKuisHTML();
+        sesiKuis = [];
+    } catch (e) { console.warn("ringkasan kuis gagal:", e); }
 }

@@ -913,18 +913,7 @@ function updateCard() {
         
         resultText.innerHTML = `Hebat! Sesi <b>${currentSession.toUpperCase()}</b> selesai dalam <b>${formatTime(secondsElapsed)}</b>.<br>Waktu belajar telah dicatat ke kalender hari ini 🎉`;
 
-        /* ringkasan tiap kartu: nilai ditentukan sistem */
-        try {
-            pasangGayaRingkasan();
-            let wadah = document.getElementById("ringkasanSesi");
-            if (!wadah) {
-                wadah = document.createElement("div");
-                wadah.id = "ringkasanSesi";
-                completionScreen.appendChild(wadah);
-            }
-            wadah.innerHTML = ringkasanHTML();
-            sesiIni = [];                       // sesi berikutnya mulai dari kosong lagi
-        } catch (e) { console.warn("ringkasan sesi gagal:", e); }
+        /* ringkasan tiap kartu DIMATIKAN di tab Belajar — dipindah ke halaman Kuis (per sesi) */
         return;
     }
 
