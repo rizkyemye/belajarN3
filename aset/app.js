@@ -226,6 +226,40 @@ let bunpouFilterDay = "all";
 let bunpouQuery = "";
 // Rumus/aturan sambung tiap pola, ditanam langsung di file ini
 // (biar nggak perlu file terpisah + nggak bisa gagal load).
+ /* Istilah rumus -> Bahasa Indonesia, biar gampang dipahami */
+const ISTILAH_RUMUS_ID = [
+    ["（ます形の語幹）", "(batang bentuk ~masu)"],
+    ["（辞書形・ている形）", "(bentuk kamus / ~te-iru)"],
+    ["（辞書形・ない形）", "(bentuk kamus / bentuk negatif)"],
+    ["（辞書形・た形）", "(bentuk kamus / bentuk lampau)"],
+    ["（ない形の「ない」→「ず」）", "(bentuk negatif: 「ない」 diganti 「ず」)"],
+    ["（ない形の「ない」→「ざる」）", "(bentuk negatif: 「ない」 diganti 「ざる」)"],
+    ["（普通形）", "(bentuk biasa)"],
+    ["普通形", "bentuk biasa"],
+    ["名詞", "kata benda"],
+    ["動詞", "kata kerja"],
+    ["い形", "kata sifat-i"],
+    ["な形", "kata sifat-na"],
+    ["数・量", "angka/jumlah"],
+    ["※", "Catatan: "],
+    ["／", " / "]
+];
+function rumusIndonesia(teks) {
+    let t = String(teks || "");
+    ISTILAH_RUMUS_ID.forEach(function (p) { t = t.split(p[0]).join(p[1]); });
+    return t.replace(/\s{2,}/g, " ").trim();
+}
+
+/* Penjelasan detail tiap pola (diambil sekali dari bunpou-note.json) */
+let PETA_CATATAN_BUNPOU = null;
+function muatCatatanBunpou() {
+    if (PETA_CATATAN_BUNPOU) return Promise.resolve(PETA_CATATAN_BUNPOU);
+    return fetch("../aset/bunpou-note.json")
+        .then(function (r) { return r.json(); })
+        .then(function (d) { PETA_CATATAN_BUNPOU = d || {}; return PETA_CATATAN_BUNPOU; })
+        .catch(function () { PETA_CATATAN_BUNPOU = {}; return PETA_CATATAN_BUNPOU; });
+}
+
 const BUNPOU_RUMUS = {
     "〜あまり": "名詞 + の ／ 動詞・い形・な形（普通形）+ あまり",
     "〜うちに": "名詞 + の ／ 動詞（辞書形・ている形）／ い形 + うちに",
@@ -419,7 +453,7 @@ function renderBunpou() {
 
     let html = "";
     groups.forEach(function (g) {
-        const rumus = BUNPOU_RUMUS[g.pattern] || "";
+        const rumus = rumusIndonesia(BUNPOU_RUMUS[g.pattern] || "");
         html += '<div class="bunpou-item">' +
             '<div class="bunpou-days">Hari ' + g.days.join(" · ") + "</div>" +
             '<div class="bunpou-pattern">' + escapeHtml(g.pattern) + "</div>" +
@@ -1068,6 +1102,18 @@ function bukaPopupBunpou(kartu) {
         '  <div class="popup-bunpou-isi"></div>' +
         '  <button class="popup-bunpou-tutup">Tutup</button>' +
         '</div>';
+    const rEl = isi.querySelector(".bunpou-rumus-text");
+    if (rEl) rEl.textContent = rumusIndonesia(rEl.textContent);
+    const pola = ((isi.querySelector(".bunpou-pattern") || {}).textContent || "").trim();
+    const kotak = document.createElement("div");
+    kotak.className = "popup-bunpou-note";
+    kotak.innerHTML = '<div class="popup-bunpou-note-judul">Penjelasan</div><div class="popup-bunpou-note-isi">Memuat penjelasan…</div>';
+    isi.appendChild(kotak);
+    muatCatatanBunpou().then(function (peta) {
+        const t = peta[pola];
+        kotak.querySelector(".popup-bunpou-note-isi").textContent =
+            t || "Penjelasan detail untuk pola ini belum tersedia.";
+    });
     wadah.querySelector(".popup-bunpou-isi").appendChild(isi);
     document.body.appendChild(wadah);
     document.body.style.overflow = "hidden";

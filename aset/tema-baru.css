@@ -954,3 +954,7 @@ body.dash #papan .nl-row:nth-child(1) .nm, body.dash #papan .nl-row:nth-child(2)
 .popup-bunpou-isi .bunpou-jp, .popup-bunpou-isi .bunpou-example { font-size: 1.05rem; line-height: 1.6; }
 .popup-bunpou-tutup { display: block; width: 100%; margin-top: 14px; padding: 13px;
     border: 0; border-radius: 12px; background: #4f46e5; color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer; }
+.popup-bunpou-note { margin-top: 14px; background: #F8FAFC; border: 1px solid #E2E8F0;
+    border-radius: 12px; padding: 12px 14px; }
+.popup-bunpou-note-judul { font-weight: 800; color: #4f46e5; margin-bottom: 6px; font-size: .95rem; }
+.popup-bunpou-note-isi { font-size: 1rem; line-height: 1.7; color: #334155; }
