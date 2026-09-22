@@ -612,7 +612,22 @@ h1, h2, h3 { letter-spacing: -0.02em; }
         transform: translateY(-2px);
         box-shadow: 0 12px 24px rgba(79, 70, 229, 0.22) !important;
     }
-
+/* pembungkus #papan yang harus dilebarkan */
+body.dash #kartuPapan { grid-column: 1 / -1; width: 100%; }
+body.dash #papan { grid-column: auto; width: 100%; min-width: 0; padding: 26px 24px 30px; }
+body.dash #papan .nl-row { display:flex; align-items:center; gap:16px; padding:20px; margin-bottom:12px; font-size:1.15rem; border-radius:18px; background:#F8FAFC; }
+body.dash #papan .nl-row .pos { flex:0 0 auto; min-width:2.4em; height:2.4em; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:1.2rem; color:#475569; background:#fff; border:3px solid #E2E8F0; border-radius:999px; }
+body.dash #papan .nl-row .nm { flex:1 1 auto; font-weight:800; font-size:1.15rem; }
+body.dash #papan .nl-row:nth-child(1), body.dash #papan .nl-row:nth-child(2), body.dash #papan .nl-row:nth-child(3) { padding:24px 20px; font-size:1.3rem; margin-bottom:14px; }
+body.dash #papan .nl-row:nth-child(1) .pos { background:#FEF3C7; border-color:#FCD34D; color:#92400E; font-size:1.5rem; }
+body.dash #papan .nl-row:nth-child(2) .pos { background:#E2E8F0; border-color:#CBD5E1; color:#334155; font-size:1.4rem; }
+body.dash #papan .nl-row:nth-child(3) .pos { background:#FDE4D3; border-color:#FDBA74; color:#9A3412; font-size:1.4rem; }
+@media (max-width:899px){
+  body.dash #kartuPapan { grid-column: 1 / -1; }
+  body.dash #papan { padding: 18px 16px 22px; }
+  body.dash #papan .nl-row { padding:16px 14px; font-size:1.05rem; gap:12px; margin-bottom:9px; }
+  body.dash #papan .nl-row .pos { min-width:2.1em; height:2.1em; font-size:1.05rem; }
+}
     .calendar-card:hover,
     .study-hub-card:hover,
     .bunpou-item:hover,
