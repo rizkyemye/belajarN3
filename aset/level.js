@@ -25,8 +25,10 @@
         document.querySelectorAll("a, button").forEach(function (el) {
             const teks = (el.textContent || "").trim();
             const onclick = el.getAttribute("onclick") || "";
-                        // semua tombol "kembali ke halaman belajar" di /fitur/ juga diperbaiki
-            const iniBeranda = /beranda|home|ホーム|belajar|balik|kembali/i.test(teks)
+            // JANGAN sentuh tombol tab (mis. "📖 Belajar" pakai switchTab) — itu bukan tombol pulang
+            if (/switchTab\s*\(/.test(onclick)) return;
+            // tombol pulang: teks Beranda/Home/balik, onclick lama ke '../', atau tautan href="../"
+            const iniBeranda = /beranda|home|ホーム|balik|kembali/i.test(teks)
                 || /'(\.\.\/|index\.html)'/.test(onclick)
                 || (el.getAttribute("href") === "../");
             if (!iniBeranda) return;
