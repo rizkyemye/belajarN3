@@ -166,7 +166,7 @@ function onDayDropdownChange() {
         div.className = 'vocab-item';
         div.innerHTML = `
             <span class="vocab-number">${index + 1}.</span>
-            <span class="vocab-front">${item.front}</span>
+            <span class="vocab-front">${tampilKata(item)}${bacaanKata(item) ? ' <span class="bacaan-kata">' + bacaanKata(item) + '</span>' : ''}</span>
             <span class="vocab-back">${getCleanBack(item.back)}</span>
         `;
         previewContainer.appendChild(div);
@@ -177,9 +177,53 @@ function onDayDropdownChange() {
 // --- TAB BUNPOU: KUMPULAN TATA BAHASA (dibaca langsung dari data.json) ---
 const BUNPOU_MARK = "【Contoh Kalimat】";
 
+/* ===== kata: bentuk kanji vs bacaan kana =====
+   Data menyimpan kata_kanji (bentuk kanji) + kata_kana (bacaan).
+   Mode かな/漢字 bisa dibolak-balik; kalau field belum ada, pakai front apa adanya. */
+function modeKana() {
+    try { return localStorage.getItem("n3_mode_kana") === "1"; } catch (e) { return false; }
+}
+function tampilKata(item) {
+    if (!item) return "";
+    const kanji = String(item.kata_kanji || item.front || "");
+    const kana = String(item.kata_kana || "");
+    if (!kana) return kanji || String(item.front || "");
+    if (modeKana()) return kana;
+    return kanji || kana;
+}
+function bacaanKata(item) {
+    if (!item || modeKana()) return "";
+    const kanji = String(item.kata_kanji || item.front || "");
+    const kana = String(item.kata_kana || "");
+    if (!kana || kana === kanji) return "";
+    return kana;
+}
+function pasangTombolKana() {
+    if (document.getElementById("tombolKana")) return;
+    const b = document.createElement("button");
+    b.id = "tombolKana";
+    b.type = "button";
+    b.className = "tombol-kana";
+    function label() { b.textContent = modeKana() ? "かな" : "漢字"; b.title = "Ganti tampilan kata: kanji atau hiragana"; }
+    label();
+    b.addEventListener("click", function () {
+        try { localStorage.setItem("n3_mode_kana", modeKana() ? "0" : "1"); } catch (e) {}
+        label();
+        if (typeof renderBunpou === "function") { try { renderBunpou(); } catch (e) {} }
+        if (typeof tampilkanKartuKata === "function") { try { tampilkanKartuKata(); } catch (e) {} }
+        if (typeof renderPreview === "function") { try { renderPreview(); } catch (e) {} }
+        if (typeof muatKuis === "function") { try { muatKuis(); } catch (e) {} }
+    });
+    document.body.appendChild(b);
+}
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", pasangTombolKana);
+else pasangTombolKana();
+window.tampilKata = tampilKata;
+window.bacaanKata = bacaanKata;
+window.modeKana = modeKana;
+
 function isBunpouItem(item) {
     // entri tata bahasa di ../aset/data.json selalu diawali tanda gelombang (〜 / ～)
-    if (String(item.jenis || "") === "bunpou") return true;   // entri bunpou baru (N5/N4) belum tentu pakai 〜
     if (String(item.jenis || "") === "bunpou") return true;   // entri bunpou baru (N5/N4) belum tentu pakai 〜
     return /^[\u301c\uff5e〜～]/.test(String(item.front || "").trim());
 }
@@ -841,7 +885,7 @@ function renderDayVocabList(dayNum) {
         div.className = 'vocab-item';
         div.innerHTML = `
             <span class="vocab-number">${index + 1}.</span>
-            <span class="vocab-front">${item.front}</span>
+            <span class="vocab-front">${tampilKata(item)}${bacaanKata(item) ? ' <span class="bacaan-kata">' + bacaanKata(item) + '</span>' : ''}</span>
             <span class="vocab-back">${getCleanBack(item.back)}</span>
         `;
         vocabListContainer.appendChild(div);
@@ -1204,6 +1248,11 @@ function pasangPopupBunpou() {
 /* ===== 動詞・PERUBAHAN KATA KERJA =====
    Satu bagian di atas tab Bunpou. Kartunya memakai kelas bunpou-item yang sama,
    jadi popup penjelasan yang sudah ada otomatis ikut jalan. */
+function tingkatHalaman() {
+    if (window.N3_LEVEL) return String(window.N3_LEVEL).toUpperCase();
+    const m = /\/(n[345])\//i.exec(location.pathname);
+    return m ? m[1].toUpperCase() : "";
+}
 function renderDoushi() {
     const isi = document.getElementById("bunpouTabContent");
     if (!isi || document.getElementById("doushiList")) return;
@@ -1211,7 +1260,7 @@ function renderDoushi() {
     wadah.innerHTML =
         '<div class="bunpou-header-card">' +
         '  <div class="bunpou-title">動詞・Perubahan Kata Kerja</div>' +
-        '  <div class="bunpou-sub">Klik satu bentuk → keluar cara ubah + contoh + penjelasan</div>' +
+        '  <div class="bunpou-sub" id="doushiSub">Klik satu bentuk → keluar cara ubah + contoh + penjelasan</div>' +
         '  <div id="doushiGolongan" class="bunpou-legend">Memuat…</div>' +
         '</div>' +
         '<div id="doushiList" class="bunpou-list"><div class="bunpou-empty">Memuat perubahan kata kerja…</div></div>';
@@ -1224,7 +1273,18 @@ function renderDoushi() {
         }).join("<br>");
         const list = document.getElementById("doushiList");
         if (!list) return;
-        list.innerHTML = (d.bentuk || []).map(function (b) {
+        const lv = tingkatHalaman();
+        const semua = d.bentuk || [];
+        const pakai = lv ? semua.filter(function (b) { return String(b.level || "N4").toUpperCase() === lv; }) : semua;
+        const sub = document.getElementById("doushiSub");
+        if (sub) {
+            const jumlahTingkat = {};
+            semua.forEach(function (b) { const k = String(b.level || "N4").toUpperCase(); jumlahTingkat[k] = (jumlahTingkat[k] || 0) + 1; });
+            sub.textContent = (lv ? "Tingkat " + lv + " · " + pakai.length + " bentuk" : "Semua bentuk · " + semua.length)
+                + " (N5 " + (jumlahTingkat.N5 || 0) + " · N4 " + (jumlahTingkat.N4 || 0) + " · N3 " + (jumlahTingkat.N3 || 0) + ")"
+                + " — buka halaman tingkat lain untuk melihat bentuknya";
+        }
+        list.innerHTML = pakai.map(function (b) {
             const cara = ["1", "2", "3"].filter(function (k) { return b.cara && b.cara[k]; })
                 .map(function (k) { return "Gol " + k + ": " + b.cara[k]; }).join("\n");
             return '<div class="bunpou-item" data-penjelasan="' + escapeHtml(b.catatan || "") + '">' +

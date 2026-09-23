@@ -37,7 +37,8 @@
      "minum"
     ]
    ],
-   "catatan": "Bentuk ます dipakai dalam situasi sopan dan tidak digunakan untuk kata kerja bantu seperti ある dalam pola tertentu."
+   "catatan": "Bentuk ます dipakai dalam situasi sopan dan tidak digunakan untuk kata kerja bantu seperti ある dalam pola tertentu.",
+   "level": "N5"
   },
   {
    "id": "masen",
@@ -59,7 +60,8 @@
      "minum"
     ]
    ],
-   "catatan": "ません adalah bentuk negatif dari ます, jadi jangan tambahkan です setelah ません."
+   "catatan": "ません adalah bentuk negatif dari ます, jadi jangan tambahkan です setelah ません.",
+   "level": "N5"
   },
   {
    "id": "mashita",
@@ -81,7 +83,8 @@
      "minum"
     ]
    ],
-   "catatan": "ました hanya menyatakan lampau positif; untuk lampau negatif gunakan ませんでした."
+   "catatan": "ました hanya menyatakan lampau positif; untuk lampau negatif gunakan ませんでした.",
+   "level": "N5"
   },
   {
    "id": "masendeshita",
@@ -103,7 +106,8 @@
      "minum"
     ]
    ],
-   "catatan": "ませんでした adalah bentuk lampau negatif dari ます, bukan gabungan ません + でした secara terpisah."
+   "catatan": "ませんでした adalah bentuk lampau negatif dari ます, bukan gabungan ません + でした secara terpisah.",
+   "level": "N5"
   },
   {
    "id": "te",
@@ -125,7 +129,8 @@
      "minum"
     ]
    ],
-   "catatan": "Pengecualian penting: 行く menjadi 行って, bukan 行いて."
+   "catatan": "Pengecualian penting: 行く menjadi 行って, bukan 行いて.",
+   "level": "N5"
   },
   {
    "id": "ta",
@@ -147,7 +152,8 @@
      "minum"
     ]
    ],
-   "catatan": "Pengecualian penting: 行く menjadi 行った, bukan 行いた."
+   "catatan": "Pengecualian penting: 行く menjadi 行った, bukan 行いた.",
+   "level": "N5"
   },
   {
    "id": "nai",
@@ -169,7 +175,8 @@
      "minum"
     ]
    ],
-   "catatan": "Pengecualian penting: kata kerja berakhiran う seperti 買う menjadi 買わない, bukan 買あない."
+   "catatan": "Pengecualian penting: kata kerja berakhiran う seperti 買う menjadi 買わない, bukan 買あない.",
+   "level": "N5"
   },
   {
    "id": "jisho",
@@ -191,7 +198,8 @@
      "minum"
     ]
    ],
-   "catatan": "Pengecualian penting: kata kerja golongan 2 sering terlihat seperti golongan 1, jadi harus dihafal, misalnya 見る dan 食べる."
+   "catatan": "Pengecualian penting: kata kerja golongan 2 sering terlihat seperti golongan 1, jadi harus dihafal, misalnya 見る dan 食べる.",
+   "level": "N5"
   },
   {
    "id": "tai",
@@ -213,7 +221,8 @@
      "minum"
     ]
    ],
-   "catatan": "〜たい hanya untuk keinginan pembicara sendiri; untuk orang lain biasanya pakai 〜たがっている."
+   "catatan": "〜たい hanya untuk keinginan pembicara sendiri; untuk orang lain biasanya pakai 〜たがっている.",
+   "level": "N4"
   },
   {
    "id": "kanou",
@@ -235,7 +244,8 @@
      "bisa minum"
     ]
    ],
-   "catatan": "Dalam bahasa Jepang sehari-hari, golongan 2 sering disingkat jadi ら抜き言葉, misalnya 食べれる."
+   "catatan": "Dalam bahasa Jepang sehari-hari, golongan 2 sering disingkat jadi ら抜き言葉, misalnya 食べれる.",
+   "level": "N4"
   },
   {
    "id": "ishi",
@@ -257,7 +267,8 @@
      "mari minum"
     ]
    ],
-   "catatan": "Bentuk 〜ましょう adalah versi sopan dari 意向形, sedangkan 意向形 biasa dipakai untuk ajakan santai."
+   "catatan": "Bentuk 〜ましょう adalah versi sopan dari 意向形, sedangkan 意向形 biasa dipakai untuk ajakan santai.",
+   "level": "N4"
   },
   {
    "id": "meirei",
@@ -279,7 +290,8 @@
      "minum!"
     ]
    ],
-   "catatan": "命令形 terdengar kasar, jadi biasanya dipakai oleh atasan, dalam situasi darurat, atau antar teman dekat."
+   "catatan": "命令形 terdengar kasar, jadi biasanya dipakai oleh atasan, dalam situasi darurat, atau antar teman dekat.",
+   "level": "N4"
   },
   {
    "id": "ukemi",
@@ -301,7 +313,8 @@
      "minum"
     ]
    ],
-   "catatan": "Pada bahasa Jepang, pelaku dalam kalimat pasif ditandai partikel に, dan subjek biasanya adalah yang menerima tindakan."
+   "catatan": "Pada bahasa Jepang, pelaku dalam kalimat pasif ditandai partikel に, dan subjek biasanya adalah yang menerima tindakan.",
+   "level": "N4"
   },
   {
    "id": "shieki",
@@ -323,7 +336,8 @@
      "minum"
     ]
    ],
-   "catatan": "Untuk kata kerja intransitif, orang yang disuruh biasanya ditandai を; untuk kata kerja transitif, biasanya ditandai に."
+   "catatan": "Untuk kata kerja intransitif, orang yang disuruh biasanya ditandai を; untuk kata kerja transitif, biasanya ditandai に.",
+   "level": "N4"
   },
   {
    "id": "jouken",
@@ -345,7 +359,8 @@
      "minum"
     ]
    ],
-   "catatan": "Bentuk ば tidak dipakai jika kalimat belakang berisi ajakan, perintah, atau permintaan langsung."
+   "catatan": "Bentuk ば tidak dipakai jika kalimat belakang berisi ajakan, perintah, atau permintaan langsung.",
+   "level": "N4"
   },
   {
    "id": "teiru",
@@ -367,7 +382,89 @@
      "minum"
     ]
    ],
-   "catatan": "Untuk kata kerja yang menyatakan perubahan sesaat, 〜ている sering berarti keadaan hasil, misalnya 結婚している = sudah menikah."
+   "catatan": "Untuk kata kerja yang menyatakan perubahan sesaat, 〜ている sering berarti keadaan hasil, misalnya 結婚している = sudah menikah.",
+   "level": "N4"
+  },
+  {
+   "id": "shiekiukemi",
+   "nama": "使役受身 (させられる)",
+   "arti": "Bentuk kausatif-pasif: dipaksa/dibuat melakukan sesuatu oleh orang lain",
+   "cara": {
+    "1": "Golongan 1 (五段): ubah akhiran -u menjadi -aserareru. Contoh: iku → ikaserareru, nomu → nomaserareru, matsu → mataserareru. (Beberapa verba seperti kaku → kakaserareru)",
+    "2": "Golongan 2 (一段): ganti -ru dengan -saserareru. Contoh: taberu → tabesaserareru, miru → misaserareru",
+    "3": "Golongan 3: する → させられる (saserareru), 来る → 来させられる (kosaserareru)"
+   },
+   "rumus": "G1: -u → -aserareru | G2: -ru → -saserareru | G3: する→させられる, 来る→来させられる",
+   "contoh": [
+    [
+     "毎日野菜を食べさせられる。",
+     "Setiap hari saya dipaksa makan sayur."
+    ],
+    [
+     "先生に立たされた。",
+     "Saya dibuat berdiri oleh guru."
+    ],
+    [
+     "長時間働かされた。",
+     "Saya dipaksa bekerja lama."
+    ]
+   ],
+   "catatan": "Dalam percakapan, golongan 1 sering disingkat: -aserareru → -asareru (contoh: 待たされる bukan 待たせられる). Bentuk ini menekankan 'tidak suka/dipaksa', berbeda dengan させてもらう yang berarti 'diberi izin'.",
+   "level": "N3"
+  },
+  {
+   "id": "nakatta",
+   "nama": "なかった",
+   "arti": "Negatif lampau bentuk biasa (bentuk kasual): 'tidak ~ (dulu)'",
+   "cara": {
+    "1": "Golongan 1 (五段): ubah akhiran -u menjadi -anai, lalu -anai → -anakatta. Contoh: iku → ikanai → ikanakatta, nomu → nomanai → nomanakatta",
+    "2": "Golongan 2 (一段): ganti -ru dengan -nakatta. Contoh: taberu → tabenakatta, miru → minakatta",
+    "3": "Golongan 3: する → しなかった (shinakatta), 来る → 来なかった (konakatta)"
+   },
+   "rumus": "G1: -u → -anakatta | G2: -ru → -nakatta | G3: する→しなかった, 来る→来なかった",
+   "contoh": [
+    [
+     "昨日、学校に行かなかった。",
+     "Kemarin saya tidak pergi ke sekolah."
+    ],
+    [
+     "朝ごはんを食べなかった。",
+     "Saya tidak makan sarapan."
+    ],
+    [
+     "宿題をしなかった。",
+     "Saya tidak mengerjakan PR."
+    ]
+   ],
+   "catatan": "なかった adalah bentuk kasual dari ませんでした. Untuk い-adjective: 高い → 高くなかった. Untuk な-adjective/noun: 元気だった → 元気じゃなかった.",
+   "level": "N3"
+  },
+  {
+   "id": "tara",
+   "nama": "たら",
+   "arti": "Bentuk syarat: 'kalau ~', 'jika ~', 'setelah ~' (kondisional)",
+   "cara": {
+    "1": "Golongan 1 (五段): bentuk た (lampau biasa) + ら. Contoh: iku → ittara, nomu → nondara, matsu → mattara",
+    "2": "Golongan 2 (一段): bentuk た + ら. Contoh: taberu → tabetara, miru → mitara",
+    "3": "Golongan 3: する → したら, 来る → 来たら (kitara)"
+   },
+   "rumus": "Semua golongan: bentuk た (lampau kasual) + ら. い-adj: 高い→高かったら. な-adj/noun: 元気→元気だったら",
+   "contoh": [
+    [
+     "雨が降ったら、行きません。",
+     "Kalau hujan, saya tidak pergi."
+    ],
+    [
+     "家に着いたら、電話して。",
+     "Setelah sampai rumah, telepon ya."
+    ],
+    [
+     "安かったら、買います。",
+     "Kalau murah, saya akan beli."
+    ]
+   ],
+   "catatan": "たら bisa berarti 'kalau' (syarat) atau 'setelah' (urutan waktu), tergantung konteks. Berbeda dengan なら (asumsi) dan ば (syarat formal). Sering dipakai untuk permintaan/saran setelah kondisi terpenuhi.",
+   "level": "N3"
   }
  ],
  "catatan": "Dibuat Tzuyu untuk belajarN3 · konjugasi N5-N4"
