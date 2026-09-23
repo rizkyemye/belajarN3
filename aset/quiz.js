@@ -296,7 +296,7 @@ function loadQuizQuestion() {
 
     const currentQuestion = currentSessionQuestions[currentQuestionIndex];
     
-    document.getElementById('quizQuestionText').textContent = currentQuestion.front;
+    document.getElementById('quizQuestionText').textContent = (typeof tampilKata === "function") ? tampilKata(currentQuestion) : currentQuestion.front;
     const qt = document.getElementById('quizQuestionText');
     if (modeDengar) {
         qt.textContent = "🔊";
@@ -355,7 +355,7 @@ function selectQuizAnswer(buttonElement, selectedAnswer, correctAnswer) {
     if (modeDengar) {                       // tampilkan kata aslinya setelah dijawab
         const soalKini = currentSessionQuestions[currentQuestionIndex];
         const qt2 = document.getElementById('quizQuestionText');
-        if (soalKini && qt2) { qt2.textContent = soalKini.front; qt2.style.fontSize = ""; qt2.onclick = function () { bacakan(soalKini.front); }; }
+        if (soalKini && qt2) { qt2.textContent = (typeof tampilKata === "function") ? tampilKata(soalKini) : soalKini.front; qt2.style.fontSize = ""; qt2.onclick = function () { bacakan(soalKini.front); }; }
     }
 
     if (selectedAnswer === correctAnswer) {
