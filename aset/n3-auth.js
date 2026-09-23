@@ -228,13 +228,20 @@
     }
 
     async function keluar() {
-        try { localStorage.setItem("n3_baru_keluar", "1"); localStorage.removeItem("n3_gate_lewat"); } catch (e) {}
+        try { localStorage.removeItem("n3_gate_lewat"); localStorage.removeItem("n3_baru_keluar"); } catch (e) {}
         try { if (sb) await sb.auth.signOut(); } catch (e) {}
         localStorage.removeItem(KUNCI_USER);
         localStorage.removeItem(KUNCI_NAMA);
         localStorage.removeItem("jlpt_current_user");
         pengguna = null; N3.pengguna = null;
-        location.reload();
+        // ganti akun -> langsung ke halaman login (bukan overlay di halaman ini)
+        try {
+            const j = location.pathname;
+            if (/login\.html$/i.test(j)) { location.reload(); return; }        // sudah di halaman login
+            if (/\/fitur\//.test(j)) location.href = "../fitur/login.html";              // /fitur/xxx.html -> /fitur/login.html
+            else if (/\/(n[345])\//.test(j)) location.href = "../fitur/login.html";  // /n5/ -> /fitur/login.html
+            else location.href = "fitur/login.html";                            // pemilih tingkat / -> /fitur/login.html
+        } catch (e) { location.reload(); }
     }
 
     function simpanSesiLokal() {
@@ -535,8 +542,6 @@
             '  <button id="n3Kirim" class="n3-btn">Masuk ➔</button>',
             '  <p class="n3-gate-note">Data kamu (jam belajar, progress, level) tersimpan di server, jadi bisa dibuka dari HP mana pun 🌸</p>',
             '  <button id="n3Lupa" class="n3-lupa" type="button">🔑 Lupa sandi?</button>',
-            '  <button id="n3Lewat" class="n3-lupa" type="button">🚪 Lanjut tanpa akun (mode lokal)</button>',
-            '  <div id="n3KeluarInfo" class="n3-gate-note" style="display:none">✅ Kamu sudah keluar dari akun. Mau masuk lagi pakai akun lain?</div>',
             '  <div id="n3Reset" class="n3-reset" style="display:none">',
             '    <div class="n3-reset-judul">Masukkan username + kode pemulihan kamu</div>',
             '    <input id="n3RUser" class="n3-input" type="text" placeholder="Username">',
@@ -628,17 +633,6 @@
         [elUser, elPass, elNama].forEach(function (el) {
             el.addEventListener("keydown", function (e) { if (e.key === "Enter") kirim(); });
         });
-
-        /* ---------- lanjut tanpa akun (mode lokal) ---------- */
-        const elLewat = g.querySelector("#n3Lewat");
-        if (elLewat) elLewat.addEventListener("click", function () {
-            try { localStorage.setItem("n3_gate_lewat", "1"); localStorage.removeItem("n3_baru_keluar"); } catch (e) {}
-            tampilkanGerbang(false);
-        });
-        try {
-            const info = g.querySelector("#n3KeluarInfo");
-            if (info && localStorage.getItem("n3_baru_keluar") === "1") info.style.display = "block";
-        } catch (e) {}
 
         /* ---------- lupa sandi ---------- */
         const elLupa   = g.querySelector("#n3Lupa");
@@ -809,16 +803,12 @@
                 await sinkronData();
                 await muatKataDariServer();
             } else {
-                let lewat = false;
-                try { lewat = localStorage.getItem("n3_gate_lewat") === "1"; } catch (e) {}
-                tampilkanGerbang(!lewat);
+                tampilkanGerbang(true);
             }
             selesaiSiap();
         }).catch(function (e) {
             console.warn("[N3] gagal cek sesi:", e);
-            let lewat2 = false;
-            try { lewat2 = localStorage.getItem("n3_gate_lewat") === "1"; } catch (e2) {}
-            tampilkanGerbang(!lewat2);
+            tampilkanGerbang(true);
             selesaiSiap();
         });
 
