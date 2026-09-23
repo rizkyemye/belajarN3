@@ -995,3 +995,26 @@ body.dash #papan .nl-row:nth-child(1) .nm, body.dash #papan .nl-row:nth-child(2)
 .doushi-gol-jumlah { display: inline-block; margin-top: 6px; font-size: .74rem; font-weight: 700;
     color: #4F46E5; background: #fff; border-radius: 999px; padding: 2px 8px; }
 .doushi-ringkas { margin-top: 14px; text-align: center; font-size: .82rem; color: #475569; }
+
+/* ===== tab 動詞: versi HP (desktop tidak diubah) ===== */
+.doushi-cari { display: none; }
+.doushi-gol-isi.tersembunyi { display: none; }
+.doushi-gol-bisa-dilipat { cursor: pointer; }
+.doushi-gol-panah { float: right; color: #4F46E5; font-weight: 700; }
+
+@media (max-width: 700px) {
+  /* kotak pencarian hanya di HP */
+  .doushi-cari { display: block; width: 100%; box-sizing: border-box; margin: 8px 0 2px;
+      padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: .9rem; background: #fff; }
+  /* 19 bentuk jadi chip 2 kolom, teks arti disembunyikan -> scroll jauh lebih pendek */
+  .doushi-accordion { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .doushi-accordion .doushi-buka { padding: 9px 10px; }
+  .doushi-accordion .doushi-hint { display: none; }
+  .doushi-accordion .doushi-baris { gap: 6px; }
+  .doushi-accordion .bunpou-pattern { font-size: .9rem; }
+  .doushi-accordion .doushi-buka.buka-lebar { grid-column: 1 / -1; }
+  /* judul golongan dipadatkan */
+  .doushi-gol-header { padding: 8px 10px; margin: 10px 0 4px; }
+  .doushi-gol-ciri { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .doushi-listkata .doushi-item, .doushi-listkata .doushi-buka { padding: 9px 10px; }
+}

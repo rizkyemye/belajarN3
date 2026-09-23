@@ -28,6 +28,9 @@
     function muat(url) {
         return fetch(url).then(function (r) { return r.json(); });
     }
+    function mobilekah() {
+        try { return window.matchMedia("(max-width: 700px)").matches; } catch (e) { return false; }
+    }
     function golNama(g) {
         return g === 1 ? "golongan 1 (五段・ごだん)" : g === 2 ? "golongan 2 (一段・いちだん)" : "golongan 3 (不規則・ふきそく)";
     }
@@ -78,6 +81,7 @@
                 baris.addEventListener("click", function () {
                     const buka = isi.style.display === "none";
                     isi.style.display = buka ? "block" : "none";
+                    kartu.classList.toggle("buka-lebar", buka);   // di HP: kartu yang dibuka melebar penuh
                     baris.querySelector(".doushi-panah").textContent = buka ? "▴" : "▾";
                 });
                 kartu.appendChild(baris); kartu.appendChild(isi);
@@ -105,8 +109,34 @@
         });
         judul.appendChild(chips);
         wadah.appendChild(judul);
+        const cari = el("input", "doushi-cari", "");
+        cari.type = "search";
+        cari.placeholder = "🔍 cari kata kerja (kanji / hiragana / arti)";
+        wadah.appendChild(cari);
         const list = el("div", "bunpou-list doushi-listkata");
         wadah.appendChild(list);
+        cari.addEventListener("input", function () {
+            const q = cari.value.trim().toLowerCase();
+            let tampil = 0;
+            list.querySelectorAll(".doushi-gol-isi").forEach(function (isi) {
+                let ada = 0;
+                isi.querySelectorAll(".doushi-buka").forEach(function (k) {
+                    const cocok = !q || k.textContent.toLowerCase().indexOf(q) !== -1;
+                    k.style.display = cocok ? "" : "none";
+                    if (cocok) ada++;
+                });
+                const head = isi.previousElementSibling;
+                if (head) head.style.display = ada ? "" : "none";
+                isi.style.display = ada ? "" : "none";
+                if (q && ada && isi.dataset.lipat) isi.classList.remove("tersembunyi");
+                tampil += ada;
+            });
+            let info = list.querySelector(".doushi-hasil-cari");
+            if (q && !tampil) {
+                if (!info) { info = el("div", "bunpou-empty doushi-hasil-cari", "Tidak ada kata kerja yang cocok 🙈"); list.appendChild(info); }
+                info.style.display = "";
+            } else if (info) info.style.display = "none";
+        });
 
         function gambarDaftarKata() {
             list.innerHTML = '<div class="bunpou-empty">Memuat…</div>';
@@ -121,16 +151,29 @@
                 });
                 const jumlahGol = {};
                 urut.forEach(function (k) { jumlahGol[k.golongan] = (jumlahGol[k.golongan] || 0) + 1; });
-                let golTerakhir = null;
+                let golTerakhir = null, isiGol = null;
                 urut.forEach(function (k) {
                     if (k.golongan !== golTerakhir) {
                         golTerakhir = k.golongan;
+                        isiGol = el("div", "doushi-gol-isi", "");
+                        if (mobilekah()) { isiGol.dataset.lipat = "1"; isiGol.classList.add("tersembunyi"); }
+                        list.appendChild(isiGol);
+                        const lipat = isiGol;
                         const info = ((DATA_BENTUK && DATA_BENTUK.golongan) || [])[k.golongan - 1] || {};
                         const head = el("div", "doushi-gol-header", "");
-                        head.innerHTML = "<b>" + aman(info.nama || golNama(k.golongan)) + "</b>" +
+                        head.innerHTML = '<span class="doushi-gol-panah">▾</span>' +
+                            "<b>" + aman(info.nama || golNama(k.golongan)) + "</b>" +
                             '<span class="doushi-gol-ciri">' + aman(info.ciri ? String(info.ciri).slice(0, 180) : "") + "</span>" +
                             '<span class="doushi-gol-jumlah">' + (jumlahGol[k.golongan] || 0) + " kata kerja</span>";
                         list.appendChild(head);
+                        if (lipat.dataset.lipat) {
+                            head.classList.add("doushi-gol-bisa-dilipat");
+                            head.addEventListener("click", function () {
+                                const tutup = lipat.classList.toggle("tersembunyi");
+                                const p = head.querySelector(".doushi-gol-panah");
+                                if (p) p.textContent = tutup ? "▸" : "▾";
+                            });
+                        }
                     }
                     const kartu = el("div", "bunpou-item doushi-buka");
                     const baris = el("div", "doushi-baris");
@@ -158,7 +201,7 @@
                         baris.querySelector(".doushi-panah").textContent = buka ? "▴" : "▾";
                     });
                     kartu.appendChild(baris); kartu.appendChild(isi);
-                    list.appendChild(kartu);
+                    isiGol.appendChild(kartu);
                 });
                 const ringkas = el("div", "doushi-ringkas", "Total <b>" + urut.length + "</b> kata kerja " + tingkatAktif +
                     " — golongan 1: <b>" + (jumlahGol[1] || 0) + "</b> · golongan 2: <b>" + (jumlahGol[2] || 0) +
