@@ -115,7 +115,23 @@
                 const arr = (d[tingkatAktif] || []);
                 if (!arr.length) { list.innerHTML = '<div class="bunpou-empty">Belum ada data untuk ' + tingkatAktif + " 🙈</div>"; return; }
                 list.innerHTML = "";
-                arr.forEach(function (k) {
+                // dikelompokkan per golongan (1 -> 2 -> 3) biar kelihatan ada 3 golongan
+                const urut = arr.slice().sort(function (a, b) {
+                    return (a.golongan - b.golongan) || String(a.kana).localeCompare(String(b.kana), "ja");
+                });
+                const jumlahGol = {};
+                urut.forEach(function (k) { jumlahGol[k.golongan] = (jumlahGol[k.golongan] || 0) + 1; });
+                let golTerakhir = null;
+                urut.forEach(function (k) {
+                    if (k.golongan !== golTerakhir) {
+                        golTerakhir = k.golongan;
+                        const info = ((DATA_BENTUK && DATA_BENTUK.golongan) || [])[k.golongan - 1] || {};
+                        const head = el("div", "doushi-gol-header", "");
+                        head.innerHTML = "<b>" + aman(info.nama || golNama(k.golongan)) + "</b>" +
+                            '<span class="doushi-gol-ciri">' + aman(info.ciri ? String(info.ciri).slice(0, 180) : "") + "</span>" +
+                            '<span class="doushi-gol-jumlah">' + (jumlahGol[k.golongan] || 0) + " kata kerja</span>";
+                        list.appendChild(head);
+                    }
                     const kartu = el("div", "bunpou-item doushi-buka");
                     const baris = el("div", "doushi-baris");
                     baris.innerHTML = '<span class="bunpou-pattern">' + aman(k.kata || k.kana) + "</span>" +
@@ -144,6 +160,10 @@
                     kartu.appendChild(baris); kartu.appendChild(isi);
                     list.appendChild(kartu);
                 });
+                const ringkas = el("div", "doushi-ringkas", "Total <b>" + urut.length + "</b> kata kerja " + tingkatAktif +
+                    " — golongan 1: <b>" + (jumlahGol[1] || 0) + "</b> · golongan 2: <b>" + (jumlahGol[2] || 0) +
+                    "</b> · golongan 3: <b>" + (jumlahGol[3] || 0) + "</b>");
+                list.appendChild(ringkas);
             }).catch(function () { list.innerHTML = '<div class="bunpou-empty">Gagal memuat daftar kata kerja 🙈</div>'; });
         }
         gambarDaftarKata();

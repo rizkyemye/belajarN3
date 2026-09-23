@@ -986,3 +986,12 @@ body.dash #papan .nl-row:nth-child(1) .nm, body.dash #papan .nl-row:nth-child(2)
 .doushi-tabel-nama { color: #64748b; }
 .doushi-tabel-baris b { color: #0f172a; }
 .doushi-chips { margin-top: 10px; }
+
+/* ===== tab 動詞: judul golongan ===== */
+.doushi-gol-header { margin: 14px 0 6px; padding: 10px 12px; border-radius: 12px;
+    background: linear-gradient(135deg, #eef2ff, #f5f3ff); border: 1px solid #e0e7ff; }
+.doushi-gol-header b { display: block; color: #3730a3; font-size: .92rem; }
+.doushi-gol-ciri { display: block; color: #475569; font-size: .78rem; line-height: 1.5; margin-top: 3px; }
+.doushi-gol-jumlah { display: inline-block; margin-top: 6px; font-size: .74rem; font-weight: 700;
+    color: #4F46E5; background: #fff; border-radius: 999px; padding: 2px 8px; }
+.doushi-ringkas { margin-top: 14px; text-align: center; font-size: .82rem; color: #475569; }
