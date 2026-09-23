@@ -1,0 +1,456 @@
+{
+ "N5": [
+  {
+   "kata": "行く",
+   "kana": "いく",
+   "arti": "pergi",
+   "golongan": 1,
+   "catatan": "bentuk te: 行って (bukan 行いて)"
+  },
+  {
+   "kata": "来る",
+   "kana": "くる",
+   "arti": "datang",
+   "golongan": 3,
+   "catatan": "bentuk kamus 来る, bentuk masu 来ます (きます)"
+  },
+  {
+   "kata": "する",
+   "kana": "する",
+   "arti": "melakukan",
+   "golongan": 3,
+   "catatan": "sering digabung jadi kata kerja majemuk (mis. 勉強する)"
+  },
+  {
+   "kata": "食べる",
+   "kana": "たべる",
+   "arti": "makan",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "飲む",
+   "kana": "のむ",
+   "arti": "minum",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "見る",
+   "kana": "みる",
+   "arti": "melihat, menonton",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "聞く",
+   "kana": "きく",
+   "arti": "mendengar, bertanya",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "話す",
+   "kana": "はなす",
+   "arti": "berbicara",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "読む",
+   "kana": "よむ",
+   "arti": "membaca",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "書く",
+   "kana": "かく",
+   "arti": "menulis",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "買う",
+   "kana": "かう",
+   "arti": "membeli",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "帰る",
+   "kana": "かえる",
+   "arti": "pulang",
+   "golongan": 1,
+   "catatan": "bentuk te: 帰って (bukan 帰りて)"
+  },
+  {
+   "kata": "起きる",
+   "kana": "おきる",
+   "arti": "bangun (tidur)",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "寝る",
+   "kana": "ねる",
+   "arti": "tidur",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "ある",
+   "kana": "ある",
+   "arti": "ada (benda mati)",
+   "golongan": 1,
+   "catatan": "bentuk negatif: ない (bukan あらない)"
+  },
+  {
+   "kata": "いる",
+   "kana": "いる",
+   "arti": "ada (orang/hewan)",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "分かる",
+   "kana": "わかる",
+   "arti": "mengerti; paham",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "言う",
+   "kana": "いう",
+   "arti": "berkata, mengatakan",
+   "golongan": 1,
+   "catatan": ""
+  }
+ ],
+ "N4": [
+  {
+   "kata": "食べる",
+   "kana": "たべる",
+   "arti": "makan",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "飲む",
+   "kana": "のむ",
+   "arti": "minum",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "行く",
+   "kana": "いく",
+   "arti": "pergi",
+   "golongan": 1,
+   "catatan": "bentuk て: 行って (bukan 行いて)"
+  },
+  {
+   "kata": "来る",
+   "kana": "くる",
+   "arti": "datang",
+   "golongan": 3,
+   "catatan": ""
+  },
+  {
+   "kata": "する",
+   "kana": "する",
+   "arti": "melakukan",
+   "golongan": 3,
+   "catatan": ""
+  },
+  {
+   "kata": "見る",
+   "kana": "みる",
+   "arti": "melihat, menonton",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "聞く",
+   "kana": "きく",
+   "arti": "mendengar, bertanya",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "話す",
+   "kana": "はなす",
+   "arti": "berbicara",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "読む",
+   "kana": "よむ",
+   "arti": "membaca",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "書く",
+   "kana": "かく",
+   "arti": "menulis",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "買う",
+   "kana": "かう",
+   "arti": "membeli",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "待つ",
+   "kana": "まつ",
+   "arti": "menunggu",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "帰る",
+   "kana": "かえる",
+   "arti": "pulang",
+   "golongan": 1,
+   "catatan": "bentuk て: 帰って (bukan 帰りて)"
+  },
+  {
+   "kata": "ある",
+   "kana": "ある",
+   "arti": "ada (benda mati)",
+   "golongan": 1,
+   "catatan": "bentuk negatif: ない (bukan あらない)"
+  },
+  {
+   "kata": "いる",
+   "kana": "いる",
+   "arti": "ada (makhluk hidup)",
+   "golongan": 2,
+   "catatan": ""
+  }
+ ],
+ "N3": [
+  {
+   "kata": "帰る",
+   "kana": "かえる",
+   "arti": "pulang",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "急ぐ",
+   "kana": "いそぐ",
+   "arti": "bergegas, terburu-buru",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "探す",
+   "kana": "さがす",
+   "arti": "mencari",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "決める",
+   "kana": "きめる",
+   "arti": "memutuskan",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "続ける",
+   "kana": "つづける",
+   "arti": "melanjutkan",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "始める",
+   "kana": "はじめる",
+   "arti": "memulai",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "集める",
+   "kana": "あつめる",
+   "arti": "mengumpulkan",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "届ける",
+   "kana": "とどける",
+   "arti": "mengantarkan, menyampaikan",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "運ぶ",
+   "kana": "はこぶ",
+   "arti": "mengangkut, membawa",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "選ぶ",
+   "kana": "えらぶ",
+   "arti": "memilih",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "頼む",
+   "kana": "たのむ",
+   "arti": "meminta, memesan",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "通う",
+   "kana": "かよう",
+   "arti": "bolak-balik (ke sekolah/kerja)",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "直す",
+   "kana": "なおす",
+   "arti": "memperbaiki",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "頑張る",
+   "kana": "がんばる",
+   "arti": "berusaha keras",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "引っ越す",
+   "kana": "ひっこす",
+   "arti": "pindah rumah",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "間に合う",
+   "kana": "まにあう",
+   "arti": "tepat waktu",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "手伝う",
+   "kana": "てつだう",
+   "arti": "membantu",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "続く",
+   "kana": "つづく",
+   "arti": "berlanjut",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "調べる",
+   "kana": "しらべる",
+   "arti": "memeriksa, mencari tahu",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "考える",
+   "kana": "かんがえる",
+   "arti": "berpikir",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "見つける",
+   "kana": "みつける",
+   "arti": "menemukan",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "紹介する",
+   "kana": "しょうかいする",
+   "arti": "memperkenalkan",
+   "golongan": 3,
+   "catatan": ""
+  },
+  {
+   "kata": "準備する",
+   "kana": "じゅんびする",
+   "arti": "mempersiapkan",
+   "golongan": 3,
+   "catatan": ""
+  },
+  {
+   "kata": "連れて来る",
+   "kana": "つれてくる",
+   "arti": "membawa (orang) datang",
+   "golongan": 3,
+   "catatan": "来る adalah kata tidak beraturan"
+  },
+  {
+   "kata": "伝える",
+   "kana": "つたえる",
+   "arti": "menyampaikan",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "気づく",
+   "kana": "きづく",
+   "arti": "menyadari",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "申し込む",
+   "kana": "もうしこむ",
+   "arti": "mendaftar",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "働く",
+   "kana": "はたらく",
+   "arti": "bekerja",
+   "golongan": 1,
+   "catatan": ""
+  },
+  {
+   "kata": "覚える",
+   "kana": "おぼえる",
+   "arti": "mengingat, menghafal",
+   "golongan": 2,
+   "catatan": ""
+  },
+  {
+   "kata": "利用する",
+   "kana": "りようする",
+   "arti": "memanfaatkan, menggunakan",
+   "golongan": 3,
+   "catatan": ""
+  },
+  {
+   "kata": "来る",
+   "kana": "くる",
+   "arti": "datang",
+   "golongan": 3,
+   "catatan": "Bentuk negatif: 来ない (こない)"
+  }
+ ]
+}

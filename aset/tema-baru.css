@@ -958,3 +958,31 @@ body.dash #papan .nl-row:nth-child(1) .nm, body.dash #papan .nl-row:nth-child(2)
     border-radius: 12px; padding: 12px 14px; }
 .popup-bunpou-note-judul { font-weight: 800; color: #4f46e5; margin-bottom: 6px; font-size: .95rem; }
 .popup-bunpou-note-isi { font-size: 1rem; line-height: 1.7; color: #334155; }
+
+/* ===== kata: bacaan + tombol かな/漢字 ===== */
+.bacaan-kata { font-size: .68em; color: #64748b; font-weight: 500; }
+.tombol-kana {
+    position: fixed; right: 14px; bottom: 84px; z-index: 900;
+    background: #4F46E5; color: #fff; border: 0; border-radius: 999px;
+    padding: 9px 14px; font-size: .82rem; font-weight: 700; cursor: pointer;
+    box-shadow: 0 6px 16px rgba(79,70,229,.32);
+}
+.tombol-kana:active { transform: scale(.96); }
+
+/* ===== tab 動詞: kartu buka-tutup ===== */
+.doushi-baris { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.doushi-baris .bunpou-pattern { flex: 0 0 auto; }
+.doushi-hint { flex: 1 1 auto; color: #475569; font-size: .85rem; line-height: 1.45; }
+.doushi-panah { flex: 0 0 auto; color: #4F46E5; font-weight: 700; }
+.doushi-isi { margin-top: 10px; border-top: 1px dashed #e2e8f0; padding-top: 10px; }
+.doushi-cara, .doushi-contoh { margin-top: 8px; }
+.doushi-cara-judul { font-size: .78rem; font-weight: 800; color: #475569; margin-bottom: 4px; }
+.doushi-cara-baris { font-size: .84rem; color: #334155; line-height: 1.6; margin-bottom: 6px; }
+.doushi-contoh-baris b { color: #4F46E5; }
+.doushi-contoh-baris span { color: #64748b; font-size: .82rem; }
+.doushi-catatan { margin-top: 8px; font-size: .82rem; color: #9a3412; background: #fff7ed; border-radius: 10px; padding: 8px 10px; }
+.doushi-tabel { margin-top: 6px; }
+.doushi-tabel-baris { display: flex; justify-content: space-between; gap: 10px; padding: 4px 0; border-bottom: 1px dotted #eef2f7; font-size: .86rem; }
+.doushi-tabel-nama { color: #64748b; }
+.doushi-tabel-baris b { color: #0f172a; }
+.doushi-chips { margin-top: 10px; }

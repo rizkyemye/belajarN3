@@ -601,10 +601,20 @@ function initBunpouUI() {
     }
     injectBunpouLegend();
     pasangPopupBunpou();
-    renderDoushi();
     buildBunpouFilters();
     renderBunpou();
 }
+
+// mesin + tab 「動詞」 (dimuat dari sini biar tidak perlu ubah HTML tiap halaman)
+(function muatDoushi() {
+    if (window.__doushiDimuat) return;
+    window.__doushiDimuat = true;
+    ["../aset/doushi-engine.js", "../aset/doushi.js"].forEach(function (src) {
+        const s = document.createElement("script");
+        s.src = src; s.async = false;
+        document.head.appendChild(s);
+    });
+})();
 
 function switchTab(tabName) {
     // Cek apakah sesi belajar sedang aktif (learningArea terbuka)
@@ -622,7 +632,8 @@ function switchTab(tabName) {
         study:    { content: document.getElementById('studyTabContent'),    btn: document.getElementById('btnTabStudy') },
         bunpou:   { content: document.getElementById('bunpouTabContent'),  btn: document.getElementById('btnTabBunpou') },
         kanji:    { content: document.getElementById('kanjiTabContent'),   btn: document.getElementById('btnTabKanji') },
-        dokkai:   { content: document.getElementById('dokkaiTabContent'),  btn: document.getElementById('btnTabDokkai') }
+        dokkai:   { content: document.getElementById('dokkaiTabContent'),  btn: document.getElementById('btnTabDokkai') },
+        doushi:   { content: document.getElementById('doushiTabContent'),  btn: document.getElementById('btnTabDoushi') }
     };
 
     learningArea.style.display = 'none';
@@ -650,6 +661,8 @@ function switchTab(tabName) {
         if (typeof window.initKanjiUI === 'function') window.initKanjiUI();
     } else if (tabName === 'dokkai') {
         if (typeof window.initDokkaiUI === 'function') window.initDokkaiUI();
+    } else if (tabName === 'doushi') {
+        if (typeof window.pasangTabDoushi === 'function') window.pasangTabDoushi();
     }
 }
 
@@ -1245,56 +1258,3 @@ function pasangPopupBunpou() {
     });
 }
 
-/* ===== 動詞・PERUBAHAN KATA KERJA =====
-   Satu bagian di atas tab Bunpou. Kartunya memakai kelas bunpou-item yang sama,
-   jadi popup penjelasan yang sudah ada otomatis ikut jalan. */
-function tingkatHalaman() {
-    if (window.N3_LEVEL) return String(window.N3_LEVEL).toUpperCase();
-    const m = /\/(n[345])\//i.exec(location.pathname);
-    return m ? m[1].toUpperCase() : "";
-}
-function renderDoushi() {
-    const isi = document.getElementById("bunpouTabContent");
-    if (!isi || document.getElementById("doushiList")) return;
-    const wadah = document.createElement("div");
-    wadah.innerHTML =
-        '<div class="bunpou-header-card">' +
-        '  <div class="bunpou-title">動詞・Perubahan Kata Kerja</div>' +
-        '  <div class="bunpou-sub" id="doushiSub">Klik satu bentuk → keluar cara ubah + contoh + penjelasan</div>' +
-        '  <div id="doushiGolongan" class="bunpou-legend">Memuat…</div>' +
-        '</div>' +
-        '<div id="doushiList" class="bunpou-list"><div class="bunpou-empty">Memuat perubahan kata kerja…</div></div>';
-    isi.insertBefore(wadah, isi.firstChild);
-    fetch("../aset/doushi.json?v=2").then(function (r) { return r.json(); }).then(function (d) {
-        const gol = document.getElementById("doushiGolongan");
-        if (gol) gol.innerHTML = "<b>3 golongan kata kerja:</b><br>" + (d.golongan || []).map(function (g) {
-            return "・<b>" + escapeHtml(g.nama || "") + "</b> — " + escapeHtml(g.ciri || "") +
-                (g.contoh ? " (" + escapeHtml(g.contoh) + ")" : "");
-        }).join("<br>");
-        const list = document.getElementById("doushiList");
-        if (!list) return;
-        const lv = tingkatHalaman();
-        const semua = d.bentuk || [];
-        const pakai = lv ? semua.filter(function (b) { return String(b.level || "N4").toUpperCase() === lv; }) : semua;
-        const sub = document.getElementById("doushiSub");
-        if (sub) {
-            const jumlahTingkat = {};
-            semua.forEach(function (b) { const k = String(b.level || "N4").toUpperCase(); jumlahTingkat[k] = (jumlahTingkat[k] || 0) + 1; });
-            sub.textContent = (lv ? "Tingkat " + lv + " · " + pakai.length + " bentuk" : "Semua bentuk · " + semua.length)
-                + " (N5 " + (jumlahTingkat.N5 || 0) + " · N4 " + (jumlahTingkat.N4 || 0) + " · N3 " + (jumlahTingkat.N3 || 0) + ")"
-                + " — buka halaman tingkat lain untuk melihat bentuknya";
-        }
-        list.innerHTML = pakai.map(function (b) {
-            const cara = ["1", "2", "3"].filter(function (k) { return b.cara && b.cara[k]; })
-                .map(function (k) { return "Gol " + k + ": " + b.cara[k]; }).join("\n");
-            return '<div class="bunpou-item" data-penjelasan="' + escapeHtml(b.catatan || "") + '">' +
-                '<div class="bunpou-pattern">' + escapeHtml(b.nama || "") + '</div>' +
-                (cara ? '<div class="bunpou-rumus"><span class="bunpou-rumus-label">Cara Ubah</span><span class="bunpou-rumus-text">' + escapeHtml(cara) + '</span></div>' : "") +
-                (b.arti ? '<div class="bunpou-meaning">' + escapeHtml(b.arti) + '</div>' : "") +
-                '</div>';
-        }).join("") || '<div class="bunpou-empty">Data kata kerja belum tersedia 🙈</div>';
-    }).catch(function () {
-        const l = document.getElementById("doushiList");
-        if (l) l.innerHTML = '<div class="bunpou-empty">Gagal memuat data kata kerja 🙈</div>';
-    });
-}
