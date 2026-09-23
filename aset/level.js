@@ -17,8 +17,13 @@
        (halaman /fitur/ melayani semua tingkat, jadi tautannya tidak boleh
        selalu ke halaman pemilih tingkat). */
     function rapikanTombolBeranda() {
-        const lv = level();
-        // kalau tingkat belum diketahui, tetap arahkan ke pemilih tingkat (bukan halaman mati)
+        let lv = level();
+        // kalau tingkat belum tersimpan, ambil dari alamat halaman (mis. /n5/ -> N5).
+        // Ini mencegah tombol pulang melempar ke pemilih tingkat (index) yang bikin bingung.
+        if (!lv) {
+            const m = /\/(n[345])\//i.exec(location.pathname);
+            if (m) lv = m[1].toUpperCase();
+        }
         const tujuan = lv ? "../" + lv.toLowerCase() + "/" : "../";
                 /* Halaman fitur memakai <a> DAN <button onclick="...href='../'...">.
            Dua-duanya diarahkan ke beranda TINGKAT ini. */
@@ -27,8 +32,11 @@
             const onclick = el.getAttribute("onclick") || "";
             // JANGAN sentuh tombol tab (mis. "📖 Belajar" pakai switchTab) — itu bukan tombol pulang
             if (/switchTab\s*\(/.test(onclick)) return;
-            // tombol pulang: teks Beranda/Home/balik, onclick lama ke '../', atau tautan href="../"
-            const iniBeranda = /beranda|home|ホーム|balik|kembali/i.test(teks)
+            // JANGAN sentuh tombol yang punya aksi sendiri (mis. "Balik ke sesi lain", "Mulai sesi")
+            // — aksi itu bukan pengalihan halaman, jadi jangan ditimpa.
+            if (onclick && !/(location|href|window\.open|assign|replace)/i.test(onclick)) return;
+            // tombol pulang: teks Beranda/Home, onclick lama ke '../', atau tautan href="../"
+            const iniBeranda = /beranda|home|ホーム/i.test(teks)
                 || /'(\.\.\/|index\.html)'/.test(onclick)
                 || (el.getAttribute("href") === "../");
             if (!iniBeranda) return;
