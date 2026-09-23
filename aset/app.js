@@ -179,6 +179,8 @@ const BUNPOU_MARK = "【Contoh Kalimat】";
 
 function isBunpouItem(item) {
     // entri tata bahasa di ../aset/data.json selalu diawali tanda gelombang (〜 / ～)
+    if (String(item.jenis || "") === "bunpou") return true;   // entri bunpou baru (N5/N4) belum tentu pakai 〜
+    if (String(item.jenis || "") === "bunpou") return true;   // entri bunpou baru (N5/N4) belum tentu pakai 〜
     return /^[\u301c\uff5e〜～]/.test(String(item.front || "").trim());
 }
 
@@ -243,6 +245,9 @@ const ISTILAH_RUMUS_ID = [
     ["数・量", "angka/jumlah"],
     ["※", "Catatan: "],
     ["／", " / "]
+    ["（て形）", "(bentuk ~te)"],
+    ["（可能形）", "(bentuk potensial)"],
+    ["（意向形）", "(bentuk ajakan)"],
 ];
 function rumusIndonesia(teks) {
     let t = String(teks || "");
@@ -380,6 +385,65 @@ const BUNPOU_RUMUS = {
     "〜恐れがある": "名詞 + の ／ 動詞（辞書形）+ 恐れがある",
     "〜次第": "名詞 + 次第（で）",
     "〜気味": "名詞 ／ 動詞（ます形の語幹）+ 気味",
+    "〜は": "Kata Benda + は",
+    "〜の": "Kata Benda + の + Kata Benda",
+    "〜に": "Tempat + に + あります/います",
+    "〜で": "Kata Benda + で",
+    "〜を": "Kata Benda + を + Kata Kerja",
+    "〜と": "Orang + と + Kata Kerja",
+    "〜がいます": "Kata Benda (hidup) + が + います",
+    "〜にあります": "Tempat + に + Kata Benda + が + あります",
+    "〜も": "Kata Benda + も",
+    "〜が好きです": "Kata Benda + が + 好きです",
+    "〜に会います": "Orang + に + 会います",
+    "〜へ行きたいです": "Tempat + へ + 行きたいです",
+    "い形容詞 + 名詞": "い形容詞 + 名詞",
+    "な形容詞 + 名詞": "な形容詞 + な + 名詞",
+    "い形容詞 + です": "い形容詞 + です",
+    "な形容詞 + です": "な形容詞 + です",
+    "〜を散歩します": "Tempat + を + 散歩します",
+    "〜に電話します": "Orang + に + 電話します",
+    "〜へ行きます": "Tempat + へ + 行きます",
+    "〜に習います": "Orang + に + 習います",
+    "〜に乗ります": "Kendaraan + に + 乗ります",
+    "〜に帰ります": "Tempat + に + 帰ります",
+    "〜と一緒に": "Orang + と + 一緒に + Kata Kerja",
+    "です": "Kata Benda + です",
+    "は": "Kata Benda + は",
+    "を": "Kata Benda + を + Kata Kerja",
+    "に": "Kata Benda (tempat) + に + いきます",
+    "で": "Kata Benda (alat) + で + Kata Kerja",
+    "へ": "Kata Benda (tempat) + へ + いきます",
+    "の": "Kata Benda + の + Kata Benda",
+    "から": "Kata Benda (waktu) + から",
+    "まで": "Kata Benda (waktu) + まで",
+    "が": "Kata Benda + が + すきです",
+    "〜てしまう": "動詞て形 + しまう",
+    "〜ている": "動詞て形 + いる",
+    "受身": "動詞ない形 + れる/られる",
+    "使役": "動詞ない形 + せる/させる",
+    "〜ば": "動詞・形容詞ば形",
+    "〜なら": "名詞・普通形 + なら",
+    "〜のに": "普通形 + のに",
+    "〜らしい": "名詞 + らしい",
+    "〜みたいだ": "名詞 + みたいだ",
+    "〜そうだ(伝聞)": "普通形 + そうだ",
+    "〜ておく": "動詞て形 + おく",
+    "〜てある": "動詞て形 + ある",
+    "〜ことにする": "動詞辞書形/ない形 + ことにする",
+    "〜ところだ": "動詞辞書形/ている形/た形 + ところだ",
+    "〜し": "普通形 + し",
+    "〜ので": "普通形 + ので",
+    "〜ながら": "動詞ます形（語幹）+ ながら",
+    "〜ばかり": "動詞て形/名詞 + ばかり",
+    "〜やすい": "動詞ます形（語幹）+ やすい",
+    "〜そうだ(様態)": "形容詞語幹 + そうだ",
+    "〜れる/〜られる": "動詞ない形 + れる/られる",
+    "〜させる/〜させる": "動詞ない形 + せる/させる",
+    "〜そうだ (伝聞)": "普通形 + そうだ",
+    "〜おきに": "時間/数量 + おきに",
+    "〜ようだ": "名詞の + ようだ / 普通形 + ようだ",
+    "〜そうだ (様態)": "形容詞語幹 + そうだ",
 };
 
 function buildBunpouFilters() {
