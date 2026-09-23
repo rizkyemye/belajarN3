@@ -97,7 +97,7 @@
             '<div class="bunpou-sub">Pilih tingkatan, lalu klik satu kata kerja → muncul semua bentuknya.</div>');
         const chips = el("div", "rv-chips doushi-chips", "");
         ["N5", "N4", "N3"].forEach(function (lv) {
-            const b = el("button", "rv-chip" + (lv === tingkatAktif ? " aktif" : ""), lv);
+           const b = el("button", "rv-chip tombol-warna" + (lv === tingkatAktif ? " aktif" : ""), lv);
             b.type = "button";
             b.addEventListener("click", function () {
                 tingkatAktif = lv;
