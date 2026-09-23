@@ -228,6 +228,7 @@
     }
 
     async function keluar() {
+        try { localStorage.setItem("n3_baru_keluar", "1"); localStorage.removeItem("n3_gate_lewat"); } catch (e) {}
         try { if (sb) await sb.auth.signOut(); } catch (e) {}
         localStorage.removeItem(KUNCI_USER);
         localStorage.removeItem(KUNCI_NAMA);
@@ -534,6 +535,8 @@
             '  <button id="n3Kirim" class="n3-btn">Masuk ➔</button>',
             '  <p class="n3-gate-note">Data kamu (jam belajar, progress, level) tersimpan di server, jadi bisa dibuka dari HP mana pun 🌸</p>',
             '  <button id="n3Lupa" class="n3-lupa" type="button">🔑 Lupa sandi?</button>',
+            '  <button id="n3Lewat" class="n3-lupa" type="button">🚪 Lanjut tanpa akun (mode lokal)</button>',
+            '  <div id="n3KeluarInfo" class="n3-gate-note" style="display:none">✅ Kamu sudah keluar dari akun. Mau masuk lagi pakai akun lain?</div>',
             '  <div id="n3Reset" class="n3-reset" style="display:none">',
             '    <div class="n3-reset-judul">Masukkan username + kode pemulihan kamu</div>',
             '    <input id="n3RUser" class="n3-input" type="text" placeholder="Username">',
@@ -609,6 +612,7 @@
                     tampilkanKode(kodeBaru);
                     return;
                 }
+                try { localStorage.removeItem("n3_gate_lewat"); localStorage.removeItem("n3_baru_keluar"); } catch (e) {}
                 elPesan.textContent = "Berhasil! Memuat data…";
                 elPesan.className = "n3-pesan ok";
                 setTimeout(function () { location.reload(); }, 400);
@@ -624,6 +628,17 @@
         [elUser, elPass, elNama].forEach(function (el) {
             el.addEventListener("keydown", function (e) { if (e.key === "Enter") kirim(); });
         });
+
+        /* ---------- lanjut tanpa akun (mode lokal) ---------- */
+        const elLewat = g.querySelector("#n3Lewat");
+        if (elLewat) elLewat.addEventListener("click", function () {
+            try { localStorage.setItem("n3_gate_lewat", "1"); localStorage.removeItem("n3_baru_keluar"); } catch (e) {}
+            tampilkanGerbang(false);
+        });
+        try {
+            const info = g.querySelector("#n3KeluarInfo");
+            if (info && localStorage.getItem("n3_baru_keluar") === "1") info.style.display = "block";
+        } catch (e) {}
 
         /* ---------- lupa sandi ---------- */
         const elLupa   = g.querySelector("#n3Lupa");
@@ -794,12 +809,16 @@
                 await sinkronData();
                 await muatKataDariServer();
             } else {
-                tampilkanGerbang(true);
+                let lewat = false;
+                try { lewat = localStorage.getItem("n3_gate_lewat") === "1"; } catch (e) {}
+                tampilkanGerbang(!lewat);
             }
             selesaiSiap();
         }).catch(function (e) {
             console.warn("[N3] gagal cek sesi:", e);
-            tampilkanGerbang(true);
+            let lewat2 = false;
+            try { lewat2 = localStorage.getItem("n3_gate_lewat") === "1"; } catch (e2) {}
+            tampilkanGerbang(!lewat2);
             selesaiSiap();
         });
 
