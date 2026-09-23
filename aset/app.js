@@ -244,7 +244,7 @@ const ISTILAH_RUMUS_ID = [
     ["な形", "kata sifat-na"],
     ["数・量", "angka/jumlah"],
     ["※", "Catatan: "],
-    ["／", " / "]
+    ["／", " / "],
     ["（て形）", "(bentuk ~te)"],
     ["（可能形）", "(bentuk potensial)"],
     ["（意向形）", "(bentuk ajakan)"],
@@ -557,6 +557,7 @@ function initBunpouUI() {
     }
     injectBunpouLegend();
     pasangPopupBunpou();
+    renderDoushi();
     buildBunpouFilters();
     renderBunpou();
 }
@@ -1174,7 +1175,7 @@ function bukaPopupBunpou(kartu) {
     kotak.innerHTML = '<div class="popup-bunpou-note-judul">Penjelasan</div><div class="popup-bunpou-note-isi">Memuat penjelasan…</div>';
     isi.appendChild(kotak);
     muatCatatanBunpou().then(function (peta) {
-        const t = peta[pola];
+        const t = peta[pola] || kartu.dataset.penjelasan;
         kotak.querySelector(".popup-bunpou-note-isi").textContent =
             t || "Penjelasan detail untuk pola ini belum tersedia.";
     });
@@ -1191,11 +1192,49 @@ function bukaPopupBunpou(kartu) {
 }
 
 function pasangPopupBunpou() {
-    const list = document.getElementById("bunpouList");
+    const list = document.getElementById("bunpouTabContent") || document.getElementById("bunpouList");
     if (!list || list.dataset.popupSiap) return;
     list.dataset.popupSiap = "1";
     list.addEventListener("click", function (e) {
         const kartu = e.target.closest(".bunpou-item");
         if (kartu) bukaPopupBunpou(kartu);
+    });
+}
+
+/* ===== 動詞・PERUBAHAN KATA KERJA =====
+   Satu bagian di atas tab Bunpou. Kartunya memakai kelas bunpou-item yang sama,
+   jadi popup penjelasan yang sudah ada otomatis ikut jalan. */
+function renderDoushi() {
+    const isi = document.getElementById("bunpouTabContent");
+    if (!isi || document.getElementById("doushiList")) return;
+    const wadah = document.createElement("div");
+    wadah.innerHTML =
+        '<div class="bunpou-header-card">' +
+        '  <div class="bunpou-title">動詞・Perubahan Kata Kerja</div>' +
+        '  <div class="bunpou-sub">Klik satu bentuk → keluar cara ubah + contoh + penjelasan</div>' +
+        '  <div id="doushiGolongan" class="bunpou-legend">Memuat…</div>' +
+        '</div>' +
+        '<div id="doushiList" class="bunpou-list"><div class="bunpou-empty">Memuat perubahan kata kerja…</div></div>';
+    isi.insertBefore(wadah, isi.firstChild);
+    fetch("../aset/doushi.json?v=2").then(function (r) { return r.json(); }).then(function (d) {
+        const gol = document.getElementById("doushiGolongan");
+        if (gol) gol.innerHTML = "<b>3 golongan kata kerja:</b><br>" + (d.golongan || []).map(function (g) {
+            return "・<b>" + escapeHtml(g.nama || "") + "</b> — " + escapeHtml(g.ciri || "") +
+                (g.contoh ? " (" + escapeHtml(g.contoh) + ")" : "");
+        }).join("<br>");
+        const list = document.getElementById("doushiList");
+        if (!list) return;
+        list.innerHTML = (d.bentuk || []).map(function (b) {
+            const cara = ["1", "2", "3"].filter(function (k) { return b.cara && b.cara[k]; })
+                .map(function (k) { return "Gol " + k + ": " + b.cara[k]; }).join("\n");
+            return '<div class="bunpou-item" data-penjelasan="' + escapeHtml(b.catatan || "") + '">' +
+                '<div class="bunpou-pattern">' + escapeHtml(b.nama || "") + '</div>' +
+                (cara ? '<div class="bunpou-rumus"><span class="bunpou-rumus-label">Cara Ubah</span><span class="bunpou-rumus-text">' + escapeHtml(cara) + '</span></div>' : "") +
+                (b.arti ? '<div class="bunpou-meaning">' + escapeHtml(b.arti) + '</div>' : "") +
+                '</div>';
+        }).join("") || '<div class="bunpou-empty">Data kata kerja belum tersedia 🙈</div>';
+    }).catch(function () {
+        const l = document.getElementById("doushiList");
+        if (l) l.innerHTML = '<div class="bunpou-empty">Gagal memuat data kata kerja 🙈</div>';
     });
 }

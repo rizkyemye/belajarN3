@@ -1,0 +1,374 @@
+{
+ "golongan": [
+  {
+   "nama": "Golongan 1 — 五段 (godan)",
+   "ciri": "Disebut juga kata kerja vokal tetap. Cara mengenali: dari bentuk kamus, kata kerja yang TIDAK berakhiran -eru/-iru (misalnya berakhiran -u, -ku, -gu, -su, -tsu, -nu, -bu, -mu, -ru tetapi bukan -eru/-iru) hampir pasti golongan ini. Namun hati-hati: ada beberapa kata berakhiran -eru/-iru yang tetap golongan 1 (contoh: 帰る kaeru, 入る hairu, 走る hashiru). Perubahan akhiran mengikuti 5 baris a-i-u-e-o.",
+   "contoh": "書く・飲む・話す"
+  },
+  {
+   "nama": "Golongan 2 — 一段 (ichidan)",
+   "ciri": "Disebut juga kata kerja vokal tetap satu baris. Cara mengenali: dari bentuk kamus, kata kerja yang berakhiran -eru atau -iru, dan TIDAK termasuk pengecualian golongan 1. Biasanya sebelum akhiran -ru ada bunyi vokal e atau i (misalnya 食べる taberu, 見る miru). Perubahannya sederhana: cukup buang -ru lalu tambahkan akhiran.",
+   "contoh": "食べる・見る・起きる"
+  },
+  {
+   "nama": "Golongan 3 — 不規則",
+   "ciri": "Kata kerja tidak beraturan, hanya ada dua: する (suru) dan 来る (kuru). Tidak mengikuti pola golongan 1 maupun 2, sehingga bentuk perubahannya harus dihafal. Kata kerja gabungan yang mengandung する (misalnya 勉強する) juga termasuk golongan ini.",
+   "contoh": "する・来る"
+  }
+ ],
+ "bentuk": [
+  {
+   "id": "masu",
+   "nama": "ます形",
+   "arti": "Bentuk sopan untuk menyatakan tindakan sekarang atau masa depan (positif).",
+   "cara": {
+    "1": "Golongan 1 (五段): ubah akhiran -u menjadi -i lalu tambah ます. Contoh: 書く→書きます, 飲む→飲みます.",
+    "2": "Golongan 2 (一段): buang akhiran る lalu tambah ます. Contoh: 食べる→食べます, 見る→見ます.",
+    "3": "Golongan 3: する→します, 来る→来ます (きます)."
+   },
+   "rumus": "Gol.1: akhiran -u → -i + ます; Gol.2: buang る + ます; Gol.3: する→します, 来る→来ます",
+   "contoh": [
+    [
+     "書きます",
+     "menulis"
+    ],
+    [
+     "飲みます",
+     "minum"
+    ]
+   ],
+   "catatan": "Bentuk ます dipakai dalam situasi sopan dan tidak digunakan untuk kata kerja bantu seperti ある dalam pola tertentu."
+  },
+  {
+   "id": "masen",
+   "nama": "ません",
+   "arti": "Bentuk sopan negatif untuk menyatakan tidak melakukan tindakan sekarang atau masa depan.",
+   "cara": {
+    "1": "Golongan 1 (五段): ubah akhiran -u menjadi -i lalu tambah ません. Contoh: 書く→書きません, 飲む→飲みません.",
+    "2": "Golongan 2 (一段): buang akhiran る lalu tambah ません. Contoh: 食べる→食べません, 見る→見ません.",
+    "3": "Golongan 3: する→しません, 来る→来ません (きません)."
+   },
+   "rumus": "Gol.1: akhiran -u → -i + ません; Gol.2: buang る + ません; Gol.3: する→しません, 来る→来ません",
+   "contoh": [
+    [
+     "書きます",
+     "menulis"
+    ],
+    [
+     "飲みます",
+     "minum"
+    ]
+   ],
+   "catatan": "ません adalah bentuk negatif dari ます, jadi jangan tambahkan です setelah ません."
+  },
+  {
+   "id": "mashita",
+   "nama": "ました",
+   "arti": "Bentuk sopan lampau positif untuk menyatakan sudah melakukan tindakan.",
+   "cara": {
+    "1": "Golongan 1 (五段): ubah akhiran -u menjadi -i lalu tambah ました. Contoh: 書く→書きました, 飲む→飲みました.",
+    "2": "Golongan 2 (一段): buang akhiran る lalu tambah ました. Contoh: 食べる→食べました, 見る→見ました.",
+    "3": "Golongan 3: する→しました, 来る→来ました (きました)."
+   },
+   "rumus": "Gol.1: akhiran -u → -i + ました; Gol.2: buang る + ました; Gol.3: する→しました, 来る→来ました",
+   "contoh": [
+    [
+     "書きます",
+     "menulis"
+    ],
+    [
+     "飲みます",
+     "minum"
+    ]
+   ],
+   "catatan": "ました hanya menyatakan lampau positif; untuk lampau negatif gunakan ませんでした."
+  },
+  {
+   "id": "masendeshita",
+   "nama": "ませんでした",
+   "arti": "Bentuk sopan lampau negatif untuk menyatakan tidak melakukan tindakan pada masa lalu.",
+   "cara": {
+    "1": "Golongan 1 (五段): ubah akhiran -u menjadi -i lalu tambah ませんでした. Contoh: 書く→書きませんでした, 飲む→飲みませんでした.",
+    "2": "Golongan 2 (一段): buang akhiran る lalu tambah ませんでした. Contoh: 食べる→食べませんでした, 見る→見ませんでした.",
+    "3": "Golongan 3: する→しませんでした, 来る→来ませんでした (きませんでした)."
+   },
+   "rumus": "Gol.1: akhiran -u → -i + ませんでした; Gol.2: buang る + ませんでした; Gol.3: する→しませんでした, 来る→来ませんでした",
+   "contoh": [
+    [
+     "書きます",
+     "menulis"
+    ],
+    [
+     "飲みます",
+     "minum"
+    ]
+   ],
+   "catatan": "ませんでした adalah bentuk lampau negatif dari ます, bukan gabungan ません + でした secara terpisah."
+  },
+  {
+   "id": "te",
+   "nama": "て形",
+   "arti": "Bentuk sambung untuk menyambung kalimat, membuat permintaan, menyatakan sedang melakukan, dan urutan kegiatan.",
+   "cara": {
+    "1": "Golongan 1 (五段): ubah akhiran sesuai baris bunyi. う/つ/る → って, む/ぶ/ぬ → んで, く → いて, ぐ → いで, す → して. Contoh: 買う → 買って, 飲む → 飲んで, 書く → 書いて.",
+    "2": "Golongan 2 (一段): buang る lalu tambah て. Contoh: 食べる → 食べて, 見る → 見て.",
+    "3": "Golongan 3: する → して, 来る → 来て. Contoh: 勉強する → 勉強して, 来る → 来て."
+   },
+   "rumus": "Golongan 1: akhiran berubah sesuai bunyi + て; Golongan 2: buang る + て; Golongan 3: する → して, 来る → 来て",
+   "contoh": [
+    [
+     "書きます",
+     "menulis"
+    ],
+    [
+     "飲みます",
+     "minum"
+    ]
+   ],
+   "catatan": "Pengecualian penting: 行く menjadi 行って, bukan 行いて."
+  },
+  {
+   "id": "ta",
+   "nama": "た形",
+   "arti": "Bentuk lampau biasa untuk menyatakan sudah terjadi, biasanya dalam percakapan santai.",
+   "cara": {
+    "1": "Golongan 1 (五段): aturannya sama seperti て形, tetapi て diganti た dan で diganti だ. Contoh: 買う → 買った, 飲む → 飲んだ, 書く → 書いた.",
+    "2": "Golongan 2 (一段): buang る lalu tambah た. Contoh: 食べる → 食べた, 見る → 見た.",
+    "3": "Golongan 3: する → した, 来る → 来た. Contoh: 勉強する → 勉強した, 来る → 来た."
+   },
+   "rumus": "Golongan 1: pola sama dengan て形 tetapi て → た dan で → だ; Golongan 2: buang る + た; Golongan 3: する → した, 来る → 来た",
+   "contoh": [
+    [
+     "書きます",
+     "menulis"
+    ],
+    [
+     "飲みます",
+     "minum"
+    ]
+   ],
+   "catatan": "Pengecualian penting: 行く menjadi 行った, bukan 行いた."
+  },
+  {
+   "id": "nai",
+   "nama": "ない形",
+   "arti": "Bentuk negatif biasa untuk menyatakan tidak melakukan, biasanya dalam percakapan santai.",
+   "cara": {
+    "1": "Golongan 1 (五段): ubah akhiran -u menjadi -a + ない. Contoh: 書く → 書かない, 飲む → 飲まない, 買う → 買わない.",
+    "2": "Golongan 2 (一段): buang る lalu tambah ない. Contoh: 食べる → 食べない, 見る → 見ない.",
+    "3": "Golongan 3: する → しない, 来る → 来ない. Contoh: 勉強する → 勉強しない, 来る → 来ない."
+   },
+   "rumus": "Golongan 1: akhiran -u → -a + ない; Golongan 2: buang る + ない; Golongan 3: する → しない, 来る → 来ない",
+   "contoh": [
+    [
+     "書きます",
+     "menulis"
+    ],
+    [
+     "飲みます",
+     "minum"
+    ]
+   ],
+   "catatan": "Pengecualian penting: kata kerja berakhiran う seperti 買う menjadi 買わない, bukan 買あない."
+  },
+  {
+   "id": "jisho",
+   "nama": "辞書形",
+   "arti": "Bentuk kamus atau bentuk dasar, dipakai untuk mencari kata di kamus dan dalam percakapan santai.",
+   "cara": {
+    "1": "Golongan 1 (五段): gunakan bentuk dasar apa adanya dengan akhiran -u. Contoh: 書く, 飲む, 買う.",
+    "2": "Golongan 2 (一段): gunakan bentuk dasar yang berakhiran る. Contoh: 食べる, 見る.",
+    "3": "Golongan 3: hafalkan bentuk dasarnya, yaitu する dan 来る. Contoh: 勉強する, 来る."
+   },
+   "rumus": "Golongan 1: bentuk -u; Golongan 2: bentuk -eru/-iru; Golongan 3: する dan 来る",
+   "contoh": [
+    [
+     "書きます",
+     "menulis"
+    ],
+    [
+     "飲みます",
+     "minum"
+    ]
+   ],
+   "catatan": "Pengecualian penting: kata kerja golongan 2 sering terlihat seperti golongan 1, jadi harus dihafal, misalnya 見る dan 食べる."
+  },
+  {
+   "id": "tai",
+   "nama": "〜たい",
+   "arti": "ingin melakukan sesuatu",
+   "cara": {
+    "1": "Ubah akhiran -u menjadi -i, lalu tambah たい. Contoh: 書く → 書き + たい = 書きたい.",
+    "2": "Buang る, lalu tambah たい. Contoh: 食べる → 食べ + たい = 食べたい.",
+    "3": "する → したい; 来る → きたい."
+   },
+   "rumus": "Golongan 1: akhiran -u → -i + たい; Golongan 2: buang る + たい; Golongan 3: する→したい, 来る→きたい",
+   "contoh": [
+    [
+     "書きます",
+     "menulis"
+    ],
+    [
+     "飲みます",
+     "minum"
+    ]
+   ],
+   "catatan": "〜たい hanya untuk keinginan pembicara sendiri; untuk orang lain biasanya pakai 〜たがっている."
+  },
+  {
+   "id": "kanou",
+   "nama": "可能形",
+   "arti": "bentuk potensial; bisa melakukan sesuatu",
+   "cara": {
+    "1": "Ubah akhiran -u menjadi -eru. Contoh: 書く → 書ける; 飲む → 飲める.",
+    "2": "Buang る, lalu tambah られる. Contoh: 食べる → 食べられる.",
+    "3": "する → できる; 来る → 来られる."
+   },
+   "rumus": "Golongan 1: -u → -eru; Golongan 2: buang る + られる; Golongan 3: する→できる, 来る→来られる",
+   "contoh": [
+    [
+     "書けます",
+     "bisa menulis"
+    ],
+    [
+     "飲めます",
+     "bisa minum"
+    ]
+   ],
+   "catatan": "Dalam bahasa Jepang sehari-hari, golongan 2 sering disingkat jadi ら抜き言葉, misalnya 食べれる."
+  },
+  {
+   "id": "ishi",
+   "nama": "意向形",
+   "arti": "bentuk ajakan; mari melakukan / akan melakukan",
+   "cara": {
+    "1": "Ubah akhiran -u menjadi -ou. Contoh: 書く → 書こう; 飲む → 飲もう.",
+    "2": "Buang る, lalu tambah よう. Contoh: 食べる → 食べよう.",
+    "3": "する → しよう; 来る → 来よう."
+   },
+   "rumus": "Golongan 1: -u → -ou; Golongan 2: buang る + よう; Golongan 3: する→しよう, 来る→来よう",
+   "contoh": [
+    [
+     "書きましょう",
+     "mari menulis"
+    ],
+    [
+     "飲みましょう",
+     "mari minum"
+    ]
+   ],
+   "catatan": "Bentuk 〜ましょう adalah versi sopan dari 意向形, sedangkan 意向形 biasa dipakai untuk ajakan santai."
+  },
+  {
+   "id": "meirei",
+   "nama": "命令形",
+   "arti": "bentuk perintah; lakukan!",
+   "cara": {
+    "1": "Ubah akhiran -u menjadi -e. Contoh: 書く → 書け; 飲む → 飲め.",
+    "2": "Buang る, lalu tambah ろ. Contoh: 食べる → 食べろ.",
+    "3": "する → しろ; 来る → 来い."
+   },
+   "rumus": "Golongan 1: -u → -e; Golongan 2: buang る + ろ; Golongan 3: する→しろ, 来る→来い",
+   "contoh": [
+    [
+     "書け",
+     "tulis!"
+    ],
+    [
+     "飲め",
+     "minum!"
+    ]
+   ],
+   "catatan": "命令形 terdengar kasar, jadi biasanya dipakai oleh atasan, dalam situasi darurat, atau antar teman dekat."
+  },
+  {
+   "id": "ukemi",
+   "nama": "受身形",
+   "arti": "Bentuk pasif: menyatakan dikenai tindakan, bisa juga untuk menyatakan sesuatu yang tidak menyenangkan.",
+   "cara": {
+    "1": "Golongan 1 (五段): ubah akhiran -u menjadi -areru. Contoh: 書く → 書かれる.",
+    "2": "Golongan 2 (一段): ubah akhiran -ru menjadi -rareru. Contoh: 食べる → 食べられる.",
+    "3": "Golongan 3: する → される, 来る → 来られる (こられる)."
+   },
+   "rumus": "G1: -u → -areru; G2: -ru → -rareru; G3: する→される, 来る→来られる",
+   "contoh": [
+    [
+     "書きます",
+     "menulis"
+    ],
+    [
+     "飲みます",
+     "minum"
+    ]
+   ],
+   "catatan": "Pada bahasa Jepang, pelaku dalam kalimat pasif ditandai partikel に, dan subjek biasanya adalah yang menerima tindakan."
+  },
+  {
+   "id": "shieki",
+   "nama": "使役形",
+   "arti": "Bentuk kausatif: menyatakan membuat atau menyuruh seseorang melakukan sesuatu.",
+   "cara": {
+    "1": "Golongan 1 (五段): ubah akhiran -u menjadi -aseru. Contoh: 書く → 書かせる.",
+    "2": "Golongan 2 (一段): ubah akhiran -ru menjadi -saseru. Contoh: 食べる → 食べさせる.",
+    "3": "Golongan 3: する → させる, 来る → 来させる (こさせる)."
+   },
+   "rumus": "G1: -u → -aseru; G2: -ru → -saseru; G3: する→させる, 来る→来させる",
+   "contoh": [
+    [
+     "書きます",
+     "menulis"
+    ],
+    [
+     "飲みます",
+     "minum"
+    ]
+   ],
+   "catatan": "Untuk kata kerja intransitif, orang yang disuruh biasanya ditandai を; untuk kata kerja transitif, biasanya ditandai に."
+  },
+  {
+   "id": "jouken",
+   "nama": "条件形",
+   "arti": "Bentuk pengandaian dengan ば: menyatakan jika suatu kondisi terpenuhi, maka hasilnya terjadi.",
+   "cara": {
+    "1": "Golongan 1 (五段): ubah akhiran -u menjadi -eba. Contoh: 書く → 書けば.",
+    "2": "Golongan 2 (一段): ubah akhiran -ru menjadi -reba. Contoh: 食べる → 食べれば.",
+    "3": "Golongan 3: する → すれば, 来る → 来れば (くれば)."
+   },
+   "rumus": "G1: -u → -eba; G2: -ru → -reba; G3: する→すれば, 来る→来れば",
+   "contoh": [
+    [
+     "書きます",
+     "menulis"
+    ],
+    [
+     "飲みます",
+     "minum"
+    ]
+   ],
+   "catatan": "Bentuk ば tidak dipakai jika kalimat belakang berisi ajakan, perintah, atau permintaan langsung."
+  },
+  {
+   "id": "teiru",
+   "nama": "〜ている",
+   "arti": "Menyatakan sedang melakukan suatu kegiatan atau keadaan yang berlanjut setelah perubahan.",
+   "cara": {
+    "1": "Golongan 1 (五段): ubah ke bentuk て sesuai aturan bunyi, lalu tambah いる. Contoh: 書く → 書いている.",
+    "2": "Golongan 2 (一段): buang -ru, tambah -te, lalu tambah いる. Contoh: 食べる → 食べている.",
+    "3": "Golongan 3: する → している, 来る → 来ている (きている)."
+   },
+   "rumus": "Bentuk て + いる; G1 mengikuti aturan perubahan bunyi て形",
+   "contoh": [
+    [
+     "書きます",
+     "menulis"
+    ],
+    [
+     "飲みます",
+     "minum"
+    ]
+   ],
+   "catatan": "Untuk kata kerja yang menyatakan perubahan sesaat, 〜ている sering berarti keadaan hasil, misalnya 結婚している = sudah menikah."
+  }
+ ],
+ "catatan": "Dibuat Tzuyu untuk belajarN3 · konjugasi N5-N4"
+}
