@@ -590,6 +590,9 @@ function injectBunpouLegend() {
     else head.appendChild(div);
 }
 
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(function () { pasangNavBawah(); pasangTombolKalender(); }, 200); });
+else setTimeout(function () { pasangNavBawah(); pasangTombolKalender(); }, 200);
+
 function initBunpouUI() {
     const searchEl = document.getElementById("bunpouSearch");
     if (searchEl && !searchEl.dataset.wired) {
@@ -615,6 +618,63 @@ function initBunpouUI() {
         document.head.appendChild(s);
     });
 })();
+
+/* ===== NAVIGASI BAWAH (HP) =====
+   Dibangun otomatis dari tombol tab yang sudah ada, jadi tidak ada daftar ganda.
+   Kalender sengaja TIDAK dimasukkan (maunya リズ). Desktop tidak memakai ini. */
+const IKON_NAV = { study: "学", bunpou: "文", doushi: "動", kanji: "漢", dokkai: "読" };
+function pasangNavBawah() {
+    const nav = document.querySelector(".tab-navigation");
+    if (!nav) return null;
+    let bar = document.getElementById("navBawah");
+    if (!bar) {
+        bar = document.createElement("nav");
+        bar.id = "navBawah";
+        bar.className = "nav-bawah";
+        document.body.appendChild(bar);
+    }
+    const tombol = [];
+    nav.querySelectorAll("button.tab-btn").forEach(function (b) {
+        const m = /switchTab\s*\(\s*['"]([a-z]+)['"]/.exec(b.getAttribute("onclick") || "");
+        const kunci = m ? m[1] : "";
+        if (!kunci || kunci === "calendar") return;      // kalender tidak masuk nav bawah
+        tombol.push({ kunci: kunci, teks: (b.textContent || "").replace(/[^A-Za-z\u3040-\u30ff\u4e00-\u9fff ]/g, "").trim() });
+    });
+    bar.innerHTML = tombol.map(function (t) {
+        return '<button type="button" class="nb-item" data-tab="' + t.kunci + '">' +
+               '<span class="nb-kanji">' + (IKON_NAV[t.kunci] || "・") + "</span>" +
+               '<span class="nb-teks">' + escapeHtml(t.teks) + "</span>" +
+               "</button>";
+    }).join("");
+    bar.querySelectorAll(".nb-item").forEach(function (el) {
+        el.addEventListener("click", function () { switchTab(el.dataset.tab); });
+    });
+    return bar;
+}
+function perbaruiNavBawah(tabName) {
+    const bar = document.getElementById("navBawah");
+    if (!bar) return;
+    bar.querySelectorAll(".nb-item").forEach(function (el) {
+        el.classList.toggle("aktif", el.dataset.tab === tabName);
+    });
+    const kali = document.getElementById("tombolKalender");
+    if (kali) kali.style.display = (tabName === "calendar") ? "none" : "flex";
+}
+function pasangTombolKalender() {
+    if (document.getElementById("tombolKalender")) return;
+    const b = document.createElement("button");
+    b.id = "tombolKalender";
+    b.type = "button";
+    b.className = "tombol-kalender";
+    b.innerHTML = "📅 Kalender";
+    b.addEventListener("click", function () { switchTab("calendar"); });
+    document.body.appendChild(b);
+    const bar = document.getElementById("navBawah");
+    if (bar && !bar.querySelector(".nb-item.aktif")) b.style.display = "none";
+}
+window.perbaruiNavBawah = perbaruiNavBawah;
+window.pasangNavBawah = pasangNavBawah;
+window.pasangTombolKalender = pasangTombolKalender;
 
 function switchTab(tabName) {
     // Cek apakah sesi belajar sedang aktif (learningArea terbuka)
@@ -648,6 +708,9 @@ function switchTab(tabName) {
         t.btn.classList.toggle('active', aktif);
     });
 
+    if (typeof window.perbaruiNavBawah === "function") window.perbaruiNavBawah(tabName);
+    if (typeof window.pasangNavBawah === "function") setTimeout(function () { const b = window.pasangNavBawah(); if (b) window.perbaruiNavBawah(tabName); }, 0);
+
     if (tabName === 'calendar') {
         renderCalendar();
         updateStatsBar();
@@ -664,6 +727,8 @@ function switchTab(tabName) {
     } else if (tabName === 'doushi') {
         if (typeof window.pasangTabDoushi === 'function') window.pasangTabDoushi();
     }
+    if (typeof window.pasangNavBawah === "function") window.pasangNavBawah();
+    if (typeof window.pasangTombolKalender === "function") window.pasangTombolKalender();
 }
 
 // --- CALENDAR LOGIC (VIEW ONLY) ---
