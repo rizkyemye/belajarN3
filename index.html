@@ -1,322 +1,193 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JLPT Master — Belajar Bahasa Jepang N5 · N4 · N3 (Bahasa Indonesia)</title>
-<meta name="description" content="Belajar JLPT dari nol sampai N3: 2.600+ kartu kosakata, 1.170 kanji dengan cara menulis, latihan mendengar, 599 soal kuis, dan 43 bacaan — semuanya Bahasa Indonesia.">
-<meta name="theme-color" content="#4F46E5">
-<meta property="og:title" content="JLPT Master — Belajar Bahasa Jepang dari N5 sampai N3">
-<meta property="og:description" content="Kosakata, kanji (cara menulis), kuis, bacaan, dan latihan mendengar. Bahasa Indonesia.">
-<meta property="og:url" content="https://rizkyemye.github.io/belajarN3/">
-<meta property="og:image" content="https://rizkyemye.github.io/belajarN3/aset/og-image.png">
-<link rel="canonical" href="https://rizkyemye.github.io/belajarN3/">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BelajarN3 — Belajar JLPT N5-N3</title>
 <style>
-/* ==========================================================================
-   LANDING — halaman pemilih tingkat. Berdiri sendiri (tidak butuh CSS lain).
-   Animasi memakai CSS murni + satu IntersectionObserver kecil (10 baris).
-   ========================================================================== */
-:root{
-  --indigo:#4F46E5; --violet:#7C3AED; --pink:#EC4899; --sky:#0EA5E9;
-  --hijau:#059669; --biru:#2563EB; --ungu:#7C3AED;
-  --tinta:#0F172A; --tinta2:#475569; --kertas:#FFFFFF; --garis:#E2E8F0;
-  --grad: linear-gradient(120deg,#4F46E5,#7C3AED 45%,#EC4899);
-  --r: 20px;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0; color:var(--tinta);
-  font-family:"Quicksand","Baloo 2",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  background:#F7F7FE; overflow-x:hidden;
-}
-/* ---------- latar bergerak ---------- */
-.latar{position:fixed; inset:0; z-index:-2; overflow:hidden}
-.latar span{
-  position:absolute; border-radius:50%; filter:blur(60px); opacity:.55;
-  animation:apung 18s ease-in-out infinite;
-}
-.latar span:nth-child(1){width:46vmax;height:46vmax;background:#C7D2FE;top:-14vmax;left:-10vmax;animation-delay:0s}
-.latar span:nth-child(2){width:38vmax;height:38vmax;background:#FBCFE8;top:24vmax;right:-12vmax;animation-delay:-6s}
-.latar span:nth-child(3){width:32vmax;height:32vmax;background:#BAE6FD;bottom:-8vmax;left:12vmax;animation-delay:-11s}
-@keyframes apung{
-  0%,100%{transform:translate3d(0,0,0) scale(1)}
-  33%{transform:translate3d(3vmax,-2vmax,0) scale(1.08)}
-  66%{transform:translate3d(-2vmax,3vmax,0) scale(.96)}
-}
-/* kelopak sakura jatuh */
-.kelopak{position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden}
-.kelopak i{
-  position:absolute; top:-6vh; font-style:normal; font-size:18px; opacity:.75;
-  animation:jatuh linear infinite;
-}
-@keyframes jatuh{
-  0%{transform:translateY(-8vh) rotate(0deg); opacity:0}
-  10%{opacity:.85}
-  100%{transform:translateY(112vh) rotate(420deg); opacity:0}
-}
-/* ---------- kerangka ---------- */
-.bungkus{max-width:1120px;margin:0 auto;padding:20px 18px 70px}
-.muncul{opacity:0; transform:translateY(22px)}
-.muncul.aktif{animation:naik .7s cubic-bezier(.2,.7,.3,1) forwards}
-@keyframes naik{to{opacity:1;transform:none}}
-/* ---------- header ---------- */
-.hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 2px 26px}
-.hdr .cap{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.2px}
-.hdr .cap b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:1.12rem}
-.hdr .cap span{font-size:1.35rem}
-.hdr a.tautan{
-  color:var(--indigo);font-weight:700;text-decoration:none;font-size:.9rem;
-  border:2px solid #E0E7FF;background:#fff;padding:8px 14px;border-radius:999px;
-  transition:transform .18s, box-shadow .18s;
-}
-.hdr a.tautan:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(79,70,229,.18)}
-/* ---------- hero ---------- */
-.hero{text-align:center;padding:26px 6px 10px}
-.hero .lencana{
-  display:inline-block;background:#fff;border:1px solid var(--garis);
-  padding:7px 15px;border-radius:999px;font-size:.8rem;font-weight:700;color:var(--tinta2);
-  box-shadow:0 6px 18px rgba(15,23,42,.06);
-}
-.hero h1{
-  font-size:clamp(2rem,6.2vw,3.5rem); line-height:1.12; margin:18px 0 12px; letter-spacing:-1px;
-}
-.hero h1 .grad{
-  background:var(--grad); background-size:220% 100%;
-  -webkit-background-clip:text; background-clip:text; color:transparent;
-  animation:geser 7s ease-in-out infinite;
-}
-@keyframes geser{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-.hero p{color:var(--tinta2);font-size:clamp(.98rem,2.4vw,1.14rem);max-width:56ch;margin:0 auto;line-height:1.65}
-.hero .jp{margin-top:14px;color:#7C3AED;font-weight:700;font-size:1rem}
-.hero .jp::after{
-  content:""; display:inline-block; width:10px; height:1.05em; margin-left:6px;
-  background:var(--violet); vertical-align:-.16em; animation:kedip 1s steps(2) infinite;
-}
-@keyframes kedip{50%{opacity:0}}
-/* ---------- kartu tingkat ---------- */
-.tingkat{
-  display:grid; gap:18px; margin-top:34px;
-  grid-template-columns:repeat(auto-fit,minmax(268px,1fr));
-}
-.tk{
-  position:relative; display:flex; flex-direction:column; text-decoration:none; color:inherit; overflow:hidden;
-  background:var(--kertas); border:1px solid var(--garis); border-radius:var(--r);
-  padding:22px 20px 20px; box-shadow:0 4px 16px rgba(15,23,42,.06);
-  transition:transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s, border-color .22s;
-}
-.tk::before{
-  content:""; position:absolute; inset:0 0 auto 0; height:6px; background:var(--warna);
-}
-.tk::after{
-  content:""; position:absolute; width:180px;height:180px;border-radius:50%;
-  background:var(--warna); opacity:.10; right:-60px; bottom:-70px;
-  transition:transform .3s ease;
-}
-.tk:hover,.tk:focus-visible{
-  transform:translateY(-6px); border-color:var(--warna);
-  box-shadow:0 18px 38px color-mix(in srgb, var(--warna) 26%, transparent);
-}
-.tk:hover::after{transform:scale(1.35)}
-.tk .lv{
-  display:inline-block;font-weight:800;font-size:.78rem;letter-spacing:.7px;
-  padding:5px 12px;border-radius:999px;color:#fff;background:var(--warna);
-}
-.tk h2{margin:14px 0 6px;font-size:1.3rem;letter-spacing:-.3px}
-.tk .sub{margin-bottom:4px}
-.tk .sub{color:var(--tinta2);font-size:.92rem;line-height:1.6;min-height:44px}
-.tk .angka{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 16px}
-.tk .angka span{
-  background:#F1F5F9;color:#334155;font-size:.78rem;font-weight:700;
-  padding:5px 11px;border-radius:999px;
-}
-.tk .masuk{
-  margin-top:auto;
-  display:flex;align-items:center;justify-content:space-between;
-  background:var(--warna);color:#fff;font-weight:800;padding:12px 16px;border-radius:14px;
-}
-.tk .masuk i{font-style:normal;transition:transform .2s}
-.tk:hover .masuk i{transform:translateX(5px)}
-/* ---------- bagian umum ---------- */
-.judul{margin:56px 0 6px;font-size:1.35rem;letter-spacing:-.3px}
-.judul + .ket{color:var(--tinta2);font-size:.95rem;margin:0 0 18px}
-.fitur{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
-.f{
-  background:#fff;border:1px solid var(--garis);border-radius:16px;padding:18px;
-  transition:transform .2s cubic-bezier(.2,.7,.3,1), box-shadow .2s;
-}
-.f:hover{transform:translateY(-5px);box-shadow:0 14px 30px rgba(79,70,229,.14)}
-.f .ikon{
-  display:inline-flex;width:44px;height:44px;align-items:center;justify-content:center;
-  border-radius:13px;font-size:1.3rem;margin-bottom:10px;
-  background:var(--ikonbg); box-shadow:0 6px 14px color-mix(in srgb, var(--ikonbg) 45%, transparent);
-}
-.f b{display:block;font-size:1rem;margin-bottom:4px}
-.f small{color:var(--tinta2);font-size:.88rem;line-height:1.55;display:block}
-/* angka besar */
-.statistik{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-top:10px}
-.angka-besar{
-  background:linear-gradient(160deg,#fff,#F8FAFF); border:1px solid var(--garis);
-  border-radius:16px;padding:18px;text-align:center;
-}
-.angka-besar b{
-  display:block;font-size:clamp(1.6rem,5vw,2.1rem);letter-spacing:-1px;
-  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.angka-besar small{color:var(--tinta2);font-size:.85rem;font-weight:600}
-/* ---------- ajakan ---------- */
-.ajakan{
-  margin-top:52px;padding:30px 24px;border-radius:24px;text-align:center;color:#fff;
-  background:var(--grad); background-size:200% 100%;
-  animation:geser 9s ease-in-out infinite; box-shadow:0 20px 45px rgba(79,70,229,.32);
-}
-.ajakan h2{margin:0 0 8px;font-size:clamp(1.25rem,3.6vw,1.7rem)}
-.ajakan p{margin:0 auto 18px;max-width:48ch;opacity:.94;font-size:.95rem;line-height:1.6}
-.ajakan .tombol{
-  display:inline-block;background:#fff;color:var(--violet);font-weight:800;
-  padding:13px 24px;border-radius:999px;text-decoration:none;
-  animation:denyut 2.4s ease-in-out infinite;
-}
-@keyframes denyut{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
-/* ---------- kaki ---------- */
-.kaki{margin-top:44px;text-align:center;color:var(--tinta2);font-size:.88rem;line-height:1.8}
-.kaki a{color:var(--indigo);font-weight:700;text-decoration:none}
-@media (prefers-reduced-motion: reduce){
-  *{animation:none !important; transition:none !important}
-  .muncul{opacity:1;transform:none}
-  .kelopak{display:none}
-}
+  :root{
+    --indigo:#4F46E5; --indigo-d:#3730A3; --indigo-l:#818CF8; --green:#16A34A;
+    --bg:#EEF2FF; --fg:#312E81; --muted:#475569; --card:#fff; --border:#C7D2FE;
+    --shadow:0 1px 2px rgba(49,46,129,.06), 0 8px 24px rgba(49,46,129,.08);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans JP",sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .nav{position:sticky;top:0;z-index:10;background:rgba(238,242,255,.86);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border)}
+  .nav .in{display:flex;align-items:center;gap:16px;height:66px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.06rem;letter-spacing:-.01em}
+  .logo i{width:32px;height:32px;border-radius:9px;background:var(--indigo);color:#fff;display:grid;place-items:center;
+    font-style:normal;font-size:15px;font-weight:800}
+  .nav .sp{flex:1}
+  .nav a.l{font-size:.92rem;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:8px}
+  .nav a.l:hover{background:#fff;color:var(--indigo-d)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;
+    border-radius:11px;font-weight:700;font-size:.95rem;text-decoration:none;cursor:pointer;border:1px solid transparent;
+    transition:transform .16s ease-out, box-shadow .16s ease-out, background .16s ease-out}
+  .btn:focus-visible{outline:3px solid var(--indigo);outline-offset:2px}
+  .btn-p{background:var(--indigo);color:#fff;box-shadow:0 6px 16px rgba(79,70,229,.28)}
+  .btn-p:hover{background:var(--indigo-d);transform:translateY(-1px)}
+  .btn-g{background:var(--green);color:#fff;box-shadow:0 6px 16px rgba(22,163,74,.24)}
+  .btn-g:hover{transform:translateY(-1px)}
+  .btn-w{background:#fff;color:var(--indigo-d);border-color:var(--border)}
+  .btn-w:hover{border-color:var(--indigo-l)}
+
+  .hero{padding:76px 0 64px}
+  .hero .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+  .tag{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);
+    color:var(--indigo-d);font-size:.8rem;font-weight:700;padding:7px 13px;border-radius:999px}
+  h1{font-size:2.9rem;line-height:1.12;letter-spacing:-.03em;margin:20px 0 16px}
+  h1 em{font-style:normal;color:var(--indigo);position:relative}
+  h1 em::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:9px;background:rgba(129,140,248,.28);
+    border-radius:4px;z-index:-1}
+  .lead{font-size:1.08rem;color:var(--muted);max-width:46ch;margin:0 0 28px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .mini{display:flex;gap:22px;margin-top:30px;flex-wrap:wrap}
+  .mini div b{display:block;font-size:1.25rem;letter-spacing:-.02em}
+  .mini div span{font-size:.82rem;color:var(--muted);font-weight:600}
+
+  .mock{background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+  .mock .bar{display:flex;align-items:center;gap:6px;padding:11px 14px;background:#F8FAFF;border-bottom:1px solid var(--border)}
+  .mock .dot{width:9px;height:9px;border-radius:50%;background:#DDE3F8}
+  .mock .url{margin-left:8px;font-size:.72rem;color:var(--muted);background:#fff;border:1px solid var(--border);
+    border-radius:7px;padding:3px 10px}
+  .mock .body{padding:18px}
+  .mock .hdr{background:linear-gradient(135deg,#4F46E5,#7C3AED);border-radius:14px;padding:16px;color:#fff}
+  .mock .hdr b{font-size:1rem;display:block}
+  .mock .hdr p{margin:2px 0 12px;font-size:.76rem;opacity:.85}
+  .mock .strip{display:flex;gap:5px}
+  .mock .strip i{flex:1;height:26px;border-radius:8px;background:rgba(255,255,255,.55)}
+  .mock .strip i.on{background:#fff}
+  .mock .strip i.now{background:#F8B2B2}
+  .mock .row{display:flex;align-items:center;gap:10px;padding:11px 12px;border:1px solid var(--border);border-radius:12px;margin-top:9px}
+  .mock .row .n{font-weight:800;font-size:.95rem}
+  .mock .row .r{font-size:.74rem;color:var(--muted)}
+  .mock .row .p{margin-left:auto;font-size:.72rem;font-weight:800;color:var(--indigo)}
+  .mock .pills{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+  .mock .pills span{font-size:.7rem;font-weight:700;padding:4px 9px;border-radius:999px;background:#EEF2FF;color:var(--indigo-d)}
+
+  section{padding:66px 0}
+  .kick{font-size:.82rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--indigo)}
+  h2{font-size:2.05rem;letter-spacing:-.025em;margin:10px 0 12px;line-height:1.2}
+  .sub{color:var(--muted);max-width:58ch;margin:0}
+  .feat{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+  .card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+  .card .ic{width:42px;height:42px;border-radius:12px;background:#EEF2FF;color:var(--indigo-d);display:grid;place-items:center;
+    font-size:1.15rem;font-weight:800;margin-bottom:14px}
+  .card h3{margin:0 0 6px;font-size:1.06rem;letter-spacing:-.01em}
+  .card p{margin:0;font-size:.92rem;color:var(--muted)}
+  .card .big{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;color:var(--indigo-d);margin:2px 0 4px}
+  .band{background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .band .in{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;padding:40px 0}
+  .band b{display:block;font-size:2rem;letter-spacing:-.03em;color:var(--indigo-d)}
+  .band span{font-size:.86rem;color:var(--muted);font-weight:600}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px;counter-reset:s}
+  .step{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+  .step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;
+    background:var(--indigo);color:#fff;font-weight:800;font-size:.92rem;margin-bottom:12px}
+  .step h3{margin:0 0 6px;font-size:1rem}
+  .step p{margin:0;font-size:.9rem;color:var(--muted)}
+  .close{background:linear-gradient(135deg,#4F46E5,#7C3AED);border-radius:22px;padding:44px;color:#fff;margin:20px 0 66px;
+    box-shadow:0 18px 44px rgba(79,70,229,.28)}
+  .close h2{color:#fff;margin-top:0}
+  .close p{color:rgba(255,255,255,.88);max-width:52ch}
+  .foot{border-top:1px solid var(--border);padding:26px 0 40px;color:var(--muted);font-size:.86rem}
+  .foot .in{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+  @media (max-width:900px){
+    .hero .grid{grid-template-columns:1fr;gap:34px}
+    h1{font-size:2.15rem}
+    .feat,.steps{grid-template-columns:1fr}
+    .band .in{grid-template-columns:repeat(2,1fr);gap:26px}
+    .close{padding:30px;border-radius:18px}
+  }
 </style>
 </head>
 <body>
-<div class="latar" aria-hidden="true"><span></span><span></span><span></span></div>
-<div class="kelopak" id="kelopak" aria-hidden="true"></div>
 
-<div class="bungkus">
+<nav class="nav"><div class="wrap in">
+  <div class="logo"><i>N3</i> BelajarN3</div>
+  <div class="sp"></div>
+  <a class="l" href="n3/">N3</a><a class="l" href="n4/">N4</a><a class="l" href="n5/">N5</a><a class="l" href="fitur/quiz.html">Kuis</a>
+  <a class="btn btn-p" href="fitur/login.html">Masuk</a>
+</div></nav>
 
-  <div class="hdr">
-    <div class="cap"><span>🌸</span><b>JLPT Master</b></div>
-    <a class="tautan" href="fitur/login.html"><b style="font-weight:800">Masuk</b> / Daftar</a>
+<header class="hero"><div class="wrap grid">
+  <div>
+    <span class="tag">JLPT N5 · N4 · N3 — gratis, tanpa iklan</span>
+    <h1>Belajar Jepang <em>10 menit</em> sehari, sampai lulus JLPT.</h1>
+    <p class="lead">3.141 kosakata berfurigana, 19 bentuk kata kerja, 184 rumus bunpou, dan kuis harian yang menyesuaikan kelemahanmu. Satu web, jalan di HP maupun desktop.</p>
+    <div class="cta">
+      <a class="btn btn-g" href="n3/">Mulai belajar sekarang</a>
+      <a class="btn btn-w" href="n5/">Mulai dari N5</a>
+    </div>
+    <div class="mini">
+      <div><b>3.141</b><span>kosakata + bacaan</span></div>
+      <div><b>330</b><span>kata kerja</span></div>
+      <div><b>184</b><span>rumus bunpou</span></div>
+    </div>
   </div>
-
-  <header class="hero muncul">
-    <span class="lencana">N5 · N4 · N3 — belajar pelan-pelan saja</span>
-    <h1>Belajar Jepang sampai <span class="grad">N3</span><br>tanpa bingung mulai dari mana</h1>
-    <p>Semua materinya berbahasa Indonesia: kosakata harian, cara menulis kanji, latihan mendengar, kuis tata bahasa, dan bacaan. Buka di HP atau laptop, sama saja.</p>
-    <p class="jp">ようこそ — ここから始めましょう</p>
-  </header>
-
-  <main>
-    <div class="tingkat">
-      <a class="tk muncul" style="--warna:#059669" href="fitur/login.html?level=N5" onclick="localStorage.setItem('n3_level','N5')">
-        <span class="lv">N5 · PEMULA</span>
-        <h2>Mulai dari nol</h2>
-        <div class="sub">Hiragana, katakana, partikel dasar, dan kalimat sehari-hari. Cocok kalau baru kenal huruf Jepang.</div>
-        <div class="angka"><span>166 kanji</span><span>641 kosakata</span><span>80 soal tata bahasa</span></div>
-        <span class="masuk">Daftar & mulai N5 <i>→</i></span>
-      </a>
-
-      <a class="tk muncul" style="--warna:#2563EB" href="fitur/login.html?level=N4" onclick="localStorage.setItem('n3_level','N4')">
-        <span class="lv">N4 · MENENGAH</span>
-        <h2>Lanjut menyusun kalimat</h2>
-        <div class="sub">Bentuk て, 受身, 〜ば, 〜のに, 〜はずだ. Sudah bisa baca teks pendek dan bercerita.</div>
-        <div class="angka"><span>386 kanji</span><span>598 kosakata</span><span>80 soal tata bahasa</span><span>6 bacaan</span></div>
-        <span class="masuk">Daftar & mulai N4 <i>→</i></span>
-      </a>
-
-      <a class="tk muncul" style="--warna:#7C3AED" href="fitur/login.html?level=N3" onclick="localStorage.setItem('n3_level','N3')">
-        <span class="lv">N3 · MAHIR</span>
-        <h2>Menuju ujian Desember</h2>
-        <div class="sub">Materi utama: 1.384 kartu belajar harian, dibuka otomatis satu hari demi satu hari.</div>
-        <div class="angka"><span>1.170 kanji</span><span>1.384 kartu</span><span>310 soal tata bahasa</span><span>31 bacaan</span></div>
-        <span class="masuk">Daftar & mulai N3 <i>→</i></span>
-      </a>
+  <div class="mock" aria-hidden="true">
+    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">rizkyemye.github.io/belajarN3</span></div>
+    <div class="body">
+      <div class="hdr">
+        <b>JLPT N3 Master</b><p>Kamis, 24 September</p>
+        <div class="strip"><i class="on"></i><i class="on"></i><i class="on"></i><i class="now"></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="row"><span class="n">相談</span><span class="r">そうだん · berkonsultasi</span><span class="p">hari 15</span></div>
+      <div class="row"><span class="n">約束</span><span class="r">やくそく · janji</span><span class="p">hari 15</span></div>
+      <div class="row"><span class="n">信頼</span><span class="r">しんらい · kepercayaan</span><span class="p">baru</span></div>
+      <div class="pills"><span>ます</span><span>て形</span><span>ない形</span><span>可能形</span><span>受身形</span><span>+14</span></div>
     </div>
+  </div>
+</div></header>
 
-    <h2 class="judul muncul">Isi di dalamnya</h2>
-    <p class="ket muncul">Enam hal yang dipakai setiap hari</p>
-    <div class="fitur">
-      <div class="f muncul" style="--ikonbg:#EDE9FE"><span class="ikon">✍️</span><b>Latihan tulis kanji</b><small>Lihat urutan goresannya, lalu tulis sendiri. Ada 音読み・訓読み dan 3 contoh kosakata tiap kanji.</small></div>
-      <div class="f muncul" style="--ikonbg:#DBEAFE"><span class="ikon">🔊</span><b>Latihan mendengar</b><small>Soal dibacakan dalam bahasa Jepang — kamu pilih artinya. Bisa diputar ulang sesuka hati.</small></div>
-      <div class="f muncul" style="--ikonbg:#FCE7F3"><span class="ikon">📖</span><b>Bunpou &amp; Dokkai</b><small>Soal tata bahasa dan bacaan pendek dengan furigana, lengkap dengan penjelasan.</small></div>
-      <div class="f muncul" style="--ikonbg:#D1FAE5"><span class="ikon">🔁</span><b>Review pintar (SRS)</b><small>Kata yang kamu lupa muncul lagi otomatis. Progresmu tetap ada walau ganti HP.</small></div>
-      <div class="f muncul" style="--ikonbg:#FEF3C7"><span class="ikon">📊</span><b>Dashboard</b><small>Lihat hari keberapa, berapa kartu yang sudah dikuasai, dan kata tersulitmu.</small></div>
-      <div class="f muncul" style="--ikonbg:#E0E7FF"><span class="ikon">🔒</span><b>Akun pribadi</b><small>Progres tersimpan di akunmu sendiri, jadi bisa lanjut dari mana saja.</small></div>
-    </div>
+<div class="band"><div class="wrap in">
+  <div><b>1.020</b><span>materi N5</span></div>
+  <div><b>921</b><span>materi N4</span></div>
+  <div><b>1.384</b><span>materi N3</span></div>
+  <div><b>24</b><span>bacaan + soal</span></div>
+</div></div>
 
-    <h2 class="judul muncul">Sekarang sudah terkumpul</h2>
-    <p class="ket muncul">Bertambah terus setiap minggu</p>
-    <div class="statistik">
-      <div class="angka-besar muncul"><b data-hitung="2623">0</b><small>kartu kosakata</small></div>
-      <div class="angka-besar muncul"><b data-hitung="1170">0</b><small>kanji + cara tulis</small></div>
-      <div class="angka-besar muncul"><b data-hitung="599">0</b><small>soal &amp; kuis</small></div>
-      <div class="angka-besar muncul"><b data-hitung="43">0</b><small>bacaan</small></div>
-    </div>
-  </main>
+<section><div class="wrap">
+  <span class="kick">Yang kamu dapat</span>
+  <h2>Dibuat dari kebutuhannya sendiri, bukan template.</h2>
+  <p class="sub">Semua materi bertahap N5 ke N3, lengkap dengan arti Bahasa Indonesia dan bacaan hiragana di setiap kata.</p>
+  <div class="feat">
+    <div class="card"><div class="ic">語</div><h3>Kosakata + furigana</h3><p>3.141 kata dengan bacaan hiragana, arti Indonesia, dan contoh kalimat. Tombol 漢字／かな untuk latihan mandiri.</p></div>
+    <div class="card"><div class="ic">動</div><h3>19 bentuk kata kerja</h3><p>330 kata kerja dibagi 3 golongan. Setiap bentuk ada rumus, cara mengubah, dan contoh memakai hiragana.</p></div>
+    <div class="card"><div class="ic">文</div><h3>184 rumus bunpou</h3><p>Dari partikel N5 sampai pola N3. Klik kartunya, muncul pola, arti, dan contoh kalimat + terjemahan.</p></div>
+    <div class="card"><div class="ic">読</div><h3>Dokkai + kuis harian</h3><p>Bacaan bertingkat dan kuis 13 soal tiap hari dari kosakata hari itu. Salah pun tetap dicatat untuk diulang.</p></div>
+    <div class="card"><div class="ic">記</div><h3>Kalender & beruntun</h3><p>Menit belajar tercatat otomatis. Lihat hari mana yang bolong, jaga beruntunnya tetap menyala.</p></div>
+    <div class="card"><div class="ic">合</div><h3>Akun & sinkron</h3><p>Tanpa akun pun jalan. Kalau masuk, progresmu tersimpan dan bisa dibuka lagi dari HP lain.</p></div>
+  </div>
+</div></section>
 
-  <section class="ajakan muncul">
-    <h2>Belum yakin mulai dari mana?</h2>
-    <p>Kalau baru kenal huruf Jepang, mulai dari N5. Kalau sudah bisa baca hiragana &amp; katakana dan paham kalimat sederhana, langsung N4 saja.</p>
-    <a class="tombol" href="fitur/login.html?level=N5&daftar=1">Coba mulai dari N5 →</a>
-  </section>
+<section><div class="wrap">
+  <span class="kick">Cara pakai</span>
+  <h2>Tiga langkah, selesai.</h2>
+  <div class="steps">
+    <div class="step"><h3>Pilih levelmu</h3><p>N5 kalau baru mulai, N4 kalau sudah kenal kana, N3 kalau mengejar ujian.</p></div>
+    <div class="step"><h3>Belajar per hari</h3><p>50 kata sehari, sudah dibagi rapi. Baca keras, tutup artinya, coba ingat sendiri.</p></div>
+    <div class="step"><h3>Kuis & review</h3><p>Kuis jam 17.00 dan review otomatis untuk kata yang sering kamu lewatkan.</p></div>
+  </div>
+</div></section>
 
-  <p class="kaki">
-    Dibuat untuk belajar bersama 🌸<br>
-    Ada yang salah tulis atau kurang jelas? Bilang saja ya.<br>
-    <a href="fitur/kredit.html">Sumber data &amp; kredit</a>
-  </p>
-</div>
+<div class="wrap"><div class="close">
+  <h2>Mulai hari ini, tanpa bayar apa pun.</h2>
+  <p>Buka webnya, pilih level, langsung belajar. Progresmu tersimpan di HP-mu sendiri.</p>
+  <div class="cta" style="margin-top:22px">
+    <a class="btn btn-g" href="n3/">Buka BelajarN3</a>
+    <a class="btn btn-w" href="fitur/login.html">Masuk dengan akun</a>
+  </div>
+</div></div>
 
-<script>
-/* kelopak sakura: dibuat sekali, animasinya CSS */
-(function () {
-  var wadah = document.getElementById("kelopak");
-  if (!wadah || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  var jml = innerWidth < 700 ? 9 : 16;
-  for (var i = 0; i < jml; i++) {
-    var k = document.createElement("i");
-    k.textContent = ["🌸", "🌸", "❀", "🌼"][i % 4];
-    k.style.left = (Math.random() * 100).toFixed(1) + "%";
-    k.style.animationDuration = (11 + Math.random() * 12).toFixed(1) + "s";
-    k.style.animationDelay = (-Math.random() * 20).toFixed(1) + "s";
-    k.style.fontSize = (12 + Math.random() * 12).toFixed(0) + "px";
-    wadah.appendChild(k);
-  }
-})();
+<footer class="foot"><div class="wrap in">
+  <b>BelajarN3</b><span>· Materi Japan Foundation tidak disalin. Soal dibuat sendiri.</span>
+  <span style="margin-left:auto">Dibuat oleh リズ</span>
+</div></footer>
 
-/* muncul saat di-scroll + angka berjalan */
-(function () {
-  var halus = !matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function hitung(el) {
-    var target = parseInt(el.getAttribute("data-hitung"), 10) || 0;
-    if (!halus) { el.textContent = target.toLocaleString("id-ID"); return; }
-    var mulai = performance.now(), durasi = 1100;
-    (function langkah(t) {
-      var p = Math.min(1, (t - mulai) / durasi);
-      var nilai = Math.round(target * (1 - Math.pow(1 - p, 3)));
-      el.textContent = nilai.toLocaleString("id-ID");
-      if (p < 1) requestAnimationFrame(langkah);
-    })(mulai);
-  }
-  var elemen = [].slice.call(document.querySelectorAll(".muncul"));
-  if (!("IntersectionObserver" in window)) {
-    elemen.forEach(function (e) { e.classList.add("aktif"); });
-    document.querySelectorAll("[data-hitung]").forEach(hitung);
-    return;
-  }
-  var pemantau = new IntersectionObserver(function (masuk) {
-    masuk.forEach(function (m, i) {
-      if (!m.isIntersecting) return;
-      m.target.style.animationDelay = (i * 70) + "ms";
-      m.target.classList.add("aktif");
-      var angka = m.target.querySelector ? m.target.querySelector("[data-hitung]") : null;
-      if (angka && !angka.dataset.jalan) { angka.dataset.jalan = "1"; hitung(angka); }
-      pemantau.unobserve(m.target);
-    });
-  }, { rootMargin: "0px 0px -8% 0px", threshold: .12 });
-  elemen.forEach(function (e) { pemantau.observe(e); });
-})();
-</script>
-</body>
-</html>
+</body></html>
