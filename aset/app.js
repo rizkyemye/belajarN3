@@ -216,8 +216,8 @@ function pasangTombolKana() {
     });
     document.body.appendChild(b);
 }
-if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", pasangTombolKana);
-else pasangTombolKana();
+/* tombol 漢字/かな mengambang dimatikan (diminta リズ). Fungsi modeKana() tetap ada,
+   jadi bacaan kata tetap tampil seperti biasa. */
 window.tampilKata = tampilKata;
 window.bacaanKata = bacaanKata;
 window.modeKana = modeKana;
@@ -662,13 +662,15 @@ function perbaruiNavBawah(tabName) {
 }
 function pasangTombolKalender() {
     if (document.getElementById("tombolKalender")) return;
+    const grid = document.querySelector(".aksi-grid");
+    if (!grid) return;
     const b = document.createElement("button");
     b.id = "tombolKalender";
     b.type = "button";
-    b.className = "tombol-kalender";
+    b.className = "tombol-aksi tombol-kalender";
     b.innerHTML = "📅 Kalender";
     b.addEventListener("click", function () { switchTab("calendar"); });
-    document.body.appendChild(b);
+    grid.appendChild(b);
     const bar = document.getElementById("navBawah");
     if (bar && !bar.querySelector(".nb-item.aktif")) b.style.display = "none";
 }

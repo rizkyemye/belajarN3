@@ -1077,3 +1077,93 @@ body.dash #papan .nl-row:nth-child(1) .nm, body.dash #papan .nl-row:nth-child(2)
   }
 }
 .tombol-kalender { display: none; }
+
+/* ===== kartu sapaan bentuk BENTO (opsi C) =====
+   Kartu ini duduk di dalam header ungu, jadi kotak besarnya pakai gaya kaca
+   (bukan ungu lagi) supaya batasnya kelihatan. */
+.hero-sapaan .sapaan-bento { display: block; width: 100%; }
+.sb-atas { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-bottom: 12px; }
+.sb-grid { display: grid; grid-template-columns: 1.35fr 1fr; grid-template-rows: auto auto; gap: 9px; }
+.sb-kotak { position: relative; overflow: hidden; border-radius: 16px; padding: 12px;
+    background: #fff; border: 1px solid #e6ebf3; }
+.sb-besar { grid-row: span 2; color: #fff;
+    background: linear-gradient(160deg, rgba(255,255,255,.30), rgba(255,255,255,.12));
+    border: 1px solid rgba(255,255,255,.55);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 10px 22px rgba(30,20,80,.18);
+    backdrop-filter: blur(3px); }
+.sb-judul { font-size: 11px; font-weight: 800; color: #64748b; letter-spacing: .04em; }
+.sb-besar .sb-judul { color: rgba(255,255,255,.85); }
+.sb-angka { font-size: 40px; font-weight: 800; line-height: 1; margin-top: 6px; letter-spacing: -.03em; }
+.sb-angka2 { font-size: 19px; font-weight: 800; color: #0f172a; margin-top: 2px; }
+.sb-ket { display: block; font-size: 11.5px; font-weight: 700; opacity: .9; margin-top: 4px; }
+.sb-kanji { position: absolute; right: 6px; bottom: -10px; font-size: 50px; font-weight: 800;
+    color: rgba(79,70,229,.08); pointer-events: none; }
+.sb-besar .sb-kanji { color: rgba(255,255,255,.15); bottom: -14px; font-size: 62px; }
+@media (max-width: 700px) {
+  .sb-angka { font-size: 34px; }
+  .sb-kanji { font-size: 42px; }
+  .sb-besar .sb-kanji { font-size: 54px; }
+}
+
+/* ===== baris aksi dibuat ringkas: chip bisa di-swipe (HP), rapi di desktop ===== */
+/* Catatan: aturan lama memakai ".header-container .aksi-grid" (lebih spesifik),
+   jadi yang ini pun harus sama supaya menang. */
+.aksi-grid, .header-container .aksi-grid {
+    display: flex !important; flex-wrap: nowrap !important; gap: 8px; align-items: center;
+    overflow-x: auto; padding: 2px 2px 6px; scrollbar-width: none; -ms-overflow-style: none; }
+.aksi-grid::-webkit-scrollbar { display: none; }
+.aksi-grid .tombol-aksi, .header-container .aksi-grid .tombol-aksi {
+    flex: 0 0 auto !important; width: auto !important; white-space: nowrap;
+    border-radius: 999px; padding: 9px 14px; font-size: .82rem; margin: 0; }
+.aksi-grid .tombol-aksi.utama, .header-container .aksi-grid .tombol-aksi.utama {
+    padding: 10px 18px; font-size: .88rem; }
+.aksi-grid .tombol-kalender, .header-container .aksi-grid .tombol-kalender {
+    background: #fff; color: #4F46E5; border: 1px solid rgba(79,70,229,.22);
+    font-weight: 800; box-shadow: 0 4px 12px rgba(79,70,229,.10); }
+
+@media (min-width: 701px) {
+  .aksi-grid, .header-container .aksi-grid { flex-wrap: wrap !important; overflow: visible; }
+}
+
+/* tombol 漢字/かな mengambang: dimatikan (diminta リズ) */
+.tombol-kana { display: none !important; }
+@media (max-width: 700px) {
+  .tombol-kalender { position: static !important; inset: auto !important; }
+}
+
+/* ===== kartu sapaan model B: strip 7 hari ===== */
+.sb-pil { font-size: 11.5px; font-weight: 800; color: #4F46E5; background: #fff;
+    border-radius: 999px; padding: 5px 11px; white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(79,70,229,.16); }
+.sb-strip { display: flex; gap: 6px; margin-top: 12px; }
+.sb-hari { flex: 1; text-align: center; }
+.sb-hari span { display: block; font-size: 10px; font-weight: 800;
+    color: rgba(255,255,255,.75); margin-bottom: 5px; letter-spacing: .06em; }
+.hero-banner .sb-hari span { color: rgba(255,255,255,.75); }
+.sb-dot { height: 34px; border-radius: 11px; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: #94a3b8; background: rgba(255,255,255,.55); }
+.sb-dot.isi { background: #fff; color: #4F46E5; }
+.sb-dot.ini { background: #F8B2B2; color: #7a2e5e; box-shadow: 0 0 0 3px rgba(255,255,255,.55); }
+.sb-kaki { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 11px;
+    font-size: 12px; font-weight: 700; color: rgba(255,255,255,.9); }
+.sb-kaki b { color: #fff; }
+@media (max-width: 700px) {
+  .sb-dot { height: 30px; font-size: 12px; }
+  .sb-hari span { font-size: 9.5px; }
+}
+
+/* ===== banner dipadatkan (mengurangi tinggi, isi tetap sama) ===== */
+.hero-banner { padding: 20px 24px; }
+.sb-strip { margin-top: 9px; }
+.sb-dot { height: 30px; }
+.sb-kaki { margin-top: 9px; font-size: 11.5px; }
+@media (max-width: 700px) {
+  .hero-banner { padding: 15px 17px; }
+  .hero-judul { font-size: 1.02rem; }
+  .sb-atas { margin-bottom: 8px; }
+  .sb-strip { margin-top: 8px; gap: 5px; }
+  .sb-dot { height: 27px; font-size: 12px; border-radius: 9px; }
+  .sb-hari span { font-size: 9px; margin-bottom: 4px; }
+  .sb-kaki { margin-top: 8px; font-size: 11px; }
+  .sb-pil { font-size: 11px; padding: 4px 9px; }
+}
