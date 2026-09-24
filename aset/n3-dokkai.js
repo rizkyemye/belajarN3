@@ -63,8 +63,24 @@
                 }).join("")}
             </div>
             <div class="dokkai-tombol-baris">
-                <button class="tombol-kecil ${pakaiFurigana ? "terang" : ""}" id="btnFurigana">ふりがな ${pakaiFurigana ? "ON" : "OFF"}</button>
-                <button class="tombol-kecil ${tampilArti ? "terang" : ""}" id="btnArti">Artinya ${tampilArti ? "ON" : "OFF"}</button>
+                <span class="saklar-baris">
+                    <span class="saklar-label">ふりがな</span>
+                    <button class="saklar ${pakaiFurigana ? "nyala" : ""}" id="btnFurigana"
+                            role="switch" aria-checked="${pakaiFurigana ? "true" : "false"}" aria-label="Furigana (bacaan di atas kanji)">
+                        <span class="saklar-ikon saklar-c" aria-hidden="true">✓</span>
+                        <span class="saklar-ikon saklar-x" aria-hidden="true">✕</span>
+                        <span class="saklar-knob" aria-hidden="true"></span>
+                    </button>
+                </span>
+                <span class="saklar-baris">
+                    <span class="saklar-label">Artinya</span>
+                    <button class="saklar ${tampilArti ? "nyala" : ""}" id="btnArti"
+                            role="switch" aria-checked="${tampilArti ? "true" : "false"}" aria-label="Tampilkan arti bacaan">
+                        <span class="saklar-ikon saklar-c" aria-hidden="true">✓</span>
+                        <span class="saklar-ikon saklar-x" aria-hidden="true">✕</span>
+                        <span class="saklar-knob" aria-hidden="true"></span>
+                    </button>
+                </span>
                 <span class="dokkai-ukuran">
                     <button data-ukuran="kecil" class="${ukuran === "kecil" ? "aktif" : ""}" title="huruf kecil">小</button>
                     <button data-ukuran="sedang" class="${ukuran === "sedang" ? "aktif" : ""}" title="huruf sedang">中</button>
