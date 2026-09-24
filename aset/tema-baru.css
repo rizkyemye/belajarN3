@@ -1167,3 +1167,39 @@ body.dash #papan .nl-row:nth-child(1) .nm, body.dash #papan .nl-row:nth-child(2)
   .sb-kaki { margin-top: 8px; font-size: 11px; }
   .sb-pil { font-size: 11px; padding: 4px 9px; }
 }
+
+/* ===== banner: ukuran disesuaikan (mengikuti contoh リズ) ===== */
+.sb-atas { display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: nowrap; gap: 10px; margin-bottom: 10px; }
+.sb-atas .sapaan-nama { font-size: 1.08rem; line-height: 1.2; }
+.sb-pil { flex: 0 0 auto; }
+.sb-strip { gap: 6px; margin-top: 4px; }
+.sb-hari span { font-size: 10.5px; font-weight: 800; letter-spacing: .04em; margin-bottom: 5px; }
+.sb-dot { height: 34px; border-radius: 10px; font-size: 14px; }
+.sb-dot.isi { background: #fff; color: #4F46E5; }
+.sb-dot.ini { background: #F8B2B2; color: #7a2e5e; box-shadow: none;
+    outline: 2px solid rgba(255,255,255,.85); outline-offset: 1px; }
+.sb-kaki { margin-top: 10px; font-size: 12.5px; }
+@media (max-width: 700px) {
+  .sb-atas .sapaan-nama { font-size: 1.02rem; }
+  .sb-strip { gap: 5px; }
+  .sb-dot { height: 30px; font-size: 13px; border-radius: 9px; }
+  .sb-hari span { font-size: 9.5px; }
+  .sb-kaki { font-size: 11.5px; }
+}
+
+/* ===== SELARAS DENGAN LANDING OPSI 1 (PRO) — token saja, struktur tidak diubah ===== */
+:root {
+    --utama: #4f46e5;          /* indigo, sama dengan landing */
+    --utama-2: #7c3aed;
+    --utama-3: #db2777;
+    --bg: #eef2ff;             /* latar biru muda, sama dengan landing */
+    --garis: #c7d2fe;          /* garis kartu, sama dengan landing */
+    --teks: #312e81;           /* teks indigo gelap */
+    --teks-lembut: #475569;
+    --bayang: 0 1px 2px rgba(49,46,129,.06), 0 8px 24px rgba(49,46,129,.08);
+    --bayang-kecil: 0 1px 2px rgba(49,46,129,.06), 0 4px 14px rgba(49,46,129,.07);
+    --radius: 16px;
+}
+/* ponytail: hanya token yang disamakan. Kalau nanti ada bagian yang warnanya masih kolot,
+   cukup tambahkan aturan di bawah blok ini — jangan bongkar 1.200 baris CSS di atasnya. */
