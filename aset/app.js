@@ -638,7 +638,9 @@ function pasangNavBawah() {
         const m = /switchTab\s*\(\s*['"]([a-z]+)['"]/.exec(b.getAttribute("onclick") || "");
         const kunci = m ? m[1] : "";
         if (!kunci || kunci === "calendar") return;      // kalender tidak masuk nav bawah
-        tombol.push({ kunci: kunci, teks: (b.textContent || "").replace(/[^A-Za-z\u3040-\u30ff\u4e00-\u9fff ]/g, "").trim() });
+        let teks = (b.textContent || "").replace(/[^A-Za-z\u3040-\u30ff\u4e00-\u9fff ]/g, "").trim();
+        teks = teks.replace(/^[\u3040-\u30ff\u4e00-\u9fff]+\s*/, "").trim() || teks;   // buang kanji di depan (mis. "漢字 Kanji" -> "Kanji")
+        tombol.push({ kunci: kunci, teks: teks });
     });
     bar.innerHTML = tombol.map(function (t) {
         return '<button type="button" class="nb-item" data-tab="' + t.kunci + '">' +
