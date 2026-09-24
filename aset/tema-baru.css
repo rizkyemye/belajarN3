@@ -1203,3 +1203,90 @@ body.dash #papan .nl-row:nth-child(1) .nm, body.dash #papan .nl-row:nth-child(2)
 }
 /* ponytail: hanya token yang disamakan. Kalau nanti ada bagian yang warnanya masih kolot,
    cukup tambahkan aturan di bawah blok ini — jangan bongkar 1.200 baris CSS di atasnya. */
+
+/* ===== DOKKAI: saklar ON/OFF + bacaan & soal lebih rapi ===== */
+.saklar-baris { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
+.saklar-label { font-size: .86rem; font-weight: 600; color: var(--teks-lembut); }
+.saklar { position: relative; width: 58px; height: 32px; border: 0; padding: 0; border-radius: 999px;
+    background: #cbd5e1; cursor: pointer; flex: 0 0 auto;
+    transition: background .2s ease; -webkit-tap-highlight-color: transparent; }
+.saklar:focus-visible { outline: 3px solid #7c3aed; outline-offset: 2px; }
+.saklar.nyala { background: #7c3aed; }
+.saklar-knob { position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 50%;
+    background: #fff; box-shadow: 0 1px 3px rgba(15,23,42,.28); transition: transform .2s ease; }
+.saklar.nyala .saklar-knob { transform: translateX(26px); }
+.saklar-ikon { position: absolute; top: 0; height: 32px; display: grid; place-items: center;
+    font-size: 13px; font-weight: 800; line-height: 1; transition: opacity .2s ease; }
+.saklar-x { right: 9px; color: #64748b; }        /* ✕ saat mati */
+.saklar-c { left: 9px; color: #fff; }            /* ✓ saat hidup */
+.saklar .saklar-c { opacity: 0; } .saklar.nyala .saklar-c { opacity: 1; }
+.saklar .saklar-x { opacity: 1; } .saklar.nyala .saklar-x { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .saklar, .saklar-knob, .saklar-ikon { transition: none !important; }
+}
+/* bacaan: indent baris pertama ala Jepang, jarak baris lega, lebar nyaman dibaca */
+.dokkai-teks { max-width: 60ch; margin: 0 auto; padding: 0 !important; }
+.dokkai-teks p { text-indent: 1em !important; margin: 0 0 .85em !important; padding: 0 !important;
+    line-height: 2.05 !important; }
+.dokkai-judul { font-size: 1.28rem; padding-bottom: 8px; border-bottom: 1px solid var(--garis); margin-bottom: 6px; }
+.dokkai-bacaan .catatan { margin-bottom: 14px; }
+.dokkai-kotoba { margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--garis); }
+/* soal: tiap soal dipisah jelas, pilihan jadi baris yang enak dipencet */
+.dokkai-soal-item { margin-top: 20px; padding-top: 18px; border-top: 1px dashed var(--garis); }
+.dokkai-soal-item:first-of-type { margin-top: 6px; padding-top: 0; border-top: 0; }
+.dokkai-pertanyaan { font-size: 1.03rem; line-height: 1.95; margin-bottom: 10px; }
+.dokkai-soal-item .dokkai-opsi { display: flex; align-items: flex-start; gap: 10px; width: 100%;
+    text-align: left; padding: 12px 14px; margin: 7px 0; border: 1px solid var(--garis); border-radius: 10px;
+    background: var(--kartu); line-height: 1.7; cursor: pointer; transition: border-color .15s ease, background .15s ease; }
+.dokkai-soal-item .dokkai-opsi:hover { border-color: #7c3aed; }
+.dokkai-soal-item .dokkai-opsi .huruf { flex: 0 0 26px; width: 26px; height: 26px; border-radius: 50%;
+    display: grid; place-items: center; background: #f1eafe; color: #6d28d9; font-weight: 800; font-size: .82rem; }
+.dokkai-soal-item .dokkai-opsi.dipilih { border-color: #7c3aed; background: #f7f2ff; }
+.dokkai-bahas { margin-top: 10px; padding: 12px 14px; border-radius: 10px; background: #f8f6ff;
+    border: 1px solid #e5dbff; line-height: 1.8; }
+@media (max-width: 700px) {
+  .dokkai-teks p { line-height: 1.95 !important; }
+  .dokkai-soal-item .dokkai-opsi { padding: 11px 12px; }
+  .saklar { width: 54px; height: 30px; }
+  .saklar-knob { width: 22px; height: 22px; }
+  .saklar.nyala .saklar-knob { transform: translateX(24px); }
+}
+
+/* ===== DOKKAI: kartu kepala, kartu bacaan & judul — disamakan dengan bagian Kanji =====
+   Pakai variabel tema (--kartu/--garis/--teks) jadi ikut berubah baik di tema V1 maupun V2. */
+.dokkai-header, .kartu.dokkai-header, .dokkai-header-card {
+    background: var(--kartu) !important; border: 1px solid var(--garis) !important;
+    border-radius: var(--radius) !important; padding: 18px !important;
+    box-shadow: var(--bayang) !important; margin-bottom: 14px !important;
+}
+.dokkai-header h2 { margin: 0 0 4px !important; font-size: 1.15rem !important; color: var(--teks) !important; }
+.dokkai-header .catatan { margin: 0 0 14px !important; font-size: .85rem !important; color: var(--teks-lembut) !important; }
+.dokkai-tombol-baris { gap: 14px !important; row-gap: 6px !important; padding-top: 4px; }
+.dokkai-ukuran { margin-left: auto; display: inline-flex; gap: 4px; }
+.dokkai-ukuran button { min-width: 36px; height: 34px; border-radius: 9px; border: 1px solid var(--garis);
+    background: var(--kartu); color: var(--teks-lembut); font-weight: 700; cursor: pointer; }
+.dokkai-ukuran button.aktif { background: var(--utama); border-color: var(--utama); color: #fff; }
+
+/* chip hari: dibiarkan memakai gaya dasar (sudah berupa bulatan angka seperti contoh リズ) */
+
+/* kartu bacaan */
+.dokkai-bacaan { background: var(--kartu) !important; border: 1px solid var(--garis) !important;
+    border-radius: var(--radius) !important; padding: 22px 24px !important; box-shadow: var(--bayang) !important; }
+/* judul cerita */
+.dokkai-judul { font-size: 1.4rem !important; font-weight: 800 !important; color: var(--teks) !important;
+    line-height: 1.5 !important; margin: 0 0 8px !important; padding-bottom: 12px !important;
+    border-bottom: 2px solid var(--garis) !important; }
+.dokkai-bacaan .catatan { font-size: .86rem !important; color: var(--teks-lembut) !important; margin: 0 0 18px !important; }
+.dokkai-kotoba .label-kecil { display: block; margin-bottom: 8px; }
+.dokkai-kata { background: var(--bg) !important; border: 1px solid var(--garis) !important;
+    border-radius: 999px !important; padding: 6px 12px !important; font-size: .84rem !important; }
+/* kartu soal */
+.dokkai-soal { background: var(--kartu) !important; border: 1px solid var(--garis) !important;
+    border-radius: var(--radius) !important; padding: 22px 24px !important; box-shadow: var(--bayang) !important; margin-top: 14px !important; }
+.dokkai-soal h3 { margin: 0 0 6px !important; font-size: 1.1rem !important; color: var(--teks) !important; }
+@media (max-width: 700px) {
+  .dokkai-bacaan, .dokkai-soal { padding: 17px 16px !important; }
+  .dokkai-judul { font-size: 1.2rem !important; }
+  .dokkai-header { padding: 15px !important; }
+  .dokkai-ukuran button { min-width: 32px; height: 32px; }
+}
