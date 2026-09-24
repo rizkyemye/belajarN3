@@ -764,7 +764,42 @@ function getIntensityLevel(seconds) {
     return 4;                       // >= 1 jam
 }
 
+/* PEMULIHAN KALENDER — data menit belajar tersimpan per nama pengguna:
+   "study_time_<user>_YYYY-MM-DD". Kalau nama pengguna di peranti berubah
+   (mis. dulu nama tampilan, sekarang nama akun), datanya seolah hilang —
+   padahal masih ada di kunci lama. Di sini dipindahkan sekali saja. */
+function pulihkanDataKalender() {
+    try {
+        // WAJIB sama dengan yang dipakai getFormattedDateKey(): variabel currentUser.
+        // Kalau belum login (currentUser kosong), jangan dipindahkan — nanti jadi kunci kosong.
+        const nama = String(currentUser || "").trim();
+        if (!nama) return;
+        if (localStorage.getItem("n3_pulih_kalender") === "1") return;
+        const awalan = "study_time_" + nama + "_";
+        const punyaSendiri = Object.keys(localStorage).some(function (k) { return k.indexOf(awalan) === 0; });
+        if (!punyaSendiri) {
+            const lain = Object.keys(localStorage).filter(function (k) {
+                return /^study_time_.+_\d{4}-\d{2}-\d{2}$/.test(k);
+            });
+            let pindah = 0;
+            lain.forEach(function (k) {
+                const pisah = k.lastIndexOf("_");
+                const tanggal = k.slice(pisah + 1);
+                const baru = awalan + tanggal;
+                const nilai = localStorage.getItem(k);
+                if (!localStorage.getItem(baru) && nilai) {
+                    localStorage.setItem(baru, nilai);
+                    pindah++;
+                }
+            });
+            if (pindah) console.log("kalender dipulihkan:", pindah, "hari untuk", nama);
+        }
+        localStorage.setItem("n3_pulih_kalender", "1");
+    } catch (e) {}
+}
+
 function renderCalendar() {
+    pulihkanDataKalender();
     const year = currentDateObj.getFullYear();
     const month = currentDateObj.getMonth();
 
