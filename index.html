@@ -104,6 +104,28 @@
     .band .in{grid-template-columns:repeat(2,1fr);gap:26px}
     .close{padding:30px;border-radius:18px}
   }
+  /* HP: baris nav boleh melipat, kalau tidak ia meluber keluar layar (bikin bisa digeser ke samping) */
+  @media (max-width:720px){
+    .nav{position:static}
+    .nav .in{flex-wrap:wrap;height:auto;padding:12px 0;gap:6px 10px}
+    .logo{width:100%}
+    .nav .sp{display:none}
+    .nav a.l{font-size:.86rem;padding:6px 8px}
+    .nav .btn{min-height:40px;padding:0 16px;font-size:.88rem;margin-left:auto}
+    .wrap{padding:0 18px}
+    h1{font-size:1.95rem}
+    .lead{font-size:1rem}
+    .cta .btn{width:100%}
+    .close{padding:24px;border-radius:16px}
+    section{padding:48px 0}
+    .hero{padding:28px 0 44px}
+    h2{font-size:1.65rem}
+  }
+  @media (max-width:400px){
+    h1{font-size:1.75rem}
+    .mini{gap:14px}
+    .mock .body{padding:14px}
+  }
 </style>
 </head>
 <body>
