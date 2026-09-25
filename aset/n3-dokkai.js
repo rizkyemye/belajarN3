@@ -92,7 +92,7 @@
         <div class="kartu dokkai-bacaan">
             <div class="dokkai-judul">${pakaiFurigana ? hari.judul_furi || esc(hari.judul) : esc(hari.judul)}</div>
             <div class="catatan">Hari ${hari.day} · ${esc(hari.tema_jp)}（${esc(hari.tema_id)}）</div>
-            <div class="dokkai-teks ukuran-${ukuran}">${(pakaiFurigana ? hari.furi : esc(hari.teks)).replace(/\n\n/g, "</p><p>").replace(/^/, "<p>") + "</p>"}</div>
+            <div class="dokkai-teks ukuran-${ukuran}">${(pakaiFurigana && hari.furi ? hari.furi : esc(hari.teks)).replace(/\n\n/g, "</p><p>").replace(/^/, "<p>") + "</p>"}</div>
             ${hari.kotoba && hari.kotoba.length ? `<div class="dokkai-kotoba">
                 <div class="label-kecil">KATA PENTING</div>
                 ${hari.kotoba.map((k) => `<span class="dokkai-kata"><b>${esc(k.kata)}</b> ${esc(k.arti)}</span>`).join("")}
@@ -209,6 +209,8 @@
         }
         const chip = document.querySelector(`#isiDokkai .dokkai-chip[data-hari="${hariAktif}"]`);
         if (chip && !chip.classList.contains("selesai")) { chip.classList.add("selesai"); chip.innerHTML += " ✓"; }
+        // kartu tugas harian di bawah kalender ikut diperbarui
+        if (typeof window.renderTugasHari === "function") { window.renderTugasHari(hariAktif); }
     }
 
     function muat() {
