@@ -1714,3 +1714,17 @@ select.study-select option:disabled { color: #94a3b8; }
 @keyframes ssDenyut { 0% { box-shadow: 0 0 0 0 rgba(79,70,229,.45); transform: translateY(-1px) scale(1.012); }
                      100% { box-shadow: 0 6px 16px rgba(79,70,229,.12); transform: none; } }
 select.study-select.pilih { animation: ssDenyut .5s ease-out; }
+
+/* ====== KARTU TUGAS: baris "ada N hari ... belum selesai" ====== */
+.tugas-hari .tugas-sisa {
+    display: inline-block; margin-top: 7px; padding: 4px 10px;
+    font-size: .76rem !important; font-weight: 700 !important; border-radius: 999px;
+    background: #eef2f7; color: #475569;
+}
+.tugas-hari .tugas-sisa.ada { background: #fee2e2; color: #b91c1c; }
+.tugas-hari .tugas.beres .tugas-sisa:not(.ada) { background: #dcfce7; color: #047857; }
+.tugas-hari .tugas.beres .tugas-sisa.ada { background: #fee2e2; color: #b91c1c; }   /* peringatan tetap merah walau kartunya hijau */
+@media (prefers-reduced-motion: no-preference) {
+    .tugas-hari .tugas-sisa.ada { animation: sisaDenyut 2.6s ease-in-out infinite; }
+}
+@keyframes sisaDenyut { 0%, 100% { transform: none; } 50% { transform: translateY(-1px) scale(1.015); } }
