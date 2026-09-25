@@ -1290,3 +1290,19 @@ body.dash #papan .nl-row:nth-child(1) .nm, body.dash #papan .nl-row:nth-child(2)
   .dokkai-header { padding: 15px !important; }
   .dokkai-ukuran button { min-width: 32px; height: 32px; }
 }
+
+/* ===== tanda "Hari ini sudah selesai" (tab Belajar) ===== */
+.tanda-selesai { display: flex; align-items: flex-start; gap: 12px; margin: 0 0 14px;
+    padding: 14px 16px; border-radius: var(--radius);
+    background: #ecfdf5 !important; border: 1px solid #a7f3d0 !important;
+    box-shadow: var(--bayang-kecil); animation: naik 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.tanda-selesai .ts-ikon { flex: 0 0 30px; width: 30px; height: 30px; border-radius: 50%;
+    display: grid; place-items: center; background: #047857; color: #fff; font-weight: 800; font-size: .95rem; }
+.tanda-selesai .ts-teks { display: block; line-height: 1.5; }
+.tanda-selesai .ts-teks b { display: block; color: #065f46 !important; font-size: 1rem; }
+.tanda-selesai .ts-teks span { display: block; color: #047857 !important; font-size: .85rem; }
+@media (max-width: 700px) {
+  .tanda-selesai { padding: 12px 13px; gap: 10px; }
+  .tanda-selesai .ts-teks b { font-size: .95rem; }
+}
+@media (prefers-reduced-motion: reduce) { .tanda-selesai { animation: none !important; } }
