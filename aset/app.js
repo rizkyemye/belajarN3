@@ -675,6 +675,63 @@ function pasangTombolKalender() {
     grid.appendChild(b);
     const bar = document.getElementById("navBawah");
     if (bar && !bar.querySelector(".nb-item.aktif")) b.style.display = "none";
+    pasangMenuAksi();
+}
+
+/* Baris tombol aksi (Quiz/Tulis/Dashboard/Review/Kalender/Profil) dijadikan MENU MELAYANG
+   di sudut kanan bawah — tombol bulat yang kalau dipencet membuka daftar menu.
+   Barisnya TIDAK dipindah-pindah: cuma diubah jadi <popover> bawaan browser, jadi semua
+   tautan, onclick, dan penambahan tombol Kalender tetap jalan seperti sebelumnya.
+   Kalau browsernya belum dukung popover, baris lama dibiarkan apa adanya (tidak rusak). */
+function pasangMenuAksi() {
+    const grid = document.querySelector(".aksi-grid");
+    if (!grid) return;
+    // Desktop TIDAK diubah: baris tombol tetap seperti semula. Menu melayang hanya untuk HP.
+    const hp = (typeof matchMedia === "function") && matchMedia("(max-width: 700px)").matches;
+    if (!hp || typeof grid.showPopover !== "function") { lepasMenuAksi(); return; }
+    if (grid.dataset.menuAksi) return;
+    grid.dataset.menuAksi = "1";
+    grid.id = "menuAksi";
+    grid.setAttribute("popover", "auto");
+    grid.setAttribute("aria-label", "Menu lain");
+
+    const fab = document.createElement("button");
+    fab.type = "button";
+    fab.id = "fabAksi";
+    fab.className = "fab-aksi";
+    fab.setAttribute("popovertarget", "menuAksi");
+    fab.setAttribute("aria-label", "Menu lain: kuis, tulis kanji, dashboard, review, kalender, ganti profil");
+    fab.innerHTML = '<span class="fab-tanda" aria-hidden="true">⋯</span><span class="fab-silang" aria-hidden="true">✕</span>';
+    document.body.appendChild(fab);
+
+    grid.addEventListener("toggle", function (e) {
+        fab.classList.toggle("terbuka", e.newState === "open");
+    });
+    // tanda buka/tutup (jaga-jaga kalau peristiwa toggle belum jalan di browser tertentu)
+    fab.addEventListener("click", function () {
+        setTimeout(function () { fab.classList.toggle("terbuka", grid.matches(":popover-open")); }, 0);
+    });
+    Array.from(grid.children).forEach(function (el, i) { el.style.setProperty("--i", i); });
+}
+/* Balikkan ke baris tombol biasa (dipakai kalau layar jadi lebar / desktop). */
+function lepasMenuAksi() {
+    const grid = document.querySelector(".aksi-grid");
+    if (!grid || !grid.dataset.menuAksi) return;
+    delete grid.dataset.menuAksi;
+    grid.removeAttribute("popover");
+    grid.removeAttribute("aria-label");
+    grid.removeAttribute("id");
+    const fab = document.getElementById("fabAksi");
+    if (fab) fab.remove();
+}
+window.pasangMenuAksi = pasangMenuAksi;
+window.lepasMenuAksi = lepasMenuAksi;
+
+// ikut berubah kalau layar diputar / diubah ukurannya
+if (typeof matchMedia === "function") {
+    const mqAksi = matchMedia("(max-width: 700px)");
+    if (mqAksi.addEventListener) mqAksi.addEventListener("change", pasangMenuAksi);
+    else if (mqAksi.addListener) mqAksi.addListener(pasangMenuAksi);
 }
 window.perbaruiNavBawah = perbaruiNavBawah;
 window.pasangNavBawah = pasangNavBawah;
@@ -838,8 +895,9 @@ function renderTugasHari(dayNum) {
         kotak = document.createElement("div");
         kotak.id = "tugasHariBox";
         kotak.className = "tugas-hari";
+        const acuan = document.getElementById("stripHari") || kalender;   // urutan: kalender → strip → kartu tugas
         kotak.setAttribute("aria-label", "Daftar tugas hari ini");
-        kalender.parentElement.insertBefore(kotak, kalender.nextSibling);
+        acuan.after(kotak);
     }
     const sesiBeres = ["pagi", "siang", "malam"].filter(function (s) { return isSessionCompleted(dayNum, s); });
     const pola = daftarPolaHari(dayNum);
@@ -890,8 +948,8 @@ function renderStripHari() {
         strip.id = "stripHari";
         strip.className = "strip-hari";
         strip.setAttribute("aria-label", "Pilih tanggal");
-        kalender.parentElement.insertBefore(strip, kalender);
     }
+    kalender.after(strip);          // strip hari duduk DI BAWAH kartu kalender
     const nama = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
     const kini = new Date(); kini.setHours(0, 0, 0, 0);
     let isi = "";
@@ -903,11 +961,16 @@ function renderStripHari() {
             ? getDaySeconds(t.getFullYear(), t.getMonth(), t.getDate()) : 0;
         const menit = Math.floor(detik / 60);
         const tandaMenit = menit > 0 ? (menit >= 60 ? Math.floor(menit / 60) + "j " + (menit % 60) + "m" : menit + "m") : "–";
-        isi += '<button class="sh-item' + (ini ? " ini" : "") + '" data-tgl="' + t.getFullYear() + "-" +
+        const persen = Math.max(0, Math.min(100, Math.round((menit / 30) * 100)));   // target harian 30 menit
+        isi += '<button class="sh-item' + (ini ? " ini" : "") + (menit > 0 ? " ada" : "") +
+               '" style="--i:' + (i + 3) + ";--p:" + persen + '"' +
+               ' data-tgl="' + t.getFullYear() + "-" +
                String(t.getMonth() + 1).padStart(2, "0") + "-" + String(t.getDate()).padStart(2, "0") + '">' +
+               '<span class="sh-kilau" aria-hidden="true"></span>' +
                '<span class="sh-tgl">' + t.getDate() + "</span>" +
                '<span class="sh-hari">' + nama[t.getDay()] + "</span>" +
-               '<span class="sh-menit">' + tandaMenit + "</span></button>";
+               '<span class="sh-menit">' + tandaMenit + "</span>" +
+               '<span class="sh-bar" aria-hidden="true"><i></i></span></button>';
     }
     strip.innerHTML = isi + '<span class="sh-panah" aria-hidden="true">»</span>';
     const aktif = strip.querySelector(".sh-item.ini");
@@ -1507,3 +1570,4 @@ function pasangPopupBunpou() {
         }
     });
 }
+
