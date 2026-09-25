@@ -1066,6 +1066,28 @@ function updateStudySessionButtonsState(dayNum) {
         statusMalam.textContent = "🔒 Selesaikan Siang";
         btnMalam.onclick = () => alert("Selesaikan Sesi Siang terlebih dahulu!");
     }
+
+    tandaHariSelesai(dayNum, pagiDone && siangDone && malamDone);
+}
+
+/* Tanda "hari ini sudah selesai" di tab Belajar — tampil kalau KETIGA sesi hari itu beres.
+   Elemennya dibuat dari JS supaya tidak perlu menyentuh HTML tiga tingkat. */
+function tandaHariSelesai(dayNum, semuaSelesai) {
+    let tanda = document.getElementById("tandaHariSelesai");
+    if (!tanda) {
+        const acuan = document.getElementById("studyBtnPagi");
+        const induk = acuan ? (acuan.closest(".session-buttons-list") || acuan.parentElement) : null;
+        if (!induk) return;
+        tanda = document.createElement("div");
+        tanda.id = "tandaHariSelesai";
+        tanda.className = "tanda-selesai";
+        tanda.setAttribute("role", "status");
+        tanda.innerHTML = '<span class="ts-ikon" aria-hidden="true">✓</span>' +
+            '<span class="ts-teks"><b>Hari ini sudah selesai!</b>' +
+            '<span>Ketiga sesi hari ke-' + dayNum + ' beres semua. Istirahat dulu, besok lanjut ✨</span></span>';
+        induk.insertBefore(tanda, induk.firstChild);
+    }
+    tanda.style.display = semuaSelesai ? "" : "none";
 }
 
 function startStudySession(sessionName, dayNum) {
