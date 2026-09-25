@@ -234,6 +234,8 @@
                 // default = hari terakhir yang sudah kebuka (hari yang sedang dipelajari sekarang)
                 hariAktif = daftar.indexOf(terakhir) !== -1 ? terakhir : daftar[daftar.length - 1];
                 render();
+                // data dokkai baru siap → hitungan "ada N hari dokkainya belum selesai" di kartu tugas ikut segar
+                if (typeof window.segarkanTugasHari === "function") window.segarkanTugasHari();
             })
             .catch((e) => {
                 console.warn("[dokkai] gagal muat:", e);
@@ -245,5 +247,13 @@
     window.initDokkaiUI = function () {
         if (!sudahMuat) { muat(); return; }
         if (semua) render();
+    };
+
+    // daftar hari yang bacaan dokkainya sudah tersedia & sudah kebuka (untuk hitungan kartu tugas)
+    window.hariDokkaiAda = function () {
+        try {
+            if (!sudahMuat) { muat(); return []; }   // hitungan menyusul begitu datanya siap
+            return daftarHariTerbuka();
+        } catch (e) { return []; }
     };
 })();
