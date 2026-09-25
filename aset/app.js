@@ -590,8 +590,8 @@ function injectBunpouLegend() {
     else head.appendChild(div);
 }
 
-if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(function () { pasangNavBawah(); pasangTombolKalender(); pasangPilTab(); pasangRailAlat(); }, 200); });
-else setTimeout(function () { pasangNavBawah(); pasangTombolKalender(); pasangPilTab(); pasangRailAlat(); }, 200);
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(function () { pasangNavBawah(); pasangTombolKalender(); pasangPilTab(); pasangRailAlat(); pasangKakiHalaman(); }, 200); });
+else setTimeout(function () { pasangNavBawah(); pasangTombolKalender(); pasangPilTab(); pasangRailAlat(); pasangKakiHalaman(); }, 200);
 
 function initBunpouUI() {
     const searchEl = document.getElementById("bunpouSearch");
@@ -709,6 +709,15 @@ function pisahLabelAlat() {
 /* Desktop: tombol alat (Quiz/Tulis/Dashboard/Review/Profil) dipindah ke RAIL IKON sisi kiri
    (opsi G pilihan リズ). Di HP railnya dibuang & tombolnya balik ke tempat asal → jadi menu melayang. */
 const ASAL_AKSI = { induk: null, sebelum: null };
+/* Kaki halaman dipindah KE DALAM .app-container — soalnya <body> itu flex baris,
+   jadi kalau dibiarkan di luar dia nyempil di samping konten (bukan di bawahnya). */
+function pasangKakiHalaman() {
+    const kaki = document.querySelector(".kaki-app");
+    const app = document.querySelector(".app-container");
+    if (kaki && app && kaki.parentElement !== app) app.appendChild(kaki);
+}
+window.pasangKakiHalaman = pasangKakiHalaman;
+
 function pasangRailAlat() {
     const grid = document.querySelector(".aksi-grid");
     if (!grid) return;
