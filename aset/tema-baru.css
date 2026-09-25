@@ -1437,3 +1437,129 @@ body.dash #papan .nl-row:nth-child(1) .nm, body.dash #papan .nl-row:nth-child(2)
   .sh-item.ini .sh-menit { color: rgba(255,255,255,.92) !important; }
   .sh-panah { flex: 0 0 20px !important; }
 }
+
+/* ====== STRIP HARI: animasi (entrance berjenjang, denyut hari ini, bar kemajuan) ====== */
+@media (max-width: 700px) {
+  .strip-hari { position: relative; overflow-x: auto; overflow-y: hidden; }
+  .sh-item { position: relative; overflow: hidden; will-change: transform;
+      transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s ease, background .22s ease; }
+  .sh-item:active { transform: scale(.94); }
+  .sh-item .sh-bar { position: absolute; left: 12px; right: 12px; bottom: 6px; height: 3px;
+      border-radius: 99px; background: rgba(79,70,229,.16); overflow: hidden; }
+  .sh-item .sh-bar i { display: block; height: 100%; width: 0; border-radius: 99px;
+      background: linear-gradient(90deg, #6366f1, #a855f7); }
+  .sh-item.ini .sh-bar { background: rgba(255,255,255,.28); }
+  .sh-item.ini .sh-bar i { background: #fff; }
+  .sh-item .sh-kilau { position: absolute; inset: 0; pointer-events: none; opacity: 0; border-radius: inherit;
+      background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.85) 50%, transparent 65%); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .sh-item { animation: shMasuk .52s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--i,0) * 55ms); }
+    .sh-item.ini { animation: shMasuk .52s cubic-bezier(.2,.8,.2,1) both, shDenyut 3s ease-in-out 1.1s infinite; }
+    .sh-item .sh-bar i { animation: shIsi .9s cubic-bezier(.2,.8,.2,1) forwards; animation-delay: calc(var(--i,0) * 55ms + .35s); }
+    .sh-item.ini .sh-tgl { animation: shPop .6s cubic-bezier(.2,1.4,.4,1) .55s both; }
+    .sh-item.ini .sh-kilau { animation: shKilau 4.6s ease-in-out 1.1s infinite; }
+    .sh-item.ada .sh-menit::before { content: "✦"; margin-right: 3px; opacity: .75; }
+    .sh-item:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 8px 18px rgba(79,70,229,.18); }
+    @media (hover: none) { .sh-item:hover { transform: none; box-shadow: none; } }
+  }
+}
+
+@keyframes shMasuk { from { opacity: 0; transform: translateY(14px) scale(.9); } to { opacity: 1; transform: none; } }
+@keyframes shPop { 0% { transform: scale(.6); } 60% { transform: scale(1.16); } 100% { transform: scale(1); } }
+@keyframes shDenyut { 0%, 100% { box-shadow: 0 10px 22px rgba(79,70,229,.32); } 50% { box-shadow: 0 14px 30px rgba(79,70,229,.5); } }
+@keyframes shKilau { 0% { opacity: 0; transform: translateX(-120%); } 12% { opacity: .75; } 30% { opacity: 0; transform: translateX(120%); } 100% { opacity: 0; transform: translateX(120%); } }
+@keyframes shIsi { from { width: 0; } to { width: calc(var(--p,0) * 1%); } }
+.sh-item .sh-bar i { width: calc(var(--p,0) * 1%); }   /* keadaan akhir (kalau animasi dimatikan) */
+
+/* ====== STRIP HARI: sentuhan akhir (geser berhenti rapi + latar bergradasi) ====== */
+@media (max-width: 700px) {
+  .strip-hari { scroll-snap-type: x proximity;
+      background: linear-gradient(180deg, #ffffff 0%, #f7f8ff 100%) !important; }
+  .sh-item { scroll-snap-align: center; }
+  .sh-item.ini::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      background: radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,.35), transparent 60%); }
+  .sh-item.ada:not(.ini) .sh-tgl { color: var(--utama); }
+}
+
+/* ====== MENU MELAYANG (tombol aksi dipindah ke sudut kanan bawah) ====== */
+.fab-aksi {
+    position: fixed; right: 16px; bottom: 24px; z-index: 60;
+    width: 58px; height: 58px; border: 0; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; padding: 0;
+    font: inherit; font-size: 1.5rem; line-height: 1; color: #fff;
+    background: linear-gradient(140deg, #6366f1, #4338ca);
+    box-shadow: 0 10px 24px rgba(79,70,229,.38), 0 2px 6px rgba(15,23,42,.18);
+    transition: transform .2s cubic-bezier(.2,.8,.2,1), box-shadow .2s ease;
+    touch-action: manipulation;
+}
+.fab-aksi .fab-silang { display: none; font-size: 1.1rem; }
+.fab-aksi .fab-tanda { display: block; }
+.fab-aksi.terbuka .fab-tanda { display: none; }
+.fab-aksi.terbuka .fab-silang { display: block; }
+.fab-aksi:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 16px 30px rgba(79,70,229,.48); }
+.fab-aksi:active { transform: scale(.93); }
+.fab-aksi:focus-visible { outline: 3px solid #312e81; outline-offset: 3px; }
+
+/* panel menu (popover bawaan browser → tutup otomatis saat klik di luar / tekan Esc) */
+.aksi-grid[popover]:popover-open,
+.header-container .aksi-grid[popover]:popover-open {
+    position: fixed !important; inset: auto 16px 94px auto !important; margin: 0 !important;
+    width: min(76vw, 270px) !important; max-height: 70vh; overflow: auto;
+    display: grid !important; grid-template-columns: 1fr !important;
+    gap: 6px !important; padding: 10px !important;
+    border: 1px solid var(--garis) !important; border-radius: 20px !important;
+    background: var(--kartu) !important;
+    box-shadow: 0 18px 40px rgba(15,23,42,.22) !important;
+}
+.aksi-grid[popover] .tombol-aksi,
+.header-container .aksi-grid[popover] .tombol-aksi {
+    grid-column: auto !important; width: 100%; text-align: left; justify-content: flex-start;
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px !important; border-radius: 14px !important;
+    font-size: .95rem !important; font-weight: 600;
+    background: var(--bg) !important; border: 1px solid transparent !important;
+    color: var(--teks) !important; box-shadow: none !important;
+}
+.aksi-grid[popover] .tombol-aksi::after {
+    content: "›"; margin-left: auto; font-size: 1.15rem; font-weight: 700; color: var(--utama); opacity: .55;
+}
+.aksi-grid[popover] .tombol-aksi:hover {
+    background: #fff !important; border-color: var(--garis) !important;
+    transform: translateX(3px); box-shadow: 0 6px 14px rgba(79,70,229,.12) !important;
+}
+.aksi-grid[popover] .tombol-aksi:active { transform: scale(.98); }
+.aksi-grid[popover] .tombol-aksi.utama,
+.aksi-grid[popover] .aksi-grid .utama {
+    background: linear-gradient(120deg, #6366f1, #4338ca) !important;
+    color: #fff !important; font-weight: 700;
+}
+.aksi-grid[popover] .tombol-aksi.utama::after { color: #fff; opacity: .85; }
+
+@keyframes fabApung { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes fabMuncul { from { opacity: 0; transform: translateY(16px) scale(.82); } to { opacity: 1; transform: none; } }
+@keyframes menuMasuk { from { opacity: 0; transform: translateY(14px) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes barangMasuk { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: no-preference) {
+    .fab-aksi { animation: fabMuncul .5s cubic-bezier(.2,.9,.3,1.2) .2s both, fabApung 3.8s ease-in-out 1s infinite; }
+    .fab-aksi.terbuka { animation: none; transform: none; }
+    .aksi-grid[popover]:popover-open { animation: menuMasuk .3s cubic-bezier(.2,.8,.2,1); }
+    .aksi-grid[popover]:popover-open .tombol-aksi {
+        animation: barangMasuk .34s cubic-bezier(.2,.8,.2,1) both;
+        animation-delay: calc(var(--i,0) * 45ms + 40ms);
+    }
+    .aksi-grid[popover] .tombol-aksi { transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease; }
+}
+@media (max-width: 700px) {
+    .fab-aksi { right: 14px; bottom: 88px; }         /* di atas tab bawah */
+    .aksi-grid[popover]:popover-open, .header-container .aksi-grid[popover]:popover-open { inset: auto 14px 152px auto !important; }
+}
+
+/* ===== STRIP HARI sekarang DI BAWAH kartu kalender: jaraknya dibalik ===== */
+.strip-hari { margin: 12px 0 0 !important; }
+
+/* Panah penting: tutup rapat saat menu belum dibuka.
+   (aturan tema lain memakai display:grid !important, jadi UA yang menyembunyikan popover kalah) */
+.aksi-grid[popover]:not(:popover-open),
+.header-container .aksi-grid[popover]:not(:popover-open) { display: none !important; }
