@@ -798,8 +798,126 @@ function pulihkanDataKalender() {
     } catch (e) {}
 }
 
+/* ====== KARTU TUGAS HARIAN (tampil di bawah kalender) ====== */
+const KUNCI_BUNPOU_BUKA = "n3_bunpou_buka";     // {"pola": 1} — pola bunpou yang sudah dibuka
+
+function bunpouDibuka() {
+    try { return JSON.parse(localStorage.getItem(KUNCI_BUNPOU_BUKA) || "{}") || {}; } catch (e) { return {}; }
+}
+
+function catatBunpouDibuka(pola) {
+    pola = String(pola || "").trim();
+    if (!pola) return;
+    const d = bunpouDibuka();
+    if (d[pola]) return;
+    d[pola] = 1;
+    try { localStorage.setItem(KUNCI_BUNPOU_BUKA, JSON.stringify(d)); } catch (e) {}
+    renderTugasHari(currentActiveDay);
+}
+
+function daftarPolaHari(dayNum) {
+    const set = new Set();
+    (typeof bunpouItems === "function" ? bunpouItems() : []).forEach(function (it) {
+        if (Number(it.day) === Number(dayNum) && it.pattern) set.add(it.pattern);
+    });
+    return [...set];
+}
+
+function dokkaiSelesai(dayNum) {
+    try {
+        const h = JSON.parse(localStorage.getItem("n3_dokkai_hasil") || "{}") || {};
+        return !!h[dayNum];
+    } catch (e) { return false; }
+}
+
+function renderTugasHari(dayNum) {
+    const kalender = document.getElementById("calendarSection");
+    if (!kalender || !dayNum) return;
+    let kotak = document.getElementById("tugasHariBox");
+    if (!kotak) {
+        kotak = document.createElement("div");
+        kotak.id = "tugasHariBox";
+        kotak.className = "tugas-hari";
+        kotak.setAttribute("aria-label", "Daftar tugas hari ini");
+        kalender.parentElement.insertBefore(kotak, kalender.nextSibling);
+    }
+    const sesiBeres = ["pagi", "siang", "malam"].filter(function (s) { return isSessionCompleted(dayNum, s); });
+    const pola = daftarPolaHari(dayNum);
+    const dibuka = bunpouDibuka();
+    const polaBeres = pola.filter(function (p) { return dibuka[p]; });
+    const dk = dokkaiSelesai(dayNum);
+    const elJlpt = document.getElementById("jlptCountdown");
+    const sisaHari = elJlpt ? String(elJlpt.textContent || "").trim() : "";
+
+    const kartu = [
+        { ikon: "📚", judul: "Sesi Pagi · Siang · Malam",
+          sub: sesiBeres.length === 3 ? "Ketiga sesi sudah selesai" :
+               (sesiBeres.length ? sesiBeres.length + " dari 3 sesi sudah selesai" : "Belum ada sesi yang dikerjakan"),
+          beres: sesiBeres.length === 3 },
+        { ikon: "📐", judul: "Bunpou hari ini",
+          sub: !pola.length ? "Belum ada bunpou untuk hari ini" :
+               (polaBeres.length === pola.length ? "Semua pola sudah dibaca" :
+                polaBeres.length + " dari " + pola.length + " pola sudah dibaca — belum selesai dibaca"),
+          beres: pola.length > 0 && polaBeres.length === pola.length },
+        { ikon: "📖", judul: "Dokkai hari ini",
+          sub: dk ? "Sudah dikerjakan" : "Masih belum dikerjakan", beres: dk },
+        { ikon: "🌸", judul: "Semangat ya buat lulus Ujian JLPT-nya!",
+          sub: sisaHari ? "Sisa " + sisaHari + " hari menuju ujian — pelan-pelan aja, yang penting rutin" :
+                          "Pelan-pelan aja, yang penting rutin", semangat: true }
+    ];
+
+    kotak.innerHTML = kartu.map(function (k) {
+        const kelas = k.semangat ? "tugas semangat" : (k.beres ? "tugas beres" : "tugas belum");
+        const tanda = k.semangat ? "🎌" : (k.beres ? "✓" : "!");
+        const label = k.semangat ? "Motivasi" : (k.judul.split(" ")[0] === "Sesi" ? "Sesi" : (k.judul.split(" ")[0] === "Bunpou" ? "Bunpou" : "Dokkai"));
+        return '<div class="' + kelas + '" role="status">' +
+               '<span class="tugas-label">' + label + "</span>" +
+               '<span class="tugas-ikon" aria-hidden="true">' + k.ikon + "</span>" +
+               '<span class="tugas-teks"><b>' + k.judul + "</b><span>" + k.sub + "</span></span>" +
+               '<span class="tugas-tanda" aria-hidden="true">' + tanda + "</span></div>";
+    }).join("");
+}
+window.renderTugasHari = renderTugasHari;
+
+/* Strip hari (versi HP) — deretan tanggal bisa digeser, hari ini kotak penuh.
+   Mengikuti contoh リズ: nama hari kecil di atas, angka besar di bawah, panah » di ujung. */
+function renderStripHari() {
+    const kalender = document.getElementById("calendarSection");
+    if (!kalender) return;
+    let strip = document.getElementById("stripHari");
+    if (!strip) {
+        strip = document.createElement("div");
+        strip.id = "stripHari";
+        strip.className = "strip-hari";
+        strip.setAttribute("aria-label", "Pilih tanggal");
+        kalender.parentElement.insertBefore(strip, kalender);
+    }
+    const nama = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+    const kini = new Date(); kini.setHours(0, 0, 0, 0);
+    let isi = "";
+    for (let i = -3; i <= 10; i++) {
+        const t = new Date(kini.getTime());
+        t.setDate(kini.getDate() + i);
+        const ini = i === 0;
+        const detik = (typeof getDaySeconds === "function")
+            ? getDaySeconds(t.getFullYear(), t.getMonth(), t.getDate()) : 0;
+        const menit = Math.floor(detik / 60);
+        const tandaMenit = menit > 0 ? (menit >= 60 ? Math.floor(menit / 60) + "j " + (menit % 60) + "m" : menit + "m") : "–";
+        isi += '<button class="sh-item' + (ini ? " ini" : "") + '" data-tgl="' + t.getFullYear() + "-" +
+               String(t.getMonth() + 1).padStart(2, "0") + "-" + String(t.getDate()).padStart(2, "0") + '">' +
+               '<span class="sh-tgl">' + t.getDate() + "</span>" +
+               '<span class="sh-hari">' + nama[t.getDay()] + "</span>" +
+               '<span class="sh-menit">' + tandaMenit + "</span></button>";
+    }
+    strip.innerHTML = isi + '<span class="sh-panah" aria-hidden="true">»</span>';
+    const aktif = strip.querySelector(".sh-item.ini");
+    if (aktif && aktif.scrollIntoView) { try { aktif.scrollIntoView({ block: "nearest", inline: "center" }); } catch (e) {} }
+}
+window.renderStripHari = renderStripHari;
+
 function renderCalendar() {
     pulihkanDataKalender();
+    renderStripHari();
     const year = currentDateObj.getFullYear();
     const month = currentDateObj.getMonth();
 
@@ -1068,6 +1186,7 @@ function updateStudySessionButtonsState(dayNum) {
     }
 
     tandaHariSelesai(dayNum, pagiDone && siangDone && malamDone);
+    renderTugasHari(dayNum);
 }
 
 /* Tanda "hari ini sudah selesai" di tab Belajar — tampil kalau KETIGA sesi hari itu beres.
@@ -1380,7 +1499,11 @@ function pasangPopupBunpou() {
     list.dataset.popupSiap = "1";
     list.addEventListener("click", function (e) {
         const kartu = e.target.closest(".bunpou-item");
-        if (kartu) bukaPopupBunpou(kartu);
+        if (kartu) {
+            const elemen = kartu.querySelector(".bunpou-pattern");
+            catatBunpouDibuka(elemen ? elemen.textContent : "");
+            bukaPopupBunpou(kartu);
+        }
     });
 }
 
