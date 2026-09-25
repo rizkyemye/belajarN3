@@ -590,8 +590,8 @@ function injectBunpouLegend() {
     else head.appendChild(div);
 }
 
-if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(function () { pasangNavBawah(); pasangTombolKalender(); }, 200); });
-else setTimeout(function () { pasangNavBawah(); pasangTombolKalender(); }, 200);
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(function () { pasangNavBawah(); pasangTombolKalender(); pasangPilTab(); pasangRailAlat(); }, 200); });
+else setTimeout(function () { pasangNavBawah(); pasangTombolKalender(); pasangPilTab(); pasangRailAlat(); }, 200);
 
 function initBunpouUI() {
     const searchEl = document.getElementById("bunpouSearch");
@@ -676,6 +676,84 @@ function pindahPilNav() {
     pil.style.setProperty("--x", aktif.offsetLeft + "px");
     pil.style.setProperty("--w", aktif.offsetWidth + "px");
 }
+/* ====== TAB DESKTOP: pil penanda yang meluncur (versi rapi dari nav bawah) ====== */
+function pasangPilTab() {
+    const nav = document.querySelector(".tab-navigation");
+    if (!nav || nav.dataset.pilSiap) return;
+    nav.dataset.pilSiap = "1";
+    const pil = document.createElement("span");
+    pil.className = "tn-pil";
+    pil.setAttribute("aria-hidden", "true");
+    nav.insertBefore(pil, nav.firstChild);
+    pindahPilTab();
+}
+/* Desktop: tombol alat (Quiz/Tulis/Dashboard/Review/Profil) DIPINDAH ke bar tab yang sama,
+   jadi cuma ada satu baris alat di atas. Di HP dia balik ke tempat asalnya (jadi menu melayang). */
+/* Pisahkan emoji & label tiap tombol alat, supaya di desktop bisa tampil ikon saja
+   (label tetap ada untuk pembaca layar & muncul sebagai tooltip waktu di-hover). */
+function pisahLabelAlat() {
+    document.querySelectorAll(".aksi-grid .tombol-aksi").forEach(function (b) {
+        if (b.dataset.labelSiap) return;
+        b.dataset.labelSiap = "1";
+        const teks = (b.textContent || "").trim();
+        const pisah = teks.match(/^(\S+)\s+(.+)$/);
+        b.setAttribute("aria-label", teks);
+        b.setAttribute("title", teks);
+        if (pisah) {
+            b.innerHTML = '<span class="ta-ikon" aria-hidden="true">' + pisah[1] + "</span>" +
+                          '<span class="ta-teks">' + pisah[2] + "</span>";
+        }
+    });
+}
+
+/* Desktop: tombol alat (Quiz/Tulis/Dashboard/Review/Profil) dipindah ke RAIL IKON sisi kiri
+   (opsi G pilihan リズ). Di HP railnya dibuang & tombolnya balik ke tempat asal → jadi menu melayang. */
+const ASAL_AKSI = { induk: null, sebelum: null };
+function pasangRailAlat() {
+    const grid = document.querySelector(".aksi-grid");
+    if (!grid) return;
+    const lebar = (typeof matchMedia === "function") && matchMedia("(min-width: 701px)").matches;
+    let rail = document.getElementById("railAlat");
+    if (lebar) {
+        if (!ASAL_AKSI.induk) { ASAL_AKSI.induk = grid.parentElement; ASAL_AKSI.sebelum = grid.nextElementSibling; }
+        pisahLabelAlat();
+        if (!rail) {
+            rail = document.createElement("aside");
+            rail.id = "railAlat";
+            rail.className = "rail-alat";
+            rail.setAttribute("aria-label", "Alat lain");
+            rail.innerHTML = '<span class="rail-logo" aria-hidden="true">⚡</span><span class="rail-garis" aria-hidden="true"></span>';
+            document.body.appendChild(rail);
+        }
+        if (grid.parentElement !== rail) rail.appendChild(grid);
+        grid.classList.add("aksi-di-rail");
+        document.body.classList.add("ada-rail");
+    } else {
+        if (rail) rail.remove();
+        if (ASAL_AKSI.induk && grid.parentElement !== ASAL_AKSI.induk) {
+            ASAL_AKSI.induk.insertBefore(grid, ASAL_AKSI.sebelum || null);
+        }
+        grid.classList.remove("aksi-di-rail");
+        document.body.classList.remove("ada-rail");
+    }
+    pindahPilTab();
+}
+window.pasangRailAlat = pasangRailAlat;
+window.pasangRailAlat = pasangRailAlat;
+
+function pindahPilTab() {
+    const nav = document.querySelector(".tab-navigation");
+    if (!nav) return;
+    const pil = nav.querySelector(".tn-pil");
+    const aktif = nav.querySelector(".tab-btn.active");
+    if (!pil) return;
+    if (!aktif) { pil.style.setProperty("--w", "0px"); return; }
+    pil.style.setProperty("--x", aktif.offsetLeft + "px");
+    pil.style.setProperty("--w", aktif.offsetWidth + "px");
+}
+window.pasangPilTab = pasangPilTab;
+window.pindahPilTab = pindahPilTab;
+
 function perbaruiNavBawah(tabName) {
     const bar = document.getElementById("navBawah");
     if (!bar) return;
@@ -690,7 +768,12 @@ function perbaruiNavBawah(tabName) {
         aktif.classList.add("pop");
     }
     const kali = document.getElementById("tombolKalender");
-    if (kali) kali.style.display = (tabName === "calendar") ? "none" : "flex";
+    if (kali) {
+        // di desktop tombol Kalender sudah ada di bar tab → jangan tampil ganda
+        const sembunyi = (tabName === "calendar") ||
+            (typeof matchMedia === "function" && matchMedia("(min-width: 701px)").matches);
+        kali.style.display = sembunyi ? "none" : "flex";
+    }
 }
 function pasangTombolKalender() {
     if (document.getElementById("tombolKalender")) return;
@@ -760,14 +843,15 @@ window.lepasMenuAksi = lepasMenuAksi;
 // ikut berubah kalau layar diputar / diubah ukurannya
 if (typeof matchMedia === "function") {
     const mqAksi = matchMedia("(max-width: 700px)");
-    if (mqAksi.addEventListener) mqAksi.addEventListener("change", pasangMenuAksi);
-    else if (mqAksi.addListener) mqAksi.addListener(pasangMenuAksi);
+    const ubahTata = function () { pasangMenuAksi(); pasangRailAlat(); };
+    if (mqAksi.addEventListener) mqAksi.addEventListener("change", ubahTata);
+    else if (mqAksi.addListener) mqAksi.addListener(ubahTata);
 }
 window.perbaruiNavBawah = perbaruiNavBawah;
 window.pindahPilNav = pindahPilNav;
 if (!window.__navUbahUkuran) {
     window.__navUbahUkuran = 1;
-    window.addEventListener("resize", function () { pindahPilNav(); });
+    window.addEventListener("resize", function () { pindahPilNav(); pindahPilTab(); });
     window.addEventListener("orientationchange", function () { setTimeout(pindahPilNav, 250); });
 }
 window.pasangNavBawah = pasangNavBawah;
@@ -858,6 +942,7 @@ function switchTab(tabName) {
         t.btn.classList.toggle('active', aktif);
     });
 
+    pindahPilTab();
     if (typeof window.perbaruiNavBawah === "function") window.perbaruiNavBawah(tabName);
     if (typeof window.pasangNavBawah === "function") setTimeout(function () { const b = window.pasangNavBawah(); if (b) window.perbaruiNavBawah(tabName); }, 0);
 
