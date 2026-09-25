@@ -1306,3 +1306,134 @@ body.dash #papan .nl-row:nth-child(1) .nm, body.dash #papan .nl-row:nth-child(2)
   .tanda-selesai .ts-teks b { font-size: .95rem; }
 }
 @media (prefers-reduced-motion: reduce) { .tanda-selesai { animation: none !important; } }
+
+/* ===== KARTU TUGAS HARIAN (di bawah kalender) ===== */
+.tugas-hari { display: grid; gap: 10px; margin: 14px 0 4px; }
+.tugas { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+    border-radius: 16px; background: var(--kartu); border: 1px solid var(--garis);
+    box-shadow: var(--bayang-kecil); position: relative; overflow: hidden;
+    animation: naik 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.tugas::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--utama); }
+.tugas-ikon { flex: 0 0 38px; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
+    font-size: 1.05rem; background: var(--bg); border: 1px solid var(--garis); }
+.tugas-teks { flex: 1; min-width: 0; display: block; line-height: 1.45; }
+.tugas-teks b { display: block; font-size: .98rem; color: var(--teks); }
+.tugas-teks span { display: block; font-size: .84rem; color: var(--teks-lembut); margin-top: 2px; }
+.tugas-tanda { flex: 0 0 26px; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+    font-weight: 800; font-size: .9rem; margin-top: 2px; }
+/* selesai: latar hijau + centang */
+.tugas.beres { background: #ecfdf5; border-color: #a7f3d0; }
+.tugas.beres::before { background: #047857; }
+.tugas.beres .tugas-teks b { color: #065f46; }
+.tugas.beres .tugas-teks span { color: #047857; }
+.tugas.beres .tugas-ikon { background: #d1fae5; border-color: #a7f3d0; }
+.tugas.beres .tugas-tanda { background: #047857; color: #fff; }
+/* belum selesai: nuansa merah + tanda seru */
+.tugas.belum { background: #fff5f5; border-color: #fecaca; }
+.tugas.belum::before { background: #dc2626; }
+.tugas.belum .tugas-teks b { color: #991b1b; }
+.tugas.belum .tugas-teks span { color: #b91c1c; }
+.tugas.belum .tugas-ikon { background: #fee2e2; border-color: #fecaca; }
+.tugas.belum .tugas-tanda { background: #dc2626; color: #fff; }
+/* kartu semangat: nada hangat, bukan tugas */
+.tugas.semangat { background: #fffbeb; border-color: #fde68a; }
+.tugas.semangat::before { background: #d97706; }
+.tugas.semangat .tugas-teks b { color: #92400e; }
+.tugas.semangat .tugas-teks span { color: #b45309; }
+.tugas.semangat .tugas-ikon { background: #fef3c7; border-color: #fde68a; }
+@media (max-width: 700px) {
+  .tugas { padding: 12px 13px; gap: 10px; }
+  .tugas-ikon { flex: 0 0 34px; width: 34px; height: 34px; font-size: .98rem; }
+  .tugas-teks b { font-size: .93rem; }
+  .tugas-teks span { font-size: .8rem; }
+}
+@media (prefers-reduced-motion: reduce) { .tugas { animation: none !important; } }
+
+/* ====== VERSI HP: gaya kartu ala aplikasi kalender iOS (mengikuti contoh リズ) ====== */
+@media (max-width: 700px) {
+  /* latar & sudut lebih lembut */
+  body { background: #f2f1ee !important; }
+  .calendar-card, .tugas { border: 0 !important; box-shadow: 0 1px 2px rgba(15,23,42,.04) !important; }
+
+  /* kalender: sel hari jadi bulat lembut, hari ini jadi kartu penuh */
+  .days-grid { gap: 6px !important; }
+  .days-grid .day-cell { border: 0 !important; border-radius: 14px !important;
+      background: #fff !important; min-height: 58px; padding: 6px 4px !important; }
+  .days-grid .day-cell .day-number { font-size: .95rem !important; font-weight: 700 !important; }
+  .days-grid .day-cell .day-time { font-size: .68rem !important; }
+  .days-grid .day-cell.is-today, .days-grid .day-cell.today {
+      background: var(--utama) !important; box-shadow: 0 6px 14px rgba(79,70,229,.28) !important; }
+  .legend-boxes { border: 0 !important; background: transparent !important; }
+
+  /* judul kartu tugas: label kecil + judul tebal + baris meta */
+  .tugas-hari { gap: 12px !important; margin-top: 16px !important; }
+  .tugas-hari::before { content: "Hari ini"; display: block; text-align: center; font-size: .8rem;
+      color: #8a8f98; letter-spacing: .02em; margin: 2px 0 4px; }
+  .tugas { display: block !important; padding: 14px 16px !important; border-radius: 20px !important;
+      background: #fff !important; position: relative; }
+  .tugas::before { display: none !important; }
+  .tugas .tugas-label { display: inline-block; font-size: .72rem; font-weight: 600; color: #6b7280;
+      background: #f1f2f4; border-radius: 999px; padding: 3px 10px; margin-bottom: 8px; }
+  .tugas .tugas-ikon { display: none !important; }
+  .tugas .tugas-teks { display: block !important; }
+  .tugas .tugas-teks b { font-size: 1.02rem !important; font-weight: 700 !important; letter-spacing: -.01em; }
+  .tugas .tugas-teks span { font-size: .84rem !important; }
+  .tugas .tugas-tanda { position: absolute; right: 14px; top: 14px; }
+  /* keadaan selesai / belum: warna tetap jadi penanda */
+  .tugas.beres { background: #f2fbf5 !important; }
+  .tugas.beres .tugas-label { background: #dcfce7; color: #047857; }
+  .tugas.belum { background: #fff6f6 !important; }
+  .tugas.belum .tugas-label { background: #fee2e2; color: #b91c1c; }
+  .tugas.semangat { background: #fffaf0 !important; }
+  .tugas.semangat .tugas-label { background: #fef3c7; color: #92400e; }
+
+  /* tab bawah: pil mengambang ala aplikasi iOS */
+  .nav-bawah { left: 12px !important; right: 12px !important; bottom: 10px !important;
+      border-radius: 22px !important; border: 0 !important; background: #fff !important;
+      box-shadow: 0 10px 30px rgba(15,23,42,.16) !important; }
+  .nb-item.aktif { border-radius: 16px !important; }
+}
+
+/* ===== STRIP HARI (versi HP) — seperti contoh リズ ===== */
+.strip-hari { display: flex; align-items: center; gap: 4px; overflow-x: auto; padding: 12px 6px 14px;
+    margin-bottom: 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    background: var(--kartu); border: 1px solid var(--garis); border-radius: var(--radius); }
+.strip-hari::-webkit-scrollbar { display: none; }
+.sh-item { flex: 0 0 auto; width: 52px; padding: 6px 0 8px; border: 0; background: transparent;
+    border-radius: 16px; cursor: pointer; display: grid; gap: 2px; justify-items: center;
+    color: var(--teks); font-family: inherit; transition: background .15s ease; }
+.sh-item .sh-hari { font-size: .68rem; font-weight: 600; color: var(--teks-lembut); letter-spacing: .01em; }
+.sh-item .sh-tgl { font-size: 1.05rem; font-weight: 700; letter-spacing: -.02em; }
+.sh-item:hover { background: var(--bg); }
+.sh-item.ini { background: var(--utama); box-shadow: 0 6px 14px rgba(79,70,229,.28); }
+.sh-item.ini .sh-hari { color: rgba(255,255,255,.85); }
+.sh-item.ini .sh-tgl { color: #fff; }
+.sh-panah { flex: 0 0 26px; text-align: center; color: var(--utama); font-weight: 800; font-size: 1.1rem; opacity: .8; }
+@media (min-width: 701px) { .strip-hari { display: none; } }   /* hanya untuk HP */
+@media (prefers-reduced-motion: reduce) { .sh-item { transition: none !important; } }
+
+/* ===== HP vs DESKTOP: kalender bulan penuh disembunyikan di HP (cukup strip hari),
+   dan strip hari disembunyikan di desktop (sudah diatur di blok strip). Statistik tetap tampil. ===== */
+@media (max-width: 700px) {
+  #calendarSection .month-nav,
+  #calendarSection h2,
+  #calendarSection .calendar-subtitle,
+  #calendarSection .weekdays-grid,
+  #calendarSection .days-grid,
+  #calendarSection .calendar-legend { display: none !important; }
+}
+
+/* ===== STRIP HARI (HP) versi BESAR: angka besar, nama hari + menit belajar hari itu ===== */
+@media (max-width: 700px) {
+  .strip-hari { gap: 10px !important; padding: 14px 12px 16px !important; border-radius: 22px !important; }
+  .sh-item { width: 72px !important; padding: 12px 0 10px !important; border-radius: 20px !important;
+      background: var(--bg) !important; gap: 1px !important; }
+  .sh-item .sh-tgl { font-size: 1.5rem !important; font-weight: 800 !important; letter-spacing: -.03em; order: 1; line-height: 1.1; }
+  .sh-item .sh-hari { font-size: .74rem !important; font-weight: 600 !important; order: 2; }
+  .sh-item .sh-menit { font-size: .7rem !important; font-weight: 700 !important; order: 3; margin-top: 3px;
+      color: var(--utama) !important; }
+  .sh-item.ini { background: var(--utama) !important; box-shadow: 0 10px 22px rgba(79,70,229,.32) !important; }
+  .sh-item.ini .sh-tgl, .sh-item.ini .sh-hari { color: #fff !important; }
+  .sh-item.ini .sh-menit { color: rgba(255,255,255,.92) !important; }
+  .sh-panah { flex: 0 0 20px !important; }
+}
