@@ -1728,3 +1728,191 @@ select.study-select.pilih { animation: ssDenyut .5s ease-out; }
     .tugas-hari .tugas-sisa.ada { animation: sisaDenyut 2.6s ease-in-out infinite; }
 }
 @keyframes sisaDenyut { 0%, 100% { transform: none; } 50% { transform: translateY(-1px) scale(1.015); } }
+
+/* ======================================================================
+   DESKTOP: header & navigasi dipadatkan (minta リズ) — tab jadi pil meluncur,
+   tombol aksi jadi baris kecil tembus pandang. HP tidak tersentuh.
+   ====================================================================== */
+@media (min-width: 701px) {
+  /* --- banner atas dibuat setipis mungkin --- */
+  .header-container .hero-banner { padding: 14px 18px !important; border-radius: 18px !important; }
+  .header-container .hero-baris { gap: 12px !important; }
+  .header-container .hero-ikon { width: 38px !important; height: 38px !important; font-size: 1.1rem !important; border-radius: 12px !important; }
+  .header-container .hero-judul { font-size: 1.02rem !important; }
+  .header-container #sapaan, .header-container .hero-sapaan { font-size: .8rem !important; }
+  .header-container .hero-profil { font-size: .78rem !important; padding: 5px 10px !important; }
+
+  /* --- tombol aksi: baris kecil tembus pandang, rata kanan --- */
+  .header-container .aksi-grid,
+  .aksi-grid {
+    display: flex !important; flex-wrap: wrap !important; justify-content: flex-end !important;
+    gap: 6px !important; margin: 10px 0 2px !important; padding: 0 !important;
+    background: transparent !important; border: 0 !important; box-shadow: none !important;
+    grid-template-columns: none !important;
+  }
+  .aksi-grid .tombol-aksi,
+  .header-container .aksi-grid .tombol-aksi {
+    flex: 0 0 auto !important; width: auto !important;
+    min-height: 0 !important; height: auto !important;          /* desktop tidak perlu target sentuh 44px */
+    line-height: 1.2 !important;
+    padding: 7px 13px !important; border-radius: 999px !important;
+    background: transparent !important; border: 1px solid transparent !important;
+    color: #4F46E5 !important; font-size: .82rem !important; font-weight: 700 !important;
+    box-shadow: none !important;
+    transition: background .18s ease, transform .18s ease, color .18s ease;
+  }
+  .aksi-grid .tombol-aksi:hover { background: #E8EBFF !important; transform: translateY(-1px); }
+  .aksi-grid .tombol-aksi:active { transform: scale(.97); }
+  .aksi-grid .tombol-aksi.utama,
+  .aksi-grid .tombol-aksi.utama:hover {
+    background: linear-gradient(140deg, #6366F1, #4338CA) !important; color: #fff !important;
+    box-shadow: 0 6px 14px rgba(79,70,229,.28) !important;
+  }
+  /* tombol Kalender ganda: sudah ada di tab, jadi disembunyikan di desktop (pakai #id biar tak terkalahkan gaya inline) */
+  #tombolKalender, .aksi-grid .tombol-kalender { display: none !important; }
+
+  /* --- tab: satu bar segmen, pil ungu meluncur ke tab aktif --- */
+  .tab-navigation {
+    position: relative !important; display: flex !important; width: 100% !important; gap: 4px !important;
+    padding: 5px !important; margin: 12px 0 14px !important;
+    background: #fff !important; border: 1px solid rgba(79,70,229,.14) !important;
+    border-radius: 18px !important; box-shadow: 0 6px 18px rgba(79,70,229,.10) !important;
+    border-bottom: 1px solid rgba(79,70,229,.14) !important;
+  }
+  .tab-navigation .tn-pil {
+    position: absolute; top: 5px; bottom: 5px; left: 0; z-index: 0; pointer-events: none;
+    width: var(--w, 0px); transform: translateX(var(--x, 0px)); border-radius: 13px;
+    background: linear-gradient(140deg, #6366F1, #4338CA);
+    box-shadow: 0 8px 18px rgba(79,70,229,.35);
+    transition: transform .42s cubic-bezier(.34,1.28,.42,1), width .42s cubic-bezier(.34,1.28,.42,1);
+  }
+  .tab-navigation .tab-btn {
+    position: relative; z-index: 1; flex: 0 1 auto; min-width: 0;   /* lebar sesuai isinya → label tidak kepotong */
+    border: 0 !important; background: transparent !important; cursor: pointer;
+    padding: 10px 11px !important; border-radius: 13px !important;
+    font: inherit; font-size: .86rem !important; font-weight: 700 !important; color: #64748B !important;
+    box-shadow: none !important; white-space: nowrap;
+    transition: color .22s ease, transform .18s ease, background .22s ease;
+  }
+  .tab-navigation .tab-btn:hover { background: #EEF2FF !important; color: #4338CA !important; }
+  .tab-navigation .tab-btn:active { transform: scale(.97); }
+  .tab-navigation .tab-btn.active,
+  .tab-navigation .tab-btn.active:hover { background: transparent !important; color: #fff !important; }
+  .tab-navigation .tab-btn:focus-visible { outline: 3px solid rgba(79,70,229,.4); outline-offset: 2px; }
+}
+@media (min-width: 701px) and (prefers-reduced-motion: no-preference) {
+  .tab-navigation { animation: tnMuncul .45s cubic-bezier(.2,.9,.3,1.1) both; }
+  .tab-navigation .tab-btn { animation: tnItem .4s cubic-bezier(.2,.9,.3,1.1) both; }
+  .tab-navigation .tab-btn:nth-child(2) { animation-delay: .04s; }
+  .tab-navigation .tab-btn:nth-child(3) { animation-delay: .08s; }
+  .tab-navigation .tab-btn:nth-child(4) { animation-delay: .12s; }
+  .tab-navigation .tab-btn:nth-child(5) { animation-delay: .16s; }
+  .tab-navigation .tab-btn:nth-child(6) { animation-delay: .2s; }
+  .tab-navigation .tab-btn:nth-child(7) { animation-delay: .24s; }
+}
+@keyframes tnMuncul { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes tnItem { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ====== KAKI HALAMAN (pengganti dua tautan di atas; kredit tetap bisa dijangkau) ====== */
+.kaki-app { max-width: 1100px; margin: 26px auto 10px; padding: 14px 20px 0; border-top: 1px solid var(--garis); }
+.kaki-app .ka-isi { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; justify-content: space-between;
+    font-size: .76rem; color: #7C86A8; }
+.kaki-app .ka-merek { font-weight: 800; color: #4F46E5; letter-spacing: .01em; }
+.kaki-app .ka-sumber { flex: 1 1 auto; min-width: 0; }
+.kaki-app .ka-taut { color: #4F46E5; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.kaki-app .ka-taut:hover { text-decoration: underline; }
+@media (max-width: 700px) {
+    .kaki-app { margin: 22px 10px 100px; padding: 12px 6px 0; }
+    .kaki-app .ka-isi { font-size: .72rem; gap: 4px 10px; }
+}
+
+/* ====== DESKTOP: tombol alat masuk ke bar tab yang sama (satu baris saja) ====== */
+@media (min-width: 701px) {
+  .aksi-grid.aksi-di-tab {
+    display: flex !important; align-items: center !important; justify-content: flex-end !important;
+    gap: 6px !important; margin: 10px 0 2px !important; padding: 0 !important;
+    background: transparent !important; border: 0 !important; box-shadow: none !important;
+  }
+  .aksi-di-tab .tombol-aksi,
+  .header-container .aksi-di-tab .tombol-aksi {
+    width: 34px !important; height: 34px !important; min-height: 0 !important;
+    flex: 0 0 auto !important; padding: 0 !important;
+    display: inline-flex !important; align-items: center; justify-content: center;
+    border-radius: 50% !important; border: 1px solid rgba(79,70,229,.14) !important;
+    background: #F7F8FF !important; color: #4F46E5 !important;
+    font-size: .95rem !important; line-height: 1 !important;
+    box-shadow: none !important;
+    transition: background .18s ease, transform .18s ease, box-shadow .18s ease;
+  }
+  .aksi-di-tab .tombol-aksi:hover { background: #E8EBFF !important; transform: translateY(-2px); box-shadow: 0 6px 14px rgba(79,70,229,.18) !important; }
+  .aksi-di-tab .tombol-aksi:active { transform: scale(.94); }
+  .aksi-di-tab .tombol-aksi:focus-visible { outline: 3px solid rgba(79,70,229,.4); outline-offset: 2px; }
+  .aksi-di-tab .tombol-aksi.utama,
+  .aksi-di-tab .tombol-aksi.utama:hover {
+    background: linear-gradient(140deg, #6366F1, #4338CA) !important; color: #fff !important; border-color: transparent !important;
+    box-shadow: 0 6px 14px rgba(79,70,229,.32) !important;
+  }
+  .aksi-di-tab .tombol-aksi.utama:hover { transform: translateY(-2px); }
+  /* labelnya disembunyikan (ikon saja) → rapi & tetap muat di layar sempit;
+     nama lengkap tetap ada lewat aria-label + title (muncul saat di-hover) */
+  .aksi-di-tab .ta-teks { display: none !important; }   /* ikon saja; nama lengkap lewat title/aria-label */
+  .aksi-di-tab .ta-ikon { font-size: .95rem !important; line-height: 1; }
+}
+
+/* ====== RAIL IKON KIRI (DESKTOP) — opsi G pilihan リズ ====== */
+.rail-alat { display: none; }
+@media (min-width: 701px) {
+  body.ada-rail { padding-left: 84px; }
+  .rail-alat {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    position: fixed; left: 0; top: 0; bottom: 0; z-index: 60;
+    width: 84px; padding: 16px 0 18px; overflow-y: auto;
+    background: #fff; border-right: 1px solid rgba(79,70,229,.12);
+    box-shadow: 6px 0 22px rgba(79,70,229,.06);
+  }
+  .rail-alat .rail-logo {
+    width: 46px; height: 46px; border-radius: 15px; display: grid; place-items: center;
+    font-size: 1.2rem; color: #fff; margin-bottom: 4px;
+    background: linear-gradient(140deg, #6366F1, #4338CA);
+    box-shadow: 0 10px 22px rgba(79,70,229,.34);
+  }
+  .rail-alat .rail-garis { width: 34px; height: 1px; background: rgba(79,70,229,.16); margin: 2px 0 6px; }
+
+  .rail-alat .aksi-grid.aksi-di-rail {
+    display: flex !important; flex-direction: column !important; align-items: center !important;
+    gap: 6px !important; margin: 0 !important; padding: 0 !important;
+    background: transparent !important; border: 0 !important; box-shadow: none !important;
+    width: 100% !important;
+  }
+  .rail-alat .tombol-aksi,
+  .header-container .rail-alat .tombol-aksi {
+    width: 64px !important; min-height: 0 !important; height: auto !important;
+    padding: 9px 4px 8px !important; border-radius: 16px !important;
+    display: grid !important; justify-items: center; gap: 2px;
+    background: transparent !important; border: 1px solid transparent !important;
+    color: #4F46E5 !important; box-shadow: none !important; text-align: center;
+    transition: background .2s ease, transform .2s cubic-bezier(.2,.9,.3,1.2), border-color .2s ease;
+  }
+  .rail-alat .tombol-aksi .ta-ikon { font-size: 1.25rem !important; line-height: 1; }
+  .rail-alat .tombol-aksi .ta-teks { display: block !important; font-size: .62rem !important; font-weight: 800 !important;
+    color: #8B93C7 !important; letter-spacing: .01em; }
+  .rail-alat .tombol-aksi:hover { background: #EEF2FF !important; border-color: rgba(79,70,229,.16) !important; transform: translateX(3px); }
+  .rail-alat .tombol-aksi:active { transform: scale(.95); }
+  .rail-alat .tombol-aksi:focus-visible { outline: 3px solid rgba(79,70,229,.4); outline-offset: 2px; }
+  .rail-alat .tombol-aksi.utama,
+  .rail-alat .tombol-aksi.utama:hover {
+    background: linear-gradient(140deg, #6366F1, #4338CA) !important; border-color: transparent !important;
+    box-shadow: 0 10px 20px rgba(79,70,229,.3) !important;
+  }
+  .rail-alat .tombol-aksi.utama .ta-teks { color: #E0E7FF !important; }
+  .rail-alat .tombol-aksi.utama:hover { transform: translateX(3px) scale(1.02); }
+}
+@media (min-width: 701px) and (prefers-reduced-motion: no-preference) {
+  .rail-alat .rail-logo { animation: railMasuk .5s cubic-bezier(.2,.9,.3,1.2) both; }
+  .rail-alat .tombol-aksi { animation: railMasuk .45s cubic-bezier(.2,.9,.3,1.2) both; }
+  .rail-alat .tombol-aksi:nth-child(2) { animation-delay: .06s; }
+  .rail-alat .tombol-aksi:nth-child(3) { animation-delay: .12s; }
+  .rail-alat .tombol-aksi:nth-child(4) { animation-delay: .18s; }
+  .rail-alat .tombol-aksi:nth-child(5) { animation-delay: .24s; }
+}
+@keyframes railMasuk { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
