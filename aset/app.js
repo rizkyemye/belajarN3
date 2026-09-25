@@ -818,7 +818,7 @@ function catatBunpouDibuka(pola) {
 function daftarPolaHari(dayNum) {
     const set = new Set();
     (typeof bunpouItems === "function" ? bunpouItems() : []).forEach(function (it) {
-        if (Number(it.day) === Number(dayNum) && it.pattern) set.add(it.pattern);
+        if (Number(it.day) === Number(dayNum) && it.pattern) set.add(String(it.pattern).trim());
     });
     return [...set];
 }
@@ -918,6 +918,7 @@ window.renderStripHari = renderStripHari;
 function renderCalendar() {
     pulihkanDataKalender();
     renderStripHari();
+    renderTugasHari(currentActiveDay);
     const year = currentDateObj.getFullYear();
     const month = currentDateObj.getMonth();
 
