@@ -1773,7 +1773,8 @@ select.study-select.pilih { animation: ssDenyut .5s ease-out; }
 
   /* --- tab: satu bar segmen, pil ungu meluncur ke tab aktif --- */
   .tab-navigation {
-    position: relative !important; display: flex !important; width: 100% !important; gap: 4px !important;
+    position: relative !important; display: flex !important; width: 100% !important; max-width: 100% !important;
+    justify-self: stretch !important; align-self: stretch !important; gap: 4px !important;
     padding: 5px !important; margin: 12px 0 14px !important;
     background: #fff !important; border: 1px solid rgba(79,70,229,.14) !important;
     border-radius: 18px !important; box-shadow: 0 6px 18px rgba(79,70,229,.10) !important;
@@ -1814,7 +1815,10 @@ select.study-select.pilih { animation: ssDenyut .5s ease-out; }
 @keyframes tnItem { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
 /* ====== KAKI HALAMAN (pengganti dua tautan di atas; kredit tetap bisa dijangkau) ====== */
-.kaki-app { max-width: 1100px; margin: 26px auto 10px; padding: 14px 20px 0; border-top: 1px solid var(--garis); }
+/* kaki halaman sekarang DI DALAM .app-container → cukup lebar penuh, rata dengan konten di atasnya */
+.kaki-app { display: block !important; width: auto !important; max-width: none !important;
+    box-sizing: border-box !important; margin: 26px 0 8px !important; padding: 14px 0 0 !important;
+    border-top: 1px solid var(--garis); }
 .kaki-app .ka-isi { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; justify-content: space-between;
     font-size: .76rem; color: #7C86A8; }
 .kaki-app .ka-merek { font-weight: 800; color: #4F46E5; letter-spacing: .01em; }
@@ -1822,8 +1826,8 @@ select.study-select.pilih { animation: ssDenyut .5s ease-out; }
 .kaki-app .ka-taut { color: #4F46E5; font-weight: 700; text-decoration: none; white-space: nowrap; }
 .kaki-app .ka-taut:hover { text-decoration: underline; }
 @media (max-width: 700px) {
-    .kaki-app { margin: 22px 10px 100px; padding: 12px 6px 0; }
-    .kaki-app .ka-isi { font-size: .72rem; gap: 4px 10px; }
+    .kaki-app { margin: 22px 0 100px !important; padding: 12px 0 0 !important; }
+    .kaki-app .ka-isi { font-size: .72rem !important; gap: 4px 10px !important; }
 }
 
 /* ====== DESKTOP: tombol alat masuk ke bar tab yang sama (satu baris saja) ====== */
