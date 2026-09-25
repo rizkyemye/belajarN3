@@ -1507,4 +1507,3 @@ function pasangPopupBunpou() {
         }
     });
 }
-
