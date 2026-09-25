@@ -1,987 +1,940 @@
 {
  "1": {
   "day": 1,
-  "tema_jp": "わたしの いえ",
-  "tema_id": "Rumah Saya",
-  "judul": "わたしの いえと かぞく",
-  "teks": "わたしの いえは アパートです。アパートの ちかくに おおきい スーパーが あります。そこでは おかしや おさけや おちゃを かいます。\n\nうちの なかに エレベーターが あります。わたしの へやは いつも きれいです。いすと つくえと かばんが あります。おかあさんは おいしい カレーを つくります。あなたも あそびに きて ください。",
+  "tema_jp": "家族とおみやげ",
+  "tema_id": "Keluarga dan Oleh-oleh",
+  "judul": "おみやげとおいわい",
+  "teks": "このごろ、アメリカからアジアへアルバイトに来る若い人が多いです。わたしのうちにも、アフリカから来たおじょうさんがいます。あの人はとてもうまい日本語を話しますが、ときどきおかしいことを言います。\n\nきのう、その人はガラスのおもちゃとケーキをおみやげにくださいました。あかちゃんがいるので、おいわいもいっしょにあげました。おかげで、うちの中は花やカーテンでいっぱいです。うれしいです。",
   "furi": "",
-  "terjemahan": "Rumah saya adalah apartemen. Di dekat apartemen ada supermarket besar. Di sana saya membeli kue, sake, dan teh.\n\nDi dalam rumah saya ada lift. Kamar saya selalu bersih. Ada kursi, meja, dan tas. Ibu saya membuat kari yang enak. Kamu juga, silakan datang bermain.",
+  "terjemahan": "Belakangan ini, banyak orang muda yang datang dari Amerika ke Asia untuk bekerja paruh waktu. Di rumah saya juga ada seorang anak perempuan yang datang dari Afrika. Orang itu berbicara bahasa Jepang dengan sangat mahir, tetapi kadang-kadang mengatakan hal yang aneh.\n\nKemarin, orang itu memberi saya mainan dari kaca dan kue sebagai oleh-oleh. Karena ada bayi, saya juga memberikan ucapan selamat bersamanya. Berkat itu, di dalam rumah penuh dengan bunga dan tirai. Saya senang.",
   "soal": [
    {
-    "t": "わたしの いえは なんですか。",
+    "t": "このごろ、どこからアジアへアルバイトに来る若い人が多いですか。",
     "pilihan": [
-     "アパート",
-     "スーパー",
-     "ホテル",
-     "がっこう"
-    ],
-    "jawab": 0,
-    "bahas": "Teks menyebutkan 'わたしの いえは アパートです' (rumah saya adalah apartemen).",
-    "t_furi": "わたしの いえは なんですか。"
-   },
-   {
-    "t": "アパートの ちかくに なにが ありますか。",
-    "pilihan": [
-     "ぎんこう",
-     "おてあらい",
-     "おおきい スーパー",
-     "えき"
-    ],
-    "jawab": 2,
-    "bahas": "Teks menyebutkan 'アパートの ちかくに おおきい スーパーが あります' (di dekat apartemen ada supermarket besar).",
-    "t_furi": "アパートの ちかくに なにが ありますか。"
-   },
-   {
-    "t": "おかあさんは なにを つくりますか。",
-    "pilihan": [
-     "おべんとう",
-     "カレー",
-     "おかし",
-     "おちゃ"
+     "アフリカから",
+     "アメリカから",
+     "アジアから",
+     "ヨーロッパから"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebutkan 'おかあさんは おいしい カレーを つくります' (ibu membuat kari yang enak).",
-    "t_furi": "おかあさんは なにを つくりますか。"
+    "bahas": "Teks menyebutkan 'アメリカからアジアへアルバイトに来る若い人が多い' (banyak orang muda datang dari Amerika ke Asia untuk kerja paruh waktu).",
+    "t_furi": ""
+   },
+   {
+    "t": "その人はどんな日本語を話しますか。",
+    "pilihan": [
+     "とてもへたな日本語",
+     "とてもうまい日本語",
+     "とてもおかしい日本語",
+     "とてもやさしい日本語"
+    ],
+    "jawab": 1,
+    "bahas": "Teks menyebutkan 'あの人はとてもうまい日本語を話します' (orang itu berbicara bahasa Jepang dengan sangat mahir).",
+    "t_furi": ""
+   },
+   {
+    "t": "その人は何をおみやげにくださいましたか。",
+    "pilihan": [
+     "花とカーテン",
+     "ケーキと花",
+     "ガラスのおもちゃとケーキ",
+     "おかねとおもちゃ"
+    ],
+    "jawab": 2,
+    "bahas": "Teks menyebutkan 'ガラスのおもちゃとケーキをおみやげにくださいました' (memberi mainan kaca dan kue sebagai oleh-oleh).",
+    "t_furi": ""
    }
   ]
  },
  "2": {
   "day": 2,
-  "tema_jp": "部屋と朝の準備",
-  "tema_id": "Kamar dan persiapan pagi",
-  "judul": "わたしの朝",
-  "teks": "わたしのクラスは あさ 8じに はじまります。だから、まいにち 6じに おきます。まず、シャワーを あびます。それから、セーターと スカートを きます。コーヒーを コップに いれて、ちょっと のみます。\n\nこの へやには ストーブが あります。ストーブの そばに テーブルが あります。テーブルの うえに テープレコーダーと テープが あります。それでは、すぐに タクシーで がっこうへ いきます。",
+  "tema_jp": "友だちとの週末",
+  "tema_id": "Akhir pekan bersama teman",
+  "judul": "すばらしい週末",
+  "teks": "これから、わたしの週末について話します。土曜日に、友だちとコンサートに行くつもりです。それに、前からすばらしいステーキを食べたいと思っていました。それで、コンサートのあとで、レストランへ行きます。\n\nさっき、友だちに電話しました。すると、友だちは「サンドイッチとサラダも食べよう」と言いました。なるほど、いい考えです。でも、わたしはサンダルをはいていましたから、しっかり歩けるか心配です。しばらくテニスをしていませんから、ぜんぜん運動していません。だから、そろそろ運動するつもりです。ぜひ、いっしょに来てください。",
   "furi": "",
-  "terjemahan": "Kelas saya mulai jam 8 pagi. Karena itu, setiap hari saya bangun jam 6. Pertama, saya mandi (shower). Setelah itu, saya memakai sweter dan rok. Saya menuangkan kopi ke dalam cangkir, lalu minum sedikit.\n\nDi kamar ini ada kompor (pemanas). Di samping kompor ada meja. Di atas meja ada tape recorder dan kaset. Kalau begitu, saya segera pergi ke sekolah dengan taksi.",
+  "terjemahan": "Mulai sekarang, saya akan bercerita tentang akhir pekan saya. Pada hari Sabtu, saya berencana pergi ke konser bersama teman. Selain itu, sejak dulu saya ingin makan steak yang luar biasa. Karena itu, setelah konser, kami akan pergi ke restoran.\n\nTadi saya menelepon teman. Ternyata, teman saya berkata, \"Ayo makan sandwich dan salad juga.\" Benar juga, ide yang bagus. Tetapi, karena saya memakai sandal, saya khawatir apakah bisa berjalan dengan mantap. Sudah lama saya tidak bermain tenis, jadi sama sekali tidak berolahraga. Karena itu, sudah waktunya saya berencana berolahraga. Tolong, datanglah bersama saya.",
   "soal": [
    {
-    "t": "わたしは まいにち なんじに おきますか。",
+    "t": "この人は土曜日に何をしますか。",
     "pilihan": [
-     "6じ",
-     "7じ",
-     "8じ",
-     "9じ"
-    ],
-    "jawab": 0,
-    "bahas": "Teks menyebutkan 'まいにち 6じに おきます' (setiap hari bangun jam 6).",
-    "t_furi": "わたしは まいにち なんじに おきますか。"
-   },
-   {
-    "t": "テーブルの うえに なにが ありますか。",
-    "pilihan": [
-     "コップと コーヒー",
-     "ストーブと スリッパ",
-     "テープレコーダーと テープ",
-     "セーターと スカート"
-    ],
-    "jawab": 2,
-    "bahas": "Teks menyebutkan 'テーブルの うえに テープレコーダーと テープが あります'.",
-    "t_furi": "テーブルの うえに なにが ありますか。"
-   },
-   {
-    "t": "がっこうへ なにで いきますか。",
-    "pilihan": [
-     "バス",
-     "タクシー",
-     "でんしゃ",
-     "あるいて"
+     "ステーキを買います",
+     "コンサートに行きます",
+     "テニスをします",
+     "サラダを作ります"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebutkan 'すぐに タクシーで がっこうへ いきます' (segera pergi ke sekolah dengan taksi).",
-    "t_furi": "がっこうへ なにで いきますか。"
+    "bahas": "Teks menyebutkan '土曜日に、友だちとコンサートに行くつもりです' (Sabtu berencana pergi ke konser bersama teman), jadi jawabannya konser.",
+    "t_furi": ""
+   },
+   {
+    "t": "友だちは何を食べようと言いましたか。",
+    "pilihan": [
+     "ステーキとサラダ",
+     "サンドイッチとステーキ",
+     "サンドイッチとサラダ",
+     "サラダとジャム"
+    ],
+    "jawab": 2,
+    "bahas": "Teman berkata 'サンドイッチとサラダも食べよう' (ayo makan sandwich dan salad juga), jadi jawabannya sandwich dan salad.",
+    "t_furi": ""
+   },
+   {
+    "t": "この人は今、どんな状態ですか。",
+    "pilihan": [
+     "よく運動している",
+     "ぜんぜん運動していない",
+     "毎日テニスをしている",
+     "ステーキがきらいだ"
+    ],
+    "jawab": 1,
+    "bahas": "Teks menyebutkan 'ぜんぜん運動していません' (sama sekali tidak berolahraga), jadi jawabannya sama sekali tidak berolahraga.",
+    "t_furi": ""
    }
   ]
  },
  "3": {
   "day": 3,
-  "tema_jp": "日常生活と買い物",
-  "tema_id": "Kehidupan Sehari-hari dan Berbelanja",
-  "judul": "わたしの一日",
-  "teks": "わたしはあさ、パンとバターをたべます。それから、バスでデパートへ行きます。デパートでネクタイとハンカチをかいます。\n\nうちへかえって、テレビでニュースを見ます。トイレのドアにポストがあります。とてもふるいです。",
+  "tema_jp": "会社と生活",
+  "tema_id": "Kehidupan dan Pekerjaan",
+  "judul": "はじめてのパート",
+  "teks": "田中さんは、あんしんして働ける ビル で パート をしています。まいにち パソコン や ファックス を つかって、いっしょうけんめい はたらきます。ゆうべ は あめ で ぬれて、のど も いたく なりましたが、あさ は もうすぐ はじまる 会議 の ため に、やっと 会社 へ いきました。\n\nきのう、おかあさんから ぶどう と きれいな ハンドバッグ を もらいました。ピアノ を ひく とき、その ハンドバッグ を つかいます。もし ひま なら、いちど うち へ きて、いっしょに れんしゅう しましょう。もちろん、ひげ を そった あとで、レジ で はらう の も わすれないで ください。",
   "furi": "",
-  "terjemahan": "Pagi hari, saya makan roti dan mentega. Setelah itu, saya pergi ke department store dengan bus. Di department store, saya membeli dasi dan saputangan.\n\nSetelah pulang ke rumah, saya menonton berita di TV. Di pintu toilet ada kotak pos. Sangat tua.",
+  "terjemahan": "Tanaka bekerja paruh waktu di sebuah gedung tempat ia bisa bekerja dengan tenang. Setiap hari ia menggunakan komputer dan faks, dan bekerja dengan sungguh-sungguh. Tadi malam hujan dan ia basah kuyup, tenggorokannya juga menjadi sakit, tetapi pagi ini demi rapat yang akan segera dimulai, ia akhirnya pergi ke kantor.\n\nKemarin, ia menerima anggur dan sebuah tas tangan yang cantik dari ibunya. Saat bermain piano, ia menggunakan tas tangan itu. Kalau kamu punya waktu luang, sekali saja datanglah ke rumahku, mari kita berlatih bersama. Tentu saja, setelah mencukur kumis, jangan lupa juga untuk membayar di kasir.",
   "soal": [
    {
-    "t": "わたしはあさ、なにをたべますか。",
+    "t": "田中さんは どこで パート を していますか。",
     "pilihan": [
-     "ごはんとさかな",
-     "パンとバター",
-     "パンとたまご",
-     "バターとごはん"
+     "あんしんして はたらける ビル",
+     "ひげ を そる ところ",
+     "ぶどう を うる ところ",
+     "ピアノ を ひく ところ"
     ],
-    "jawab": 1,
-    "bahas": "Teks menyebutkan 'パンとバターをたべます' (makan roti dan mentega).",
-    "t_furi": "わたしはあさ、なにをたべますか。"
+    "jawab": 0,
+    "bahas": "Teks menyebutkan '田中さんは、あんしんして働ける ビル で パート をしています' (Tanaka bekerja paruh waktu di gedung tempat ia bisa bekerja dengan tenang).",
+    "t_furi": ""
    },
    {
-    "t": "デパートでなにをかいますか。",
+    "t": "田中さんは きのう なに を もらいましたか。",
     "pilihan": [
-     "ノートとペン",
-     "くつとぼうし",
-     "ネクタイとハンカチ",
-     "パンとバター"
+     "パソコン と ファックス",
+     "レジ と ワープロ",
+     "ぶどう と ハンドバッグ",
+     "ベル と プレゼント"
     ],
     "jawab": 2,
-    "bahas": "Teks menyebutkan 'ネクタイとハンカチをかいます' (membeli dasi dan saputangan).",
-    "t_furi": "デパートでなにをかいますか。"
+    "bahas": "Teks menyebutkan 'きのう、おかあさんから ぶどう と きれいな ハンドバッグ を もらいました' (Kemarin ia menerima anggur dan tas tangan yang cantik dari ibunya).",
+    "t_furi": ""
    },
    {
-    "t": "テレビでなにを見ますか。",
+    "t": "この 人は どうして あさ 会社 へ いきましたか。",
     "pilihan": [
-     "えいが",
-     "ニュース",
-     "アニメ",
-     "スポーツ"
+     "ピアノ を ひく ため",
+     "もうすぐ はじまる 会議 の ため",
+     "ぶどう を たべる ため",
+     "ハンドバッグ を かう ため"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebutkan 'テレビでニュースを見ます' (menonton berita di TV).",
+    "bahas": "Teks menyebutkan 'あさ は もうすぐ はじまる 会議 の ため に、やっと 会社 へ いきました' (Pagi ini demi rapat yang akan segera dimulai, ia akhirnya pergi ke kantor).",
     "t_furi": ""
    }
   ]
  },
  "4": {
   "day": 4,
-  "tema_jp": "がっこうの いちにち",
-  "tema_id": "Sehari di Sekolah",
-  "judul": "わたしの いちにち",
-  "teks": "わたしは まいにち がっこうへ いきます。あさ、ともだちと いっしょに えきまで あるきます。えきは うちから とおいです。でも、みんなと はなすと たのしいです。\n\nきょうは あめでした。だから、くらいいえで ゆっくりと べんきょうしました。わたしは えいごを もういちど やりました。それから、おくさんと れすとらんで のみものを のみました。あしたも もっと がんばります。",
+  "tema_jp": "アパートの生活と週末",
+  "tema_id": "Kehidupan Apartemen dan Akhir Pekan",
+  "judul": "わたしのげしゅく生活",
+  "teks": "わたしは駅のちかくのアパートにすんでいます。へやには小さいおしいれがあって、そのおくにしたぎをおいてあります。まいあさ、おくじょうにのぼって、うんどうをします。くもの多い日は、とおくの山がよく見えます。\n\nせんしゅう、かいぎしつでかちょうとかいわをしました。かいぎは一時間すぎて、とてもつかれました。よる、かいがんをまわって、しおのにおいをかむと、よろこぶきもちになります。たのしみは、ひらいた店でかんたんなごはんをたべることです。",
   "furi": "",
-  "terjemahan": "Saya pergi ke sekolah setiap hari. Pagi hari, saya berjalan bersama teman sampai ke stasiun. Stasiun itu jauh dari rumah. Tetapi, berbicara dengan semua orang itu menyenangkan.\n\nHari ini hujan. Karena itu, saya belajar dengan perlahan di rumah yang gelap. Saya mengerjakan bahasa Inggris sekali lagi. Setelah itu, saya minum minuman bersama istri di restoran. Besok juga saya akan berusaha lebih keras.",
+  "terjemahan": "Saya tinggal di apartemen dekat stasiun. Di kamar ada lemari kecil, dan di bagian dalamnya saya menyimpan pakaian dalam. Setiap pagi saya naik ke atap dan berolahraga. Pada hari yang banyak awan, gunung di kejauhan terlihat jelas.\n\nMinggu lalu, saya berbicara dengan kepala bagian di ruang rapat. Rapat berlangsung lebih dari satu jam, dan saya sangat lelah. Pada malam hari, saat berkeliling di pantai dan menggigit (merasakan) aroma laut, perasaan saya menjadi senang. Kegembiraan saya adalah makan makanan sederhana di toko yang buka.",
   "soal": [
    {
-    "t": "わたしは あさ、だれと いっしょに えきまで あるきますか。",
+    "t": "この人はまいあさ、どこでうんどうをしますか。",
     "pilihan": [
-     "ひとりで",
-     "ともだちと",
-     "おくさんと",
-     "いしゃと"
+     "こうえんで",
+     "おくじょうで",
+     "かいぎしつで",
+     "かいがんで"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebut 'あさ、ともだちと いっしょに えきまで あるきます' (pagi, berjalan bersama teman sampai stasiun), jadi jawabannya ともだちと.",
+    "bahas": "Teks menyebutkan 'まいあさ、おくじょうにのぼって、うんどうをします' (setiap pagi naik ke atap dan berolahraga), jadi jawabannya おくじょうで.",
     "t_furi": ""
    },
    {
-    "t": "きょうは どんな てんきでしたか。",
+    "t": "せんしゅう、この人はだれとかいわをしましたか。",
     "pilihan": [
-     "はれ",
-     "ゆき",
-     "あめ",
-     "かぜ"
+     "かんごふと",
+     "かないと",
+     "かちょうと",
+     "みんなと"
     ],
     "jawab": 2,
-    "bahas": "Teks menyebut 'きょうは あめでした' (hari ini hujan), jadi jawabannya あめ.",
-    "t_furi": "きょうは どんな てんきでしたか。"
+    "bahas": "Teks menyebutkan 'かいぎしつでかちょうとかいわをしました' (berbicara dengan kepala bagian di ruang rapat), jadi jawabannya かちょうと.",
+    "t_furi": ""
    },
    {
-    "t": "わたしは れすとらんで なにを しましたか。",
+    "t": "この人のたのしみは何ですか。",
     "pilihan": [
-     "えいがを みました",
-     "のみものを のみました",
-     "ほんを かいました",
-     "およぎました"
+     "うんどうすること",
+     "ひらいた店でかんたんなごはんをたべること",
+     "おくじょうにのぼること",
+     "かいぎをすること"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebut 'れすとらんで のみものを のみました' (minum minuman di restoran), jadi jawabannya のみものを のみました.",
-    "t_furi": "わたしは れすとらんで なにを しましたか。"
+    "bahas": "Teks menyebutkan 'たのしみは、ひらいた店でかんたんなごはんをたべることです' (kegembiraannya adalah makan makanan sederhana di toko yang buka), jadi jawabannya pilihan kedua.",
+    "t_furi": ""
    }
   ]
  },
  "5": {
   "day": 5,
-  "tema_jp": "かぞくとの なつやすみ",
-  "tema_id": "Liburan musim panas bersama keluarga",
-  "judul": "わたしの なつやすみ",
-  "teks": "わたしの かぞくは なつやすみに うみへ いきます。ちちは うたを うたうのが すきですが、とても へたです。かあは きいろい かびんと あかい くだものを かいます。\n\nわたしは まいにち あさ おきて、がっこうの にもつを かたづけます。かようびと きんようびは きっさてんで ともだちに あいます。みなさんと いっしょに おんがくを きいて、たのしいです。",
+  "tema_jp": "きせつの たびと きもち",
+  "tema_id": "Perjalanan Musim dan Perasaan",
+  "judul": "ひさしぶりの きしゃの たび",
+  "teks": "ひさしぶりに きしゃに のって、きんじょの ともだちと たびに いきました。きせつは あきで、まどの そとの けしきは とても きれいでした。でも、きゅうこうに のりおくれて、いそいで えきを はしりました。\n\nきゃくは おおくて、くうきが にがい においでした。わたしは きもちが わるくなり、ぐあいが あく ように みえました。ともだちは 「きみの ために いのるよ」と いって、わたしを おこして くれました。その やさしさに おどろき、きょうみを もちました。",
   "furi": "",
-  "terjemahan": "Keluarga saya pergi ke laut pada liburan musim panas. Ayah saya suka menyanyikan lagu, tetapi sangat tidak mahir. Ibu membeli vas kuning dan buah merah.\n\nSaya setiap hari bangun pagi, lalu merapikan barang-barang sekolah. Pada hari Selasa dan Jumat saya bertemu teman di kedai kopi. Bersama semua orang mendengarkan musik, rasanya menyenangkan.",
+  "terjemahan": "Setelah lama tidak naik kereta, saya pergi bertamasya dengan teman dari lingkungan sekitar. Musimnya musim gugur, dan pemandangan di luar jendela sangat indah. Tetapi, saya ketinggalan kereta cepat dan berlari tergesa-gesa di stasiun.\n\nPenumpangnya banyak, dan udaranya berbau pahit. Saya merasa tidak enak badan, dan tampak kondisi saya memburuk. Teman saya berkata, \"Aku akan mendoakanmu,\" dan membangunkan saya. Saya terkejut dengan kebaikan itu, dan menjadi tertarik.",
   "soal": [
    {
-    "t": "かぞくは なつやすみに どこへ いきますか。",
+    "t": "この ひとは なにで たびに いきましたか。",
     "pilihan": [
-     "やまへ いきます",
-     "うみへ いきます",
-     "がっこうへ いきます",
-     "かいしゃへ いきます"
+     "くるまで",
+     "きしゃで",
+     "ひこうきで",
+     "ふねで"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebutkan なつやすみに うみへ いきます (pergi ke laut saat liburan musim panas).",
-    "t_furi": "かぞくは なつやすみに どこへ いきますか。"
+    "bahas": "Teks menyebutkan きしゃに のって (naik kereta), jadi jawabannya きしゃで.",
+    "t_furi": "この ひとは なにで たびに いきましたか。"
    },
    {
-    "t": "ちちの うたは どうですか。",
+    "t": "この ひとの きもちは どうなりましたか。",
     "pilihan": [
-     "とても じょうずです",
-     "とても へたです",
-     "とても あまいです",
-     "とても さむいです"
-    ],
-    "jawab": 1,
-    "bahas": "Teks menyebutkan ちちは うたを うたうのが すきですが、とても へたです (ayah suka bernyanyi tetapi sangat tidak mahir).",
-    "t_furi": "ちちの うたは どうですか。"
-   },
-   {
-    "t": "かようびと きんようびに なにを しますか。",
-    "pilihan": [
-     "うみで およぎます",
-     "くだものを たべます",
-     "きっさてんで ともだちに あいます",
-     "かびんを かいます"
+     "とても うれしく なった",
+     "とても たのしく なった",
+     "きもちが わるく なった",
+     "とても げんきに なった"
     ],
     "jawab": 2,
-    "bahas": "Teks menyebutkan かようびと きんようびは きっさてんで ともだちに あいます (hari Selasa dan Jumat bertemu teman di kedai kopi).",
-    "t_furi": "かようびと きんようびに なにを しますか。"
+    "bahas": "Teks menyebutkan きもちが わるくなり (perasaannya menjadi tidak enak), jadi jawabannya pilihan ketiga.",
+    "t_furi": "この ひとの きもちは どうなりましたか。"
+   },
+   {
+    "t": "ともだちは この ひとに なにを しましたか。",
+    "pilihan": [
+     "しんぶんを よんだ",
+     "おこして くれた",
+     "でんわを かけた",
+     "しゃしんを とった"
+    ],
+    "jawab": 1,
+    "bahas": "Teks menyebutkan わたしを おこして くれました (membangunkan saya), jadi jawabannya おこして くれた.",
+    "t_furi": "ともだちは この ひとに なにを しましたか。"
    }
   ]
  },
  "6": {
   "day": 6,
-  "tema_jp": "かぞくとまちのせいかつ",
-  "tema_id": "Kehidupan Keluarga dan Kota",
-  "judul": "わたしのまち",
-  "teks": "きょねん、わたしはあにときょうだいでこのまちにいます。ちかくにこうえんとこうばんがあります。こうえんのちかくにたてものがおおいです。きんようびにぎんこうへいきます。ぎんこうのまえにこうさてんがあります。\n\nごぜんははちじからごじまできょうしつでべんきょうします。せんせいはにほんごをおしえます。ごごはこうえんではしをわたって、いぬとさんぽします。そらがきれいです。わたしのいえのげんかんはせまいです。",
-  "furi": "きょねん、わたしはあにときょうだいでこのまちにいます。ちかくにこうえんとこうばんがあります。こうえんのちかくにたてものがおおいです。きんようびにぎんこうへいきます。ぎんこうのまえにこうさてんがあります。\n\nごぜんははちじからごじまできょうしつでべんきょうします。せんせいはにほんごをおしえます。ごごはこうえんではしをわたって、いぬとさんぽします。そらがきれいです。わたしのいえのげんかんはせまいです。",
-  "terjemahan": "Tahun lalu, saya tinggal di kota ini bersama kakak laki-laki dan saudara-saudara. Di dekat sini ada taman dan pos polisi. Di dekat taman banyak gedung. Hari Jumat saya pergi ke bank. Di depan bank ada persimpangan.\n\nPagi hari dari jam delapan sampai jam lima saya belajar di ruang kelas. Guru mengajar bahasa Jepang. Sore hari saya menyeberangi jembatan di taman dan berjalan-jalan dengan anjing. Langitnya indah. Pintu masuk rumah saya sempit.",
+  "tema_jp": "こうぎょうと みなとの まち",
+  "tema_id": "Kota Industri dan Pelabuhan",
+  "judul": "ちちの こうじょう",
+  "teks": "ちちは こうむいんです。まいにち こうつうで みなとに むかいます。みなとの ちかくに こうじょうが たくさん あります。\n\nこんや、ちちは こうぎを おこないます。こうぎは こうがいの こうこうせいも さんかします。さいきん、こうぎょうの こしょうが おおくて、みんなで かんがえています。",
+  "furi": "",
+  "terjemahan": "Ayah saya adalah pegawai negeri. Setiap hari ia pergi ke pelabuhan dengan transportasi umum. Di dekat pelabuhan ada banyak pabrik.\n\nMalam ini, ayah akan mengadakan ceramah. Ceramah itu juga diikuti oleh siswa SMA di pinggiran kota. Akhir-akhir ini, kerusakan di industri banyak, jadi semua orang sedang memikirkannya.",
   "soal": [
    {
-    "t": "きんようびにどこへいきますか。",
+    "t": "ちちの しごとは なんですか。",
     "pilihan": [
-     "こうえん",
-     "ぎんこう",
-     "こうばん",
-     "きょうしつ"
+     "こういんです",
+     "こうむいんです",
+     "せんせいです",
+     "いしゃです"
     ],
     "jawab": 1,
-    "bahas": "Pada teks disebutkan 'きんようびにぎんこうへいきます' yang berarti hari Jumat pergi ke bank.",
-    "t_furi": "きんようびにどこへいきますか。"
+    "bahas": "Teks menyebutkan 'ちちは こうむいんです' (ayah saya pegawai negeri).",
+    "t_furi": "ちちの しごとは なんですか。"
    },
    {
-    "t": "せんせいはなにをおしえますか。",
+    "t": "ちちは どこへ むかいますか。",
     "pilihan": [
-     "えいご",
-     "すうがく",
-     "にほんご",
-     "おんがく"
+     "がっこう",
+     "こうじょう",
+     "みなと",
+     "こうえん"
     ],
     "jawab": 2,
-    "bahas": "Teks menyebutkan 'せんせいはにほんごをおしえます' yaitu guru mengajar bahasa Jepang.",
-    "t_furi": ""
+    "bahas": "Teks menyebutkan 'みなとに むかいます' (pergi ke pelabuhan).",
+    "t_furi": "ちちは どこへ むかいますか。"
    },
    {
-    "t": "いえのげんかんはどうですか。",
+    "t": "こんや、ちちは なにを おこないますか。",
     "pilihan": [
-     "ひろい",
-     "せまい",
-     "あたらしい",
-     "おおきい"
+     "しごと",
+     "こうぎ",
+     "うんどう",
+     "りょこう"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebutkan 'わたしのいえのげんかんはせまいです' yang berarti pintu masuk rumah sempit.",
+    "bahas": "Teks menyebutkan 'こんや、ちちは こうぎを おこないます' (malam ini ayah mengadakan ceramah).",
     "t_furi": ""
    }
   ]
  },
  "7": {
   "day": 7,
-  "tema_jp": "わたしの いちにち",
-  "tema_id": "Hari-hariku",
-  "judul": "けさの さんぽ",
-  "teks": "けさ、わたしは あねと さんぽを しました。やまの むこうに ふるい おてらが あります。とても しずかで、くろい かさを さす ひとが いました。\n\nひるごはんの あと、わたしは ひだりてで こうちゃを のみました。さとうは みっつ いれました。それから、つくえに すわって、さくぶんを かきました。",
+  "tema_jp": "しょうらいのゆめと毎日の生活",
+  "tema_id": "Cita-cita dan kehidupan sehari-hari",
+  "judul": "しょうらいのゆめ",
+  "teks": "わたしは毎日、しょうがっこうで べんきょうしています。しゅみは じゅうどうで、まいにち れんしゅうして、しあいに かつために がんばっています。でも、この しゅうかんは しけんが あって、とても いそがしいです。\n\nしょうらい、わたしは はいしゃに なりたいです。そのために、しゅっせきを たいせつにして、じゅんびを しっかり します。もし しっぱいしても、すぐに あやまって、また がんばります。ちちは じむしょで はたらいていて、わたしの ゆめを おうえんして くれます。",
   "furi": "",
-  "terjemahan": "Pagi ini, saya berjalan-jalan dengan kakak perempuan saya. Di seberang gunung ada kuil tua. Sangat tenang, dan ada orang yang memakai payung hitam.\n\nSetelah makan siang, saya minum teh hitam dengan tangan kiri. Saya memasukkan tiga gula. Setelah itu, saya duduk di meja dan menulis karangan.",
+  "terjemahan": "Saya setiap hari belajar di sekolah dasar. Hobi saya adalah judo, dan saya berlatih setiap hari, berusaha keras untuk menang dalam pertandingan. Tetapi, minggu ini ada ujian, jadi saya sangat sibuk.\n\nDi masa depan, saya ingin menjadi dokter gigi. Untuk itu, saya menghargai kehadiran dan mempersiapkan diri dengan baik. Jika pun gagal, saya akan segera meminta maaf dan berusaha lagi. Ayah saya bekerja di kantor, dan mendukung cita-cita saya.",
   "soal": [
    {
-    "t": "けさ、わたしは だれと さんぽを しましたか。",
+    "t": "この ひとの しゅみは なんですか。",
     "pilihan": [
-     "ともだちと",
-     "あねと",
-     "こどもと",
-     "ひとりで"
+     "じゅうどう",
+     "しょうせつ",
+     "りょうり",
+     "うた"
     ],
-    "jawab": 1,
-    "bahas": "Teks menyebutkan 'けさ、わたしは あねと さんぽを しました' yang berarti pagi ini saya berjalan-jalan dengan kakak perempuan.",
-    "t_furi": "けさ、わたしは だれと さんぽを しましたか。"
+    "jawab": 0,
+    "bahas": "Teks menyebutkan 'しゅみは じゅうどう' (hobi saya adalah judo).",
+    "t_furi": "この ひとの しゅみは なんですか。"
    },
    {
-    "t": "こうちゃに さとうを いくつ いれましたか。",
+    "t": "この しゅうかん、なぜ いそがしいですか。",
     "pilihan": [
-     "ひとつ",
-     "ふたつ",
-     "みっつ",
-     "よっつ"
-    ],
-    "jawab": 2,
-    "bahas": "Teks menyebutkan 'さとうは みっつ いれました' yang berarti memasukkan tiga gula.",
-    "t_furi": "こうちゃに さとうを いくつ いれましたか。"
-   },
-   {
-    "t": "ひるごはんの あと、わたしは なにを しましたか。",
-    "pilihan": [
-     "さんぽを した",
-     "こうちゃを のんだ",
-     "やまに のぼった",
-     "でんわを した"
+     "しあいが あるから",
+     "しけんが あるから",
+     "りょこうが あるから",
+     "しごとが あるから"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebutkan 'ひるごはんの あと、わたしは ひだりてで こうちゃを のみました' yang berarti setelah makan siang, saya minum teh hitam.",
-    "t_furi": "ひるごはんの あと、わたしは なにを しましたか。"
+    "bahas": "Teks menyebutkan 'この しゅうかんは しけんが あって、とても いそがしいです' (minggu ini ada ujian, jadi sangat sibuk).",
+    "t_furi": "この しゅうかん、なぜ いそがしいですか。"
+   },
+   {
+    "t": "この ひとの しょうらいの ゆめは なんですか。",
+    "pilihan": [
+     "せんせい",
+     "はいしゃ",
+     "しゃちょう",
+     "うんてんしゅ"
+    ],
+    "jawab": 1,
+    "bahas": "Teks menyebutkan 'しょうらい、わたしは はいしゃに なりたいです' (di masa depan, saya ingin menjadi dokter gigi).",
+    "t_furi": "この ひとの しょうらいの ゆめは なんですか。"
    }
   ]
  },
  "8": {
   "day": 8,
-  "tema_jp": "わたしの いちにち",
-  "tema_id": "Hari-hariku",
-  "judul": "じてんしゃと とけい",
-  "teks": "わたしは まいにち じてんしゃで がっこうへ いきます。あさ しちじに でかけて、じゅぎょうは はちじはんに はじまります。ときどき とけいを みて、じかんを かくにんします。\n\nきょうは しゅくだいを もって、でぐちで ともだちを まちました。それから くるまを かりて、じぶんの てがみを だしに いきました。すこし あつい はるの ひでした。",
+  "tema_jp": "むかしの せいかつと こころ",
+  "tema_id": "Kehidupan dan Hati di Masa Lalu",
+  "judul": "むかしの いえと せいかつ",
+  "teks": "むかし、日本の いえには たたみが ありました。たたみの へやには にんぎょうや はなを かざる ことが おおかったです。ちいさい あかんぼうが いる ばあい、おやは とても しんせつに せわを しました。\n\nその じだい、せいかつは いまより たいへんでしたが、こころは ふかく、人と 人との つながりが ありました。人々は じんじゃに のぼって、ほしに いのりました。せかいが すすむ 中で、むかしの ただしい こころを わすれない ことが たいせつです。",
   "furi": "",
-  "terjemahan": "Saya setiap hari pergi ke sekolah dengan sepeda. Saya berangkat jam tujuh pagi, dan pelajaran dimulai jam setengah delapan. Kadang-kadang saya melihat jam dan memastikan waktu.\n\nHari ini saya membawa PR, dan menunggu teman di pintu keluar. Setelah itu saya menyewa mobil, dan pergi mengirim surat saya sendiri. Itu adalah hari musim semi yang sedikit panas.",
+  "terjemahan": "Dahulu, di rumah-rumah Jepang terdapat tatami. Di kamar tatami, seringkali dipajang boneka dan bunga. Dalam kasus ada bayi kecil, orang tua merawatnya dengan sangat baik.\n\nPada zaman itu, kehidupan lebih sulit daripada sekarang, tetapi hatinya dalam, dan ada hubungan antar manusia. Orang-orang naik ke kuil untuk berdoa kepada bintang. Di tengah dunia yang terus maju, penting untuk tidak melupakan hati yang benar dari masa lalu.",
   "soal": [
    {
-    "t": "わたしは まいにち なにで がっこうへ いきますか。",
+    "t": "むかしの 日本の いえには 何が ありましたか。",
     "pilihan": [
-     "じてんしゃ",
-     "くるま",
+     "すいどう",
+     "たたみ",
      "でんしゃ",
-     "あるいて"
-    ],
-    "jawab": 0,
-    "bahas": "Teks menyebutkan 'わたしは まいにち じてんしゃで がっこうへ いきます' (setiap hari pergi ke sekolah dengan sepeda).",
-    "t_furi": "わたしは まいにち なにで がっこうへ いきますか。"
-   },
-   {
-    "t": "じゅぎょうは なんじに はじまりますか。",
-    "pilihan": [
-     "しちじ",
-     "ろくじはん",
-     "はちじはん",
-     "くじ"
-    ],
-    "jawab": 2,
-    "bahas": "Teks menyebutkan 'じゅぎょうは はちじはんに はじまります' (pelajaran dimulai jam setengah delapan).",
-    "t_furi": "じゅぎょうは なんじに はじまりますか。"
-   },
-   {
-    "t": "きょう、わたしは なにを だしに いきましたか。",
-    "pilihan": [
-     "しゅくだい",
-     "てがみ",
-     "しゃしん",
-     "じてんしゃ"
+     "じんこう"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebutkan 'じぶんの てがみを だしに いきました' (pergi mengirim surat sendiri).",
-    "t_furi": "きょう、わたしは なにを だしに いきましたか。"
+    "bahas": "Teks menyebutkan 'むかし、日本の いえには たたみが ありました' (Dahulu, di rumah Jepang ada tatami). Jadi jawabannya たたみ.",
+    "t_furi": ""
+   },
+   {
+    "t": "ちいさい あかんぼうが いる ばあい、おやは どう しましたか。",
+    "pilihan": [
+     "しかりました",
+     "わらいました",
+     "しんせつに せわを しました",
+     "ねぼうを しました"
+    ],
+    "jawab": 2,
+    "bahas": "Teks menyebutkan 'おやは とても しんせつに せわを しました' (orang tua merawat dengan sangat baik). Jadi jawabannya pilihan ke-3.",
+    "t_furi": "ちいさい あかんぼうが いる ばあい、おやは どう しましたか。"
+   },
+   {
+    "t": "この ぶんしょうの ないようと あうものは どれですか。",
+    "pilihan": [
+     "いまの せいかつは むかしより たいへんだ",
+     "むかしの こころを わすれない ことが たいせつだ",
+     "せかいが すすむのは よくない",
+     "じんじゃに のぼるのは あぶない"
+    ],
+    "jawab": 1,
+    "bahas": "Paragraf terakhir menyatakan 'むかしの ただしい こころを わすれない ことが たいせつです' (penting untuk tidak melupakan hati yang benar dari masa lalu). Jadi jawabannya pilihan ke-2.",
+    "t_furi": "この ぶんしょうの ないようと あうものは どれですか。"
    }
   ]
  },
  "9": {
   "day": 9,
-  "tema_jp": "がっこうの いちにち",
-  "tema_id": "Sehari di Sekolah",
-  "judul": "わたしの すいようび",
-  "teks": "すいようびは はれでした。わたしは あたらしい ふくを きて、がっこうへ いきました。がっこうの まえに としょかんが あります。としょかんで しんぶんを よみました。\n\nしょくどうで たべものを たべました。からい たべものは あまり すきでは ありません。せんせいは とても じょうずで、こえも しずかです。うちへ かえって、せんたくと そうじを ぜんぶ しました。",
+  "tema_jp": "家族と大切なもの",
+  "tema_id": "Keluarga dan Hal yang Penting",
+  "judul": "そふとそぼの おくりもの",
+  "teks": "わたしの そふと そぼは ちゅうがっこうの せんせいでした。せんそうの あと、たいへんな ときも ありましたが、いつも ていねいに せつめいして くれました。そふは だんせいで、そぼは きものを つくるのが じょうずでした。\n\nひるやすみに ともだちと そうだんして、たいふうの ひは たいいんした せんぱいに おくりものを おくる ことに しました。ちゅうしゃじょうの ちかくで くさを さがして、むしを 見つけました。その 日は だいぶ さわぎましたが、とても だいじな 一日に なりました。",
   "furi": "",
-  "terjemahan": "Hari Rabu cuacanya cerah. Saya memakai pakaian baru, lalu pergi ke sekolah. Di depan sekolah ada perpustakaan. Di perpustakaan saya membaca koran.\n\nDi kantin saya makan makanan. Makanan pedas tidak terlalu saya sukai. Guru sangat pandai, dan suaranya juga tenang. Setelah pulang ke rumah, saya mengerjakan cuci pakaian dan bersih-bersih semuanya.",
+  "terjemahan": "Kakek dan nenek saya adalah guru SMP. Setelah perang, ada juga masa-masa sulit, tetapi mereka selalu menjelaskan dengan sopan. Kakek adalah seorang pria, dan nenek pandai membuat kimono.\n\nSaat istirahat siang, saya berdiskusi dengan teman, dan memutuskan untuk mengirim hadiah kepada senior yang dirawat inap pada hari topan. Di dekat tempat parkir, saya mencari rumput dan menemukan serangga. Hari itu cukup ramai, tetapi menjadi hari yang sangat penting.",
   "soal": [
    {
-    "t": "すいようびは どんな てんきでしたか。",
+    "t": "そふと そぼは 何の せんせいでしたか。",
     "pilihan": [
-     "あめでした",
-     "はれでした",
-     "ゆきでした",
-     "かぜでした"
+     "だいがくの せんせい",
+     "ちゅうがくの せんせい",
+     "こうこうの せんせい",
+     "しょうがっこうの せんせい"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebutkan 'すいようびは はれでした' (Hari Rabu cuacanya cerah), jadi jawabannya 'はれでした'.",
-    "t_furi": "すいようびは どんな てんきでしたか。"
+    "bahas": "Teks menyebutkan 'そふと そぼは ちゅうがっこうの せんせいでした' (kakek dan nenek adalah guru SMP).",
+    "t_furi": ""
    },
    {
-    "t": "わたしは どこで しんぶんを よみましたか。",
+    "t": "せんぱいに 何を おくりますか。",
     "pilihan": [
-     "しょくどう",
-     "がっこうの まえ",
-     "としょかん",
-     "うち"
+     "くさ",
+     "むし",
+     "おくりもの",
+     "きもの"
     ],
     "jawab": 2,
-    "bahas": "Teks menyebutkan 'としょかんで しんぶんを よみました' (membaca koran di perpustakaan), jadi jawabannya 'としょかん'.",
-    "t_furi": "わたしは どこで しんぶんを よみましたか。"
+    "bahas": "Teks menyebutkan 'せんぱいに おくりものを おくる ことに しました' (memutuskan mengirim hadiah kepada senior).",
+    "t_furi": ""
    },
    {
-    "t": "からい たべものについて、わたしは どう おもいますか。",
+    "t": "むしを どこで 見つけましたか。",
     "pilihan": [
-     "とても すきです",
-     "あまり すきでは ありません",
-     "とても じょうずです",
-     "とても はやいです"
+     "ちゅうしゃじょうの ちかく",
+     "がっこうの ちかく",
+     "たいいんの ちかく",
+     "こうえんの ちかく"
     ],
-    "jawab": 1,
-    "bahas": "Teks menyebutkan 'からい たべものは あまり すきでは ありません' (makanan pedas tidak terlalu saya sukai), jadi jawabannya pilihan kedua.",
-    "t_furi": "からい たべものについて、わたしは どう おもいますか。"
+    "jawab": 0,
+    "bahas": "Teks menyebutkan 'ちゅうしゃじょうの ちかくで くさを さがして、むしを 見つけました' (di dekat tempat parkir mencari rumput dan menemukan serangga).",
+    "t_furi": ""
    }
   ]
  },
  "10": {
   "day": 10,
-  "tema_jp": "かぞくと まちの せいかつ",
-  "tema_id": "Kehidupan Keluarga dan Kota",
-  "judul": "わたしの いちにち",
-  "teks": "わたしの かぞくは おおぜい います。ちちは からだが ふといです。あさごはんは だいどころで たべます。わたしは だいがくに でんしゃで いきます。\n\nひるは まちの みせで ちずを かいます。にわに とりが います。そとで おとこのこが あそんで います。てんきが あたたかいです。",
-  "furi": "わたしの かぞくは おおぜい います。ちちは からだが ふといです。あさごはんは だいどころで たべます。わたしは だいがくに でんしゃで いきます。\n\nひるは まちの みせで ちずを かいます。にわに とりが います。そとで おとこのこが あそんで います。てんきが あたたかいです。",
-  "terjemahan": "Keluarga saya banyak orang. Ayah saya badannya gemuk. Sarapan dimakan di dapur. Saya pergi ke universitas dengan kereta. \n\nSiang hari saya membeli peta di toko kota. Di taman ada burung. Di luar ada anak laki-laki sedang bermain. Cuacanya hangat.",
+  "tema_jp": "動物園と伝統の町",
+  "tema_id": "Kebun Binatang dan Kota Tradisional",
+  "judul": "にちようびの でんぽう",
+  "teks": "にちようび、わたしは どうぶつえんへ 行きました。とちゅうで とっきゅうに のって、えきで おりました。どうぶつえんでは めずらしい どうぐを つかった てんらんかいが ありました。てんいんが ゆっくり はつおんして、こたえを つたえて くれました。\n\nその あと、いなかの しまへ 行って、でんとうの まつりを はいけんしました。どろぼうが かみを ぬすんで にげましたが、けいさつが すぐ つかまえました。てんきよほうでは あめが ふると 言いましたから、わたしは かさを つけて、うちへ とまりました。",
+  "furi": "",
+  "terjemahan": "Pada hari Minggu, saya pergi ke kebun binatang. Di tengah perjalanan saya naik kereta ekspres khusus, lalu turun di stasiun. Di kebun binatang ada pameran yang menggunakan alat langka. Pramuniaga mengucapkan dengan perlahan dan menyampaikan jawabannya kepada saya.\n\nSetelah itu, saya pergi ke pulau di pedesaan dan melihat festival tradisional. Seorang pencuri mencuri kertas dan melarikan diri, tetapi polisi segera menangkapnya. Ramalan cuaca mengatakan akan turun hujan, jadi saya memasang payung dan menginap di rumah.",
   "soal": [
    {
-    "t": "ちちの からだは どうですか。",
+    "t": "わたしは どうやって どうぶつえんへ 行きましたか。",
     "pilihan": [
-     "みじかいです",
-     "ふといです",
-     "ひくいです",
-     "おそいです"
+     "あるいて 行った",
+     "とっきゅうに のって 行った",
+     "じてんしゃで 行った",
+     "ふねで 行った"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebutkan ちちは からだが ふといです (Ayah saya badannya gemuk).",
-    "t_furi": "ちちの からだは どうですか。"
+    "bahas": "Teks menyebutkan 'とっきゅうに のって' (naik kereta ekspres khusus), jadi jawabannya adalah naik tokkyuu.",
+    "t_furi": ""
    },
    {
-    "t": "わたしは なにで だいがくに いきますか。",
+    "t": "てんらんかいで 何を つかいましたか。",
     "pilihan": [
-     "でんわ",
-     "ちかてつ",
-     "でんしゃ",
-     "でんき"
+     "あたらしい くつ",
+     "めずらしい どうぐ",
+     "おおきい かばん",
+     "ふるい でんぽう"
+    ],
+    "jawab": 1,
+    "bahas": "Teks menyebutkan 'めずらしい どうぐを つかった てんらんかい', jadi yang digunakan adalah alat langka.",
+    "t_furi": ""
+   },
+   {
+    "t": "てんきよほうは 何と 言いましたか。",
+    "pilihan": [
+     "はれる",
+     "ゆきが ふる",
+     "あめが ふる",
+     "かぜが ふく"
     ],
     "jawab": 2,
-    "bahas": "Teks menyebutkan でんしゃで いきます (pergi dengan kereta).",
-    "t_furi": "わたしは なにで だいがくに いきますか。"
-   },
-   {
-    "t": "にわに なにが いますか。",
-    "pilihan": [
-     "おとこのこ",
-     "とり",
-     "おとな",
-     "おとうと"
-    ],
-    "jawab": 1,
-    "bahas": "Teks menyebutkan にわに とりが います (di taman ada burung).",
-    "t_furi": "にわに なにが いますか。"
+    "bahas": "Teks menyebutkan 'てんきよほうでは あめが ふると 言いました', jadi ramalan cuaca mengatakan akan hujan.",
+    "t_furi": ""
    }
   ]
  },
  "11": {
   "day": 11,
-  "tema_jp": "家族と週末の買い物",
-  "tema_id": "Belanja Akhir Pekan bersama Keluarga",
-  "judul": "どようびの かいもの",
-  "teks": "どようびに かぞくと いちばへ いきました。ちちは にくやで ぶたにくを かいました。わたしは やおやで やさいを かいました。みちは にぎやかでした。\n\nにちようびは くもりでした。いえで ほんを よみました。ねこは あたまの うえで ねました。わたしは ともだちに てがみを わたしました。",
+  "tema_jp": "文化と生活",
+  "tema_id": "Budaya dan Kehidupan",
+  "judul": "びじゅつかんの一日",
+  "teks": "ぼくはかのじょとびじゅつかんへ行きました。かのじょはうつくしいえを見て、ひじょうにうれしそうでした。でも、ぼくはふくざつなえより、ぶんかの本がすきです。\n\nそのあと、かれらとひこうじょうへ行きました。ぶちょうは「ひつようなしなものはかならずかばんにいれてください」と言いました。ぼくはわすれものをしないように、ふとんの上でかたづけました。",
   "furi": "",
-  "terjemahan": "Pada hari Sabtu, saya pergi ke pasar bersama keluarga. Ayah membeli daging babi di toko daging. Saya membeli sayuran di toko sayur. Jalannya ramai.\n\nHari Minggu cuacanya mendung. Saya membaca buku di rumah. Kucing tidur di atas kepala. Saya menyerahkan surat kepada teman.",
+  "terjemahan": "Aku pergi ke museum seni bersama pacarku. Dia terlihat sangat senang melihat lukisan yang indah. Tetapi, aku lebih suka buku budaya daripada lukisan yang rumit.\n\nSetelah itu, aku pergi ke bandara bersama mereka. Kepala departemen berkata, \"Barang yang diperlukan harus selalu dimasukkan ke dalam tas.\" Agar tidak lupa barang, aku merapikan di atas kasur.",
   "soal": [
    {
-    "t": "どようびに なにを しましたか。",
+    "t": "ぼくがすきなものはなんですか。",
     "pilihan": [
-     "ほんを よみました",
-     "いちばへ いきました",
-     "ねこを かいました",
-     "てがみを もらいました"
-    ],
-    "jawab": 1,
-    "bahas": "Pada hari Sabtu, penulis pergi ke pasar (いちばへ いきました).",
-    "t_furi": "どようびに なにを しましたか。"
-   },
-   {
-    "t": "ちちは どこで ぶたにくを かいましたか。",
-    "pilihan": [
-     "やおや",
-     "ほんや",
-     "にくや",
-     "くすりや"
+     "うつくしいえ",
+     "ふくざつなえ",
+     "ぶんかの本",
+     "ひこうじょう"
     ],
     "jawab": 2,
-    "bahas": "Ayah membeli daging babi di toko daging (にくや).",
-    "t_furi": "ちちは どこで ぶたにくを かいましたか。"
+    "bahas": "Teks menyebutkan 'ぼくはふくざつなえより、ぶんかの本がすきです' (aku lebih suka buku budaya daripada lukisan rumit), jadi jawabannya buku budaya.",
+    "t_furi": "ぼくがすきなものはなんですか。"
    },
    {
-    "t": "にちようびの てんきは どうでしたか。",
+    "t": "ぶちょうは何と言いましたか。",
     "pilihan": [
-     "はれ",
-     "くもり",
-     "あめ",
-     "ゆき"
+     "ふとんをかたづけてください",
+     "ひつようなしなものをかばんにいれてください",
+     "びじゅつかんへ行ってください",
+     "わすれものをわすれてください"
     ],
     "jawab": 1,
-    "bahas": "Hari Minggu cuacanya mendung (くもりでした).",
-    "t_furi": "にちようびの てんきは どうでしたか。"
+    "bahas": "Teks menyebutkan 'ひつようなしなものはかならずかばんにいれてください', jadi jawabannya adalah memasukkan barang yang diperlukan ke dalam tas.",
+    "t_furi": ""
+   },
+   {
+    "t": "ぼくはどこでかたづけましたか。",
+    "pilihan": [
+     "びじゅつかん",
+     "ひこうじょう",
+     "ふとんの上",
+     "ぶちょうのいえ"
+    ],
+    "jawab": 2,
+    "bahas": "Teks menyebutkan 'ふとんの上でかたづけました', jadi jawabannya adalah di atas kasur.",
+    "t_furi": "ぼくはどこでかたづけましたか。"
    }
   ]
  },
  "12": {
   "day": 12,
-  "tema_jp": "まいにちの せいかつ",
-  "tema_id": "Kehidupan sehari-hari",
-  "judul": "わたしの いちにち",
-  "teks": "まいあさ、わたしは はやく おきます。そして、かおを あらって、はを みがきます。それから、あかるい へやで べんきょうします。\n\nまいばん、ばんごはんを たべた あとで、ほんを よみます。いもうとは まいにち ひこうきの ほんを よんで、ひこうきの なまえを わすれません。わたしは とても いそがしいですが、まいしゅう びょういんへ いきます。",
-  "furi": "まいあさ、わたしは はやく おきます。そして、かおを あらって、はを みがきます。それから、あかるい へやで べんきょうします。\n\nまいばん、ばんごはんを たべた あとで、ほんを よみます。いもうとは まいにち ひこうきの ほんを よんで、ひこうきの なまえを わすれません。わたしは とても いそがしいですが、まいしゅう びょういんへ いきます。",
-  "terjemahan": "Setiap pagi, saya bangun cepat. Lalu, saya mencuci muka dan menyikat gigi. Setelah itu, saya belajar di kamar yang terang.\n\nSetiap malam, setelah makan malam, saya membaca buku. Adik perempuan saya setiap hari membaca buku tentang pesawat, dan tidak lupa nama pesawat. Saya sangat sibuk, tetapi setiap minggu saya pergi ke rumah sakit.",
+  "tema_jp": "家族と伝統文化",
+  "tema_id": "Keluarga dan Budaya Tradisional",
+  "judul": "ちちのはなし",
+  "teks": "ちちはわかいとき、ほんやくのしごとをしていました。そして、まんがをよむのがすきで、よくみそのあじのりょうりをたべながら、よしゅうをしていました。あした、ちちはむすめとりょかんへいきます。りょかんでは、はやしのおとでおどりをおどるよていです。\n\nちちは「やくそくをまもるのは、やくにたつ」といつもいいます。そのわけは、ちいさいときから、もめんのけをたてるしごとをてつだったからです。よる、れいぼうがひえると、ちちはすぐにねむくなり、ゆめをみます。あそびにいくじかんがなくなるのはむりですが、りょうほうをりようするよういをしています。",
+  "furi": "",
+  "terjemahan": "Ayah saya ketika muda bekerja sebagai penerjemah. Dan, dia suka membaca manga, sering sambil makan masakan berasa miso, dia belajar persiapan. Besok, ayah akan pergi ke ryokan bersama putrinya. Di ryokan, rencananya akan menari tarian dengan iringan musik hayashi.\n\nAyah selalu berkata, \"Menepati janji itu berguna.\" Alasannya adalah karena sejak kecil, dia membantu pekerjaan menenun wol kapas. Malam, ketika pendingin ruangan menjadi dingin, ayah langsung mengantuk, dan bermimpi. Waktu untuk pergi bermain menjadi hilang memang tidak mungkin, tetapi dia bersiap untuk memanfaatkan keduanya.",
   "soal": [
    {
-    "t": "まいあさ、わたしは なにを しますか。",
+    "t": "ちちはわかいとき、どんなしごとをしていましたか。",
     "pilihan": [
-     "ばんごはんを たべます",
-     "はを みがきます",
-     "ひこうきを とびます",
-     "ふくを かえします"
+     "りょかんのしごと",
+     "ほんやくのしごと",
+     "おどりのしごと",
+     "もめんのしごと"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebutkan 'まいあさ、わたしは はやく おきます。そして、かおを あらって、はを みがきます' (setiap pagi bangun lalu mencuci muka dan menyikat gigi). Jadi jawabannya 'はを みがきます'.",
-    "t_furi": "まいあさ、わたしは なにを しますか。"
+    "bahas": "Teks menyebutkan 'ちちはわかいとき、ほんやくのしごとをしていました' (Ayah ketika muda bekerja sebagai penerjemah).",
+    "t_furi": ""
    },
    {
-    "t": "いもうとは まいにち なにを よみますか。",
+    "t": "あした、ちちはだれとりょかんへいきますか。",
     "pilihan": [
-     "びょうきの ほん",
-     "べんきょうの ほん",
-     "ひこうきの ほん",
-     "ばんごはんの ほん"
+     "むすこ",
+     "ともだち",
+     "むすめ",
+     "ちちのちち"
     ],
     "jawab": 2,
-    "bahas": "Teks menyebutkan 'いもうとは まいにち ひこうきの ほんを よんで' (adik perempuan setiap hari membaca buku pesawat). Jadi jawabannya 'ひこうきの ほん'.",
-    "t_furi": "いもうとは まいにち なにを よみますか。"
+    "bahas": "Teks menyebutkan 'あした、ちちはむすめとりょかんへいきます' (Besok, ayah pergi ke ryokan bersama putrinya).",
+    "t_furi": ""
    },
    {
-    "t": "わたしは まいしゅう どこへ いきますか。",
+    "t": "ちちがいつもいっていることはどれですか。",
     "pilihan": [
-     "がっこう",
-     "びょういん",
-     "へや",
-     "ほんだな"
+     "やくそくをまもるのは、やくにたつ",
+     "れいぼうがひえるとねむくなる",
+     "よしゅうをするのはたいへんだ",
+     "まんがをよむのはおもしろい"
     ],
-    "jawab": 1,
-    "bahas": "Teks menyebutkan 'わたしは とても いそがしいですが、まいしゅう びょういんへ いきます' (saya sangat sibuk, tetapi setiap minggu pergi ke rumah sakit). Jadi jawabannya 'びょういん'.",
-    "t_furi": "わたしは まいしゅう どこへ いきますか。"
+    "jawab": 0,
+    "bahas": "Teks menyebutkan 'ちちは「やくそくをまもるのは、やくにたつ」といつもいいます' (Ayah selalu berkata 'Menepati janji itu berguna').",
+    "t_furi": "ちちがいつもいっていることはどれですか。"
    }
   ]
  },
  "13": {
   "day": 13,
-  "tema_jp": "木曜日と友達",
-  "tema_id": "Hari Kamis dan Teman",
-  "judul": "木曜日の夕方",
-  "teks": "木曜日の夕方、私は友達と郵便局へ行きます。友達は有名な野菜と薬を買いました。私も葉書が欲しいです。\n\n夜、友達と夕飯を食べます。来週も来月も来年も、友達と遊びたいです。友達は洋服が要ると言いました。私も洋服を頼みます。",
+  "tema_jp": "探検と生活",
+  "tema_id": "Petualangan dan Kehidupan",
+  "judul": "山の探検と毎日の生活",
+  "teks": "来月、私は友だちと山に登ります。山の道を確認してから、ゆっくり探検します。けがしないように、あいさつするときも、かっこうに気をつけます。\n\nさ来週はレポートを書きます。コンピュータを使いますが、けれども、ときどき紙にも書きます。税金や就職のことも、やはり考えなければなりません。芸術も勉強したいけれども、お金を増やすのは難しいです。",
   "furi": "",
-  "terjemahan": "Pada hari Kamis sore, saya pergi ke kantor pos bersama teman. Teman membeli sayuran terkenal dan obat. Saya juga ingin kartu pos.\n\nMalam, saya makan malam bersama teman. Minggu depan, bulan depan, dan tahun depan juga, saya ingin bermain bersama teman. Teman berkata bahwa dia butuh pakaian. Saya juga memesan pakaian.",
+  "terjemahan": "Bulan depan, saya akan mendaki gunung bersama teman. Setelah memeriksa jalur gunung, kami akan menjelajah dengan santai. Agar tidak cedera, saat memberi salam pun, saya memperhatikan penampilan.\n\nDua minggu lagi saya akan menulis laporan. Saya menggunakan komputer, tetapi kadang-kadang menulis di kertas juga. Soal pajak dan mencari pekerjaan, tetap harus saya pikirkan. Saya juga ingin belajar seni, tetapi menambah uang itu sulit.",
   "soal": [
    {
-    "t": "木曜日の夕方、私はどこへ行きますか。",
+    "t": "来月、何をしますか。",
     "pilihan": [
-     "学校",
-     "郵便局",
-     "病院",
-     "店"
+     "友だちと山に登ります",
+     "レポートを書きます",
+     "税金を払います",
+     "芸術を勉強します"
     ],
-    "jawab": 1,
-    "bahas": "Teks menyebutkan '木曜日の夕方、私は友達と郵便局へ行きます' yang berarti pergi ke kantor pos.",
+    "jawab": 0,
+    "bahas": "Teks menyebut '来月、私は友だちと山に登ります' sehingga jawabannya adalah mendaki gunung bersama teman.",
     "t_furi": ""
    },
    {
-    "t": "友達は何を買いましたか。",
+    "t": "さ来週、何をしますか。",
     "pilihan": [
-     "葉書と洋服",
-     "野菜と薬",
-     "目と門",
-     "夕飯と薬"
-    ],
-    "jawab": 1,
-    "bahas": "Teks menyebutkan '友達は有名な野菜と薬を買いました' yaitu sayuran dan obat.",
-    "t_furi": ""
-   },
-   {
-    "t": "私は何が欲しいですか。",
-    "pilihan": [
-     "野菜",
-     "薬",
-     "葉書",
-     "洋服"
+     "山を探検します",
+     "就職します",
+     "レポートを書きます",
+     "あいさつします"
     ],
     "jawab": 2,
-    "bahas": "Teks menyebutkan '私も葉書が欲しいです' yang berarti saya ingin kartu pos.",
+    "bahas": "Teks menyebut 'さ来週はレポートを書きます' sehingga jawabannya adalah menulis laporan.",
+    "t_furi": ""
+   },
+   {
+    "t": "この人は何を難しいと思っていますか。",
+    "pilihan": [
+     "山に登ること",
+     "お金を増やすこと",
+     "あいさつすること",
+     "道を確認すること"
+    ],
+    "jawab": 1,
+    "bahas": "Teks menyebut 'お金を増やすのは難しいです' sehingga jawabannya adalah menambah uang.",
     "t_furi": ""
    }
   ]
  },
  "14": {
   "day": 14,
-  "tema_jp": "川と森と星",
-  "tema_id": "Sungai, Hutan, dan Bintang",
-  "judul": "おとといの さんぽ",
-  "teks": "おととい、わたしは ともだちと 川の ちかくを さんぽしました。森の 中は とても しずかで、とりの こえが きこえました。さくらの 木の 下に すわって、おちゃを のみながら はなしました。\n\nけさ、わたしは ひとりで また 森に 行きました。よるの 星は とても きれいだと ききましたから、よるに また 来たいです。つかれたら、川の 水を のんでもいいですか。でも、ごみを すててはいけません。あしたも また 来ましょう。",
+  "tema_jp": "町の思い出",
+  "tema_id": "Kenangan di Kota",
+  "judul": "坂道の試し",
+  "teks": "私の家は駅の近くの三丁目にあります。毎朝、学校へ行く途中で、長い坂道を通ります。坂道の上に小さな売店があって、よく友だちの田中君とジュースを買います。\n\n去年の夏、海水浴に行きました。途中で信号を確認して、道を渡りました。観客がたくさんいた講演を聞いた後、植木を見学しました。予想より楽しかったです。来年もまた訪れたいです。",
   "furi": "",
-  "terjemahan": "Kemarin lusa, saya berjalan-jalan di dekat sungai bersama teman. Di dalam hutan sangat sepi, dan suara burung terdengar. Kami duduk di bawah pohon sakura, sambil minum teh kami berbicara.\n\nTadi pagi, saya pergi ke hutan lagi sendirian. Karena saya mendengar bahwa bintang di malam hari sangat indah, saya ingin datang lagi pada malam hari. Kalau lelah, bolehkah saya minum air sungai? Tetapi, jangan buang sampah. Besok ayo datang lagi.",
+  "terjemahan": "Rumah saya berada di 3-chome dekat stasiun. Setiap pagi, dalam perjalanan ke sekolah, saya melewati jalan menanjak yang panjang. Di atas jalan menanjak itu ada kios kecil, dan saya sering membeli jus dengan teman saya, Tanaka-kun.\n\nMusim panas tahun lalu, saya pergi ke pantai untuk berenang di laut. Di tengah jalan, saya memeriksa lampu lalu lintas dan menyeberang jalan. Setelah mendengar ceramah yang banyak penontonnya, saya mengamati tanaman hias. Itu lebih menyenangkan dari yang saya perkirakan. Tahun depan saya ingin mengunjunginya lagi.",
   "soal": [
    {
-    "t": "おととい、だれと 川に 行きましたか。",
+    "t": "私の家はどこにありますか。",
     "pilihan": [
-     "ひとりで",
-     "ともだちと",
-     "かぞくと",
-     "せんせいと"
+     "駅の近くの三丁目",
+     "坂道の上",
+     "売店の中",
+     "海水浴場の近く"
     ],
-    "jawab": 1,
-    "bahas": "Teks menyebutkan 'ともだちと 川の ちかくを さんぽしました' (berjalan-jalan di dekat sungai bersama teman), jadi jawabannya adalah ともだちと.",
+    "jawab": 0,
+    "bahas": "Teks menyebutkan '私の家は駅の近くの三丁目にあります' (rumah saya ada di 3-chome dekat stasiun).",
     "t_furi": ""
    },
    {
-    "t": "森の 中で 何が きこえましたか。",
+    "t": "坂道の上に何がありますか。",
     "pilihan": [
-     "川の おと",
-     "とりの こえ",
-     "うたの こえ",
-     "あめの おと"
-    ],
-    "jawab": 1,
-    "bahas": "Teks menyebutkan 'とりの こえが きこえました' (terdengar suara burung), sehingga jawaban yang benar adalah とりの こえ.",
-    "t_furi": ""
-   },
-   {
-    "t": "この 人は よるに 何を 見たいですか。",
-    "pilihan": [
-     "さくら",
-     "川",
-     "星",
-     "森"
+     "学校",
+     "信号",
+     "小さな売店",
+     "植木"
     ],
     "jawab": 2,
-    "bahas": "Teks menyebutkan 'よるの 星は とても きれいだと ききましたから、よるに また 来たいです' (ingin datang lagi pada malam hari karena mendengar bintang malam sangat indah), jadi yang ingin dilihat adalah 星 (bintang).",
+    "bahas": "Teks menyebutkan '坂道の上に小さな売店があって' (di atas jalan menanjak ada kios kecil).",
+    "t_furi": ""
+   },
+   {
+    "t": "去年の夏、何をしましたか。",
+    "pilihan": [
+     "講演をしました",
+     "海水浴に行きました",
+     "植木を売りました",
+     "坂道を走りました"
+    ],
+    "jawab": 1,
+    "bahas": "Teks menyebutkan '去年の夏、海水浴に行きました' (musim panas tahun lalu, pergi berenang di laut).",
     "t_furi": ""
    }
   ]
  },
  "15": {
   "day": 15,
-  "tema_jp": "食事と週末",
-  "tema_id": "Makan dan Akhir Pekan",
-  "judul": "週末の一日",
-  "teks": "毎朝、私は朝ご飯を食べます。朝ご飯の後で、手洗いをします。昼ご飯は十二時に食べます。お腹が空くと、昼御飯をたくさん食べます。喉が渇くと、水を飲みます。\n\n週末に、家族と遊園地や動物園へ行きます。おととしは博物館と美術館へ行きました。さ来年は水族館と港と空港へ行きたいです。運動の後で、風邪を引きました。熱があるから、薬を飲みます。お腹が痛いです。",
-  "furi": "毎朝、私は朝ご飯を食べます。朝ご飯の後で、手洗いをします。昼ご飯は十二時に食べます。お腹が空くと、昼御飯をたくさん食べます。喉が渇くと、水を飲みます。\n\n週末に、家族と遊園地や動物園へ行きます。おととしは博物館と美術館へ行きました。さ来年は水族館と港と空港へ行きたいです。運動の後で、風邪を引きました。熱があるから、薬を飲みます。お腹が痛いです。",
-  "terjemahan": "Setiap pagi, saya makan sarapan. Setelah sarapan, saya cuci tangan. Makan siang saya makan pada jam dua belas. Kalau lapar, saya makan banyak makan siang. Kalau haus, saya minum air.\n\nPada akhir pekan, saya pergi ke taman bermain dan kebun binatang bersama keluarga. Dua tahun lalu saya pergi ke museum dan museum seni. Tahun depan lusa saya ingin pergi ke akuarium, pelabuhan, dan bandara. Setelah olahraga, saya masuk angin. Karena demam, saya minum obat. Perut saya sakit.",
+  "tema_jp": "15日目",
+  "tema_id": "Hari ke-15",
+  "judul": "梅雨の日の通勤",
+  "teks": "今日は朝から梅雨の雨がひどくて、通勤の電車が遅れました。急に会社に着いたとき、打ち合わせに遅刻してしまい、とても申し訳ない気持ちになりました。課長は私の話を聞いて、うけいれてくれましたが、私は自分の失敗をうまく打ち消すことができませんでした。\n\n昼休みに台所でお弁当を食べながら、経験者の同僚が「うっかりミスは誰でもあるよ」と言ってくれました。その言葉で少し落ち込む気持ちに諦めがつき、午後は掃除機で掃除をして、洗濯機の洗濯も手伝いました。家に帰って冷蔵庫から飲み物を出すとき、紅葉の写真を見て、静かな気持ちになりました。",
+  "furi": "",
+  "terjemahan": "Hari ini hujan musim hujan deras sejak pagi, dan kereta untuk perjalanan ke kantor terlambat. Saat tiba tiba-tiba di kantor, saya terlambat untuk rapat, dan saya merasa sangat menyesal. Manajer bagian mendengarkan cerita saya dan menerimanya, tetapi saya tidak bisa menghapus kesalahan saya dengan baik.\n\nSaat makan siang di dapur sambil makan bekal, rekan kerja yang berpengalaman berkata, \"Kesalahan karena kelalaian pasti dialami siapa saja.\" Dengan kata-kata itu, perasaan sedih saya sedikit bisa menerima kenyataan, dan sore harinya saya menyapu dengan penyedot debu dan membantu mencuci dengan mesin cuci. Saat pulang ke rumah dan mengeluarkan minuman dari kulkas, saya melihat foto daun musim gugur dan perasaan saya menjadi tenang.",
   "soal": [
    {
-    "t": "朝ご飯の後で、何をしますか。",
+    "t": "今日、筆者はなぜ遅刻しましたか。",
     "pilihan": [
-     "薬を飲みます",
-     "手洗いをします",
-     "運動をします",
-     "昼御飯を食べます"
+     "梅雨の雨で電車が遅れたから",
+     "寝坊したから",
+     "高速道路が混んでいたから",
+     "選挙に行ったから"
+    ],
+    "jawab": 0,
+    "bahas": "Teks menyebutkan 梅雨の雨がひどくて、通勤の電車が遅れました, jadi penyebabnya adalah hujan musim hujan yang membuat kereta terlambat.",
+    "t_furi": ""
+   },
+   {
+    "t": "昼休みに同僚は何と言いましたか。",
+    "pilihan": [
+     "早く帰りなさい",
+     "うっかりミスは誰でもあるよ",
+     "掃除をしなさい",
+     "年賀状を出しなさい"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebutkan setelah sarapan (朝ご飯の後で) melakukan cuci tangan (手洗いをします).",
+    "bahas": "Teks menyebutkan 経験者の同僚が「うっかりミスは誰でもあるよ」と言ってくれました, jadi jawabannya jelas.",
     "t_furi": ""
    },
    {
-    "t": "昼ご飯は何時に食べますか。",
+    "t": "午後、筆者は何をしましたか。",
     "pilihan": [
-     "九時",
-     "十時",
-     "十二時",
-     "三時"
+     "花火を見ました",
+     "選挙に行きました",
+     "掃除と洗濯を手伝いました",
+     "高速道路を運転しました"
     ],
     "jawab": 2,
-    "bahas": "Teks menyebutkan 昼ご飯は十二時に食べます (makan siang jam dua belas).",
-    "t_furi": ""
-   },
-   {
-    "t": "おととし、どこへ行きましたか。",
-    "pilihan": [
-     "遊園地と動物園",
-     "水族館と港",
-     "博物館と美術館",
-     "空港"
-    ],
-    "jawab": 2,
-    "bahas": "Teks menyebutkan おととしは博物館と美術館へ行きました (dua tahun lalu pergi ke museum dan museum seni).",
+    "bahas": "Teks menyebutkan 午後は掃除機で掃除をして、洗濯機の洗濯も手伝いました, jadi pekerjaan sore hari adalah membantu bersih-bersih dan mencuci.",
     "t_furi": ""
    }
   ]
  },
  "16": {
   "day": 16,
-  "tema_jp": "十六日目・買い物と家族",
-  "tema_id": "Hari ke-16: Belanja dan Keluarga",
-  "judul": "お菓子屋と屋上",
-  "teks": "今週、家族と駅の近くの建物へ買い物に参りました。地下鉄の窓口で友達に会って、少し話しました。\n\nお菓子屋で食べ物と飲み物を買って、屋上で音楽を聞きました。男の子が急に自転車を投げて、お釣りを半分拾いました。",
+  "tema_jp": "引っ越しと新しい生活",
+  "tema_id": "Pindah rumah dan kehidupan baru",
+  "judul": "新しい町での生活",
+  "teks": "先月、私は家族と一緒に新しい町に引っ越しをしました。引っ越しの日、電車に乗り遅れずに、朝早く起きて荷物を運びおわりました。新しい家は案外広くて、窓から山が近くに見えます。\n\n妹は足首が少し鈍いですが、毎日真面目に学校へ通って、友だちとお互いに助けています。私はまだ町の人に慣れていませんが、父が迎えに行くと言ってくれたので、改めて安心しました。恐らく来月には、この町の生活にも慣れて、もっと頑張れると望んでいます。",
   "furi": "",
-  "terjemahan": "Minggu ini, saya pergi berbelanja ke sebuah gedung dekat stasiun bersama keluarga. Di loket kereta bawah tanah saya bertemu teman dan berbicara sebentar.\n\nDi toko kue saya membeli makanan dan minuman, lalu mendengarkan musik di atap gedung. Seorang anak laki-laki tiba-tiba melempar sepedanya, dan saya memungut setengah uang kembaliannya.",
+  "terjemahan": "Bulan lalu, saya pindah ke kota baru bersama keluarga. Pada hari pindahan, saya tidak ketinggalan kereta, bangun pagi-pagi dan selesai mengangkut barang-barang. Rumah baru ternyata luas, dan dari jendela gunung terlihat dekat.\n\nAdik saya kakinya agak lambat, tetapi setiap hari dia rajin pergi ke sekolah dan saling membantu dengan teman-temannya. Saya masih belum terbiasa dengan orang-orang di kota ini, tetapi karena ayah berkata akan menjemput saya, saya kembali merasa tenang. Mungkin bulan depan, saya pun akan terbiasa dengan kehidupan di kota ini, dan berharap bisa lebih berusaha lagi.",
   "soal": [
    {
-    "t": "今週、だれと買い物に行きましたか。",
+    "t": "引っ越しの日、筆者はどうしましたか。",
     "pilihan": [
-     "友達と",
-     "先生と",
-     "家族と",
-     "男の子と"
+     "電車に乗り遅れました",
+     "朝早く起きて荷物を運びおわりました",
+     "妹を迎えに行きました",
+     "学校へ行きませんでした"
+    ],
+    "jawab": 1,
+    "bahas": "Teks menyebut 'tidak ketinggalan kereta, bangun pagi dan selesai mengangkut barang', jadi jawaban yang benar adalah pilihan kedua.",
+    "t_furi": ""
+   },
+   {
+    "t": "妹について正しいものはどれですか。",
+    "pilihan": [
+     "足首が速いです",
+     "学校へ行きたくないです",
+     "真面目に学校へ通っています",
+     "友だちとお互いに助けていません"
     ],
     "jawab": 2,
-    "bahas": "Teks menyebutkan '家族と…買い物に参りました' (pergi berbelanja bersama keluarga).",
+    "bahas": "Teks menyebut adik 'rajin pergi ke sekolah dan saling membantu dengan teman', sehingga pilihan ketiga benar.",
     "t_furi": ""
    },
    {
-    "t": "どこで友達に会いましたか。",
+    "t": "筆者は今、どんな気持ちですか。",
     "pilihan": [
-     "お菓子屋",
-     "屋上",
-     "教室",
-     "地下鉄の窓口"
+     "町の生活に完全に慣れました",
+     "まだ慣れていませんが、安心して頑張りたいです",
+     "引っ越しを後悔しています",
+     "父に会いたくないです"
     ],
-    "jawab": 3,
-    "bahas": "Teks menyebutkan '地下鉄の窓口で友達に会って' (bertemu teman di loket kereta bawah tanah).",
-    "t_furi": ""
-   },
-   {
-    "t": "屋上で何をしましたか。",
-    "pilihan": [
-     "音楽を聞きました",
-     "自転車を投げました",
-     "お釣りを拾いました",
-     "買い物をしました"
-    ],
-    "jawab": 0,
-    "bahas": "Teks menyebutkan '屋上で音楽を聞きました' (mendengarkan musik di atap gedung).",
+    "jawab": 1,
+    "bahas": "Teks menyebut 'masih belum terbiasa' tetapi 'merasa tenang' dan 'berharap bisa lebih berusaha', jadi pilihan kedua paling sesuai.",
     "t_furi": ""
    }
   ]
  },
  "17": {
   "day": 17,
-  "tema_jp": "17日目：わたしの一日",
-  "tema_id": "Hari ke-17: Kegiatan Sehari-hari",
-  "judul": "あさからよるまで",
-  "teks": "あさ、わたしはおきます。まず、かおをあらう。それから、はをみがく。あさごはんをたべたあと、でんしゃにのる。えきでともだちにあいさつをする。がっこうで、しゅくだいをかえす。\n\nひるやすみに、こうえんへいく。こうえんには、おとこのひととおんなのひとがあつまる。わたしはおんがくをきく。そして、ほんをよむ。よる、いえでりょうりをつくる。とてもおいしい。",
+  "tema_jp": "仕事と生活の安全",
+  "tema_id": "Pekerjaan dan Keselamatan Hidup",
+  "judul": "田中さんの一日",
+  "teks": "田中さんは今年から会社で働いています。毎日、給料のために残業をしたり、貯金をしたりしています。先週、面接を受けて、履歴書を出してみました。でも、仕事は思ったほど簡単ではありません。\n\nある日、田中さんは案内所で道を聞いてみました。踏切の近くに消防署があって、駐車違反の車も見ました。ビルの中では非常口と消火器を確認しました。友だちが「気をつけてね」と言ってくれたので、田中さんはうれしがりました。会議は延期になったまま、彼は少し安心しました。",
   "furi": "",
-  "terjemahan": "Pagi, saya bangun. Pertama, saya mencuci muka. Setelah itu, saya menyikat gigi. Setelah makan sarapan, saya naik kereta. Di stasiun, saya memberi salam kepada teman. Di sekolah, saya mengembalikan PR.\n\nSaat istirahat siang, saya pergi ke taman. Di taman, seorang pria dan seorang wanita berkumpul. Saya mendengarkan musik. Lalu, saya membaca buku. Malam, saya memasak di rumah. Sangat lezat.",
+  "terjemahan": "Tanaka bekerja di perusahaan mulai tahun ini. Setiap hari, demi gaji, dia lembur dan menabung. Minggu lalu, dia mengikuti wawancara dan mencoba menyerahkan riwayat hidup. Tetapi, pekerjaan tidak semudah yang dia pikirkan.\n\nSuatu hari, Tanaka mencoba bertanya jalan di pusat informasi. Di dekat perlintasan kereta ada pemadam kebakaran, dan dia juga melihat mobil yang melanggar parkir. Di dalam gedung, dia memeriksa pintu darurat dan alat pemadam api. Karena temannya berkata \"hati-hati ya\", Tanaka merasa senang. Rapat ditunda begitu saja, dan dia sedikit merasa tenang.",
   "soal": [
    {
-    "t": "あさ、わたしはなにをしますか。",
+    "t": "田中さんは何のために残業をしていますか。",
     "pilihan": [
-     "かおをあらう",
-     "ほんをよむ",
-     "りょうりをつくる",
-     "おんがくをきく"
+     "貯金のため",
+     "給料のため",
+     "面接のため",
+     "履歴書のため"
     ],
-    "jawab": 0,
-    "bahas": "Di teks disebutkan 'まず、かおをあらう' (pertama, mencuci muka), jadi jawabannya mencuci muka.",
+    "jawab": 1,
+    "bahas": "Teks menyebut '給料のために残業をしたり' yang berarti lembur demi gaji.",
     "t_furi": ""
    },
    {
-    "t": "ひるやすみに、どこへいきますか。",
+    "t": "田中さんは案内所で何をしてみましたか。",
     "pilihan": [
-     "えいがかん",
-     "こうえん",
-     "くうこう",
-     "びじゅつかん"
+     "消火器を探してみた",
+     "道を聞いてみた",
+     "履歴書を書いてみた",
+     "駐車違反をしてみた"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebut 'ひるやすみに、こうえんへいく' (saat istirahat siang pergi ke taman), jadi jawabannya 公園 (taman).",
-    "t_furi": "ひるやすみに、どこへいきますか。"
+    "bahas": "Teks menyebut '案内所で道を聞いてみました' yang berarti mencoba bertanya jalan di pusat informasi.",
+    "t_furi": ""
    },
    {
-    "t": "よる、なにをしますか。",
+    "t": "会議はどうなりましたか。",
     "pilihan": [
-     "ほんをよむ",
-     "おんがくをきく",
-     "りょうりをつくる",
-     "でんしゃにのる"
+     "延期になった",
+     "中止になった",
+     "始まった",
+     "終わった"
     ],
-    "jawab": 2,
-    "bahas": "Teks menyebut 'よる、いえでりょうりをつくる' (malam, memasak di rumah), jadi jawabannya 料理を作る.",
-    "t_furi": "よる、なにをしますか。"
+    "jawab": 0,
+    "bahas": "Teks menyebut '会議は延期になったまま' yang berarti rapat menjadi ditunda.",
+    "t_furi": ""
    }
   ]
  },
  "18": {
   "day": 18,
-  "tema_jp": "かぞくとの日よう日",
-  "tema_id": "Hari Minggu bersama keluarga",
-  "judul": "ねむい日よう日",
-  "teks": "きょうは日よう日です。あさ、わたしはとてもねむいです。でも、こどもとでんしゃにのります。あかちゃんもかばんを持ちます。ちいさいかばんです。\n\nせんしゅう、こどもはびょうきでした。びょういんへ行って、くすりをのみました。きょうはげんきです。ゆうびんきょくのとなりで、しんぶんを読みます。まどからえいがを見ます。わたしのしゅみはりょうりです。かたづけるのはすきではありません。おそくなるまえに、はやくうちへかえります。",
+  "tema_jp": "18日目：電話と訪問",
+  "tema_id": "Hari ke-18: Telepon dan Kunjungan",
+  "judul": "はじめてのお使い",
+  "teks": "今日は母の誕生日なので、私はスーパーへお使いに行きました。店で母の好きなケーキを買って、家に帰る途中で友達の田中さんに会いました。田中さんは「お先に失礼します」と言って、急いで帰りました。\n\n次の日、田中さんから電話がありました。「もしもし、昨日はお待たせしました。今からお邪魔します」と田中さんが言いました。私は「かしこまりました。おかまいなく」と答えました。田中さんは母に「おめにかかるのは久しぶりです」とお世辞を言いました。母は安心して、詳しい話をしました。",
   "furi": "",
-  "terjemahan": "Hari ini hari Minggu. Pagi ini, saya sangat mengantuk. Tetapi, saya naik kereta bersama anak. Bayi juga membawa tas. Tasnya kecil.\n\nMinggu lalu, anak saya sakit. Kami pergi ke rumah sakit dan minum obat. Sekarang dia sehat. Di sebelah kantor pos, saya membaca koran. Dari jendela, saya menonton film. Hobi saya adalah memasak. Saya tidak suka membereskan. Sebelum menjadi terlambat, kami cepat-cepat pulang ke rumah.",
+  "terjemahan": "Karena hari ini ulang tahun ibu, saya pergi ke supermarket untuk berbelanja (urusan). Di toko saya membeli kue kesukaan ibu, dan di tengah jalan pulang saya bertemu teman, Tanaka. Tanaka berkata \"Permisi, saya duluan\" lalu bergegas pulang.\n\nKeesokan harinya, ada telepon dari Tanaka. \"Halo, maaf membuat Anda menunggu kemarin. Mulai sekarang saya akan bertamu,\" kata Tanaka. Saya menjawab, \"Baik, mengerti. Jangan repot-repot.\" Tanaka berkata kepada ibu, \"Sudah lama tidak bertemu Anda\" sebagai pujian. Ibu merasa tenang, dan berbicara tentang hal-hal yang detail.",
   "soal": [
    {
-    "t": "きょうは何よう日ですか。",
+    "t": "私はどこへお使いに行きましたか。",
     "pilihan": [
-     "月よう日",
-     "日よう日",
-     "金よう日",
-     "土よう日"
+     "デパート",
+     "スーパー",
+     "学校",
+     "病院"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebut 'きょうは日よう日です' yang berarti hari ini hari Minggu.",
+    "bahas": "Teks menyebutkan '私はスーパーへお使いに行きました' (saya pergi berbelanja ke supermarket), jadi jawabannya スーパー.",
     "t_furi": ""
    },
    {
-    "t": "こどもはせんしゅう、どうしましたか。",
+    "t": "田中さんは電話で何と言いましたか。",
     "pilihan": [
-     "げんきでした",
-     "びょうきでした",
-     "ねむかったです",
-     "おそくなりました"
-    ],
-    "jawab": 1,
-    "bahas": "Teks menyebut 'せんしゅう、こどもはびょうきでした' yang berarti minggu lalu anak sakit.",
-    "t_furi": "こどもはせんしゅう、どうしましたか。"
-   },
-   {
-    "t": "わたしのしゅみは何ですか。",
-    "pilihan": [
-     "えいが",
-     "しんぶん",
-     "りょうり",
-     "くすり"
+     "おかまいなく",
+     "お先に失礼します",
+     "お待たせしました",
+     "お疲れ様"
     ],
     "jawab": 2,
-    "bahas": "Teks menyebut 'わたしのしゅみはりょうりです' yang berarti hobi saya adalah memasak.",
+    "bahas": "Dalam teks tertulis '田中さんから電話がありました。「もしもし、昨日はお待たせしました...」', jadi Tanaka mengatakan お待たせしました.",
+    "t_furi": ""
+   },
+   {
+    "t": "田中さんは母に何を言いましたか。",
+    "pilihan": [
+     "詳しい話",
+     "お世辞",
+     "お使い",
+     "交換"
+    ],
+    "jawab": 1,
+    "bahas": "Teks menyebutkan '田中さんは母に「おめにかかるのは久しぶりです」とお世辞を言いました', jadi Tanaka mengatakan pujian (お世辞).",
     "t_furi": ""
    }
   ]
  },
  "19": {
   "day": 19,
-  "tema_jp": "そうじと すいえい",
-  "tema_id": "Membersihkan dan Berenang",
-  "judul": "きれいに する",
-  "teks": "きのう、わたしは へやを きれいに しました。つくえの うえに あかい けしゴムが ありました。わたしは それを ひろって、かぎを かばんに いれました。ごみを ふくろに いれて、はこびました。\n\nせんぱいと こうはいと すいえいに いきました。すいえいの あとで、なべと さらと ちゃわんを あらいました。びんの ふたを おとしました。わたしは あかるい ところで さがしました。",
-  "furi": "きのう、わたしは へやを きれいに しました。つくえの うえに あかい けしゴムが ありました。わたしは それを ひろって、かぎを かばんに いれました。ごみを ふくろに いれて、はこびました。<br>せんぱいと こうはいと すいえいに いきました。すいえいの あとで、なべと さらと ちゃわんを あらいました。びんの ふたを おとしました。わたしは あかるい ところで さがしました。",
-  "terjemahan": "Kemarin, saya membersihkan kamar. Di atas meja ada penghapus merah. Saya memungutnya, dan memasukkan kunci ke dalam tas. Saya memasukkan sampah ke dalam kantong, dan membawanya.\n\nSaya pergi berenang bersama senior dan junior. Setelah berenang, saya mencuci panci, piring, dan mangkuk. Saya menjatuhkan tutup botol. Saya mencarinya di tempat yang terang.",
+  "tema_jp": "おもてなしと生活",
+  "tema_id": "Pelayanan dan Kehidupan Sehari-hari",
+  "judul": "アルバイトとおもてなし",
+  "teks": "ある日、私は平日の夕方にアルバイトを始めました。締め切りまでにレポートを提出しなければならないので、週末はいつも図書館で勉強しています。いつの間にか、私はお客様に「いらっしゃいませ」ときちんと挨拶できるようになりました。おかげで、少し自信がつきました。\n\n先週、お客様が財布を忘れてしまって、かわいそうでした。私はすぐに店長に伺って、お客様に電話しました。お互いに助けることが大切だと思います。おもてなしの心を育つのは楽ではありませんが、能力が上がって、かえって嬉しいです。差し支えなければ、来月も続けたいです。",
+  "furi": "",
+  "terjemahan": "Suatu hari, saya mulai bekerja paruh waktu di sore hari di hari kerja. Karena harus menyerahkan laporan sebelum tenggat waktu, akhir pekan saya selalu belajar di perpustakaan. Tanpa terasa, saya sudah bisa memberi salam \"selamat datang\" dengan baik kepada pelanggan. Berkat itu, saya sedikit lebih percaya diri.\n\nMinggu lalu, ada pelanggan yang lupa dompetnya, dan saya merasa kasihan. Saya segera bertanya kepada kepala toko, lalu menelepon pelanggan tersebut. Saya pikir saling membantu itu penting. Menumbuhkan semangat pelayanan memang tidak mudah, tetapi kemampuan saya meningkat, dan sebaliknya saya merasa senang. Jika tidak keberatan, bulan depan saya ingin melanjutkan.",
   "soal": [
    {
-    "t": "きのう、わたしは なにを しましたか。",
+    "t": "筆者はいつアルバイトをしていますか。",
     "pilihan": [
-     "すいえいを しました",
-     "へやを きれいに しました",
-     "なべを かいました",
-     "かぎを おとしました"
+     "週末の朝",
+     "平日の夕方",
+     "平日の朝",
+     "週末の夜"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebutkan 'きのう、わたしは へやを きれいに しました' (kemarin saya membersihkan kamar), jadi jawabannya adalah membersihkan kamar.",
-    "t_furi": "きのう、わたしは なにを しましたか。"
+    "bahas": "Teks menyebut '平日の夕方にアルバイトを始めました', jadi jawabannya adalah sore hari di hari kerja.",
+    "t_furi": ""
    },
    {
-    "t": "つくえの うえに なにが ありましたか。",
+    "t": "先週、お客様は何を忘れましたか。",
     "pilihan": [
-     "かぎ",
-     "びん",
-     "けしゴム",
-     "ふくろ"
+     "レポート",
+     "財布",
+     "電話",
+     "挨拶"
+    ],
+    "jawab": 1,
+    "bahas": "Teks menyebut 'お客様が財布を忘れてしまって', jadi pelanggan lupa dompet.",
+    "t_furi": ""
+   },
+   {
+    "t": "筆者は来月どうしたいと思っていますか。",
+    "pilihan": [
+     "アルバイトをやめたい",
+     "図書館で勉強したい",
+     "アルバイトを続けたい",
+     "電話をしたくない"
     ],
     "jawab": 2,
-    "bahas": "Teks menyebutkan 'つくえの うえに あかい けしゴムが ありました' (di atas meja ada penghapus merah).",
-    "t_furi": "つくえの うえに なにが ありましたか。"
-   },
-   {
-    "t": "びんの ふたを おとした あと、どこで さがしましたか。",
-    "pilihan": [
-     "くらい ところ",
-     "あかるい ところ",
-     "すいえいの ところ",
-     "せんぱいの ところ"
-    ],
-    "jawab": 1,
-    "bahas": "Teks menyebutkan 'わたしは あかるい ところで さがしました' (saya mencarinya di tempat yang terang), jadi jawabannya adalah tempat yang terang.",
-    "t_furi": "びんの ふたを おとした あと、どこで さがしましたか。"
+    "bahas": "Di akhir teks disebutkan '来月も続けたいです', jadi penulis ingin melanjutkan kerja paruh waktunya.",
+    "t_furi": ""
    }
   ]
  },
  "20": {
   "day": 20,
-  "tema_jp": "スポーツと うた",
-  "tema_id": "Olahraga dan Lagu",
-  "judul": "えんの 日",
-  "teks": "きょうは えんの 日です。えんに ともだちと いっしょに いきました。えんの かどで きっぷを まちました。それから でんしゃに のりました。\n\nえんでは さかなを すこし みました。その あとで みんなで うたを うたいました。わたしは おどりも しました。あしや 肩や 腕や 指を つかいました。とても たのしかったです。",
+  "tema_jp": "我慢と満足",
+  "tema_id": "Kesabaran dan Kepuasan",
+  "judul": "私の大切な経験",
+  "teks": "子供のとき、私はサッカーがとても好きでした。毎日、公園に集まって友だちとボールをふみながら遊びました。でも、試合でいつも負けて、とても我慢できませんでした。それでも、諦めが悪い私は、毎日練習を続けました。ある日、ボールが遠くへとんで、川にそそぐ道をはこぶ車の下にかくれて、みつかりませんでした。\n\n高校のとき、私はプロの選手に憧れて、クラブチームに入りました。コーチは私に「当たり前のことを毎日やることが大切だ」と言いました。私はボールをまわす練習をして、友だちとつながることができました。試合で相手を追い越すと、気持ちがゆれるほど嬉しかったです。今は大学でサッカーを続けて、ユニフォームを母に預けて、いつも感謝しています。相変わらず、練習の後は服がよごれますが、心は満足です。",
   "furi": "",
-  "terjemahan": "Hari ini adalah hari taman. Saya pergi ke taman bersama teman. Di sudut taman saya menunggu tiket. Setelah itu saya naik kereta.\n\nDi taman saya melihat ikan sedikit. Setelah itu semua orang menyanyi lagu. Saya juga menari. Saya menggunakan kaki, bahu, lengan, dan jari. Sangat menyenangkan.",
+  "terjemahan": "Saat kecil, saya sangat suka sepak bola. Setiap hari, saya berkumpul di taman dan bermain sambil menginjak bola dengan teman-teman. Tetapi, dalam pertandingan saya selalu kalah, dan saya sangat tidak bisa bersabar. Meskipun begitu, saya yang pantang menyerah terus berlatih setiap hari. Suatu hari, bola terbang jauh, tersembunyi di bawah mobil yang membawa jalan menuju sungai, dan tidak ditemukan.\n\nSaat SMA, saya mengagumi pemain profesional dan masuk klub. Pelatih berkata kepada saya, \"Penting untuk melakukan hal-hal yang wajar setiap hari.\" Saya berlatih memutar bola, dan bisa terhubung dengan teman-teman. Ketika menyalip lawan dalam pertandingan, saya sangat senang sampai perasaan saya goyah. Sekarang saya melanjutkan sepak bola di universitas, menitipkan seragam kepada ibu, dan selalu bersyukur. Seperti biasa, setelah latihan pakaian menjadi kotor, tetapi hati saya puas.",
   "soal": [
    {
-    "t": "きょうは なんの 日ですか。",
+    "t": "子供のとき、筆者は何をしましたか。",
     "pilihan": [
-     "がっこうの 日",
-     "えんの 日",
-     "いえの 日",
-     "みせの 日"
+     "川で泳ぎました",
+     "公園に集まってサッカーをしました",
+     "車をはこびました",
+     "母にユニフォームを預けました"
     ],
     "jawab": 1,
-    "bahas": "Teks menyebut 'きょうは えんの 日です' yang berarti hari ini adalah hari taman.",
+    "bahas": "Teks menyebut '毎日、公園に集まって友だちとボールをふみながら遊びました' yang berarti berkumpul di taman dan bermain bola.",
     "t_furi": ""
    },
    {
-    "t": "えんの かどで なにを まちましたか。",
+    "t": "コーチは何と言いましたか。",
     "pilihan": [
-     "ともだち",
-     "でんしゃ",
-     "きっぷ",
-     "さかな"
+     "毎日練習を休みなさい",
+     "プロの選手になりなさい",
+     "当たり前のことを毎日やることが大切だ",
+     "服をよごしてはいけない"
     ],
     "jawab": 2,
-    "bahas": "Teks menyebut 'えんの かどで きっぷを まちました' yaitu menunggu tiket di sudut taman.",
-    "t_furi": "えんの かどで なにを まちましたか。"
-   },
-   {
-    "t": "えんでは なにを しましたか。",
-    "pilihan": [
-     "およいだ",
-     "はしった",
-     "うたを うたった",
-     "ほんを よんだ"
-    ],
-    "jawab": 2,
-    "bahas": "Teks menyebut 'みんなで うたを うたいました' yang berarti semua orang menyanyi lagu.",
-    "t_furi": "えんでは なにを しましたか。"
-   }
-  ]
- },
- "21": {
-  "day": 21,
-  "tema_jp": "二十一日子どもの日",
-  "tema_id": "Hari ke-21: Hari Anak",
-  "judul": "おじいさんと川の日",
-  "teks": "ここのか、おじいさんとおばさんは川へ行きました。はじめに、まるい石を見ました。おじいさんはラジオカセットで音楽を聞きました。おばさんは「あの丸い石はきれいですね」と言いました。\n\n九日、伯父さんと叔母さんも来ました。川は右にまがります。みんなでラジカセを見ました。伯母さんは「初めの歌が好きです」と言いました。",
-  "furi": "",
-  "terjemahan": "Pada tanggal sembilan, kakek dan bibi pergi ke sungai. Pertama-tama, mereka melihat batu yang bulat. Kakek mendengarkan musik dengan radio kaset. Bibi berkata, \"Batu bulat itu indah ya.\"\n\nPada tanggal sembilan, paman dan bibi juga datang. Sungai berbelok ke kanan. Semua orang melihat radio kaset. Bibi berkata, \"Saya suka lagu yang pertama.\"",
-  "soal": [
-   {
-    "t": "おじいさんは何で音楽を聞きましたか。",
-    "pilihan": [
-     "ラジカセ",
-     "ラジオカセット",
-     "テレビ",
-     "電話"
-    ],
-    "jawab": 1,
-    "bahas": "Teks menyebut おじいさんはラジオカセットで音楽を聞きました (Kakek mendengarkan musik dengan radio kaset).",
+    "bahas": "Teks menyebut 'コーチは私に「当たり前のことを毎日やることが大切だ」と言いました'.",
     "t_furi": ""
    },
    {
-    "t": "川はどちらにまがりますか。",
+    "t": "今、筆者の気持ちはどうですか。",
     "pilihan": [
-     "左",
-     "上",
-     "右",
-     "下"
+     "我慢できない",
+     "諦めが悪い",
+     "心は満足だ",
+     "とても悲しい"
     ],
     "jawab": 2,
-    "bahas": "Teks menyebut 川は右にまがります (Sungai berbelok ke kanan).",
-    "t_furi": ""
-   },
-   {
-    "t": "おばさんはどんな石を見ましたか。",
-    "pilihan": [
-     "四角い石",
-     "丸い石",
-     "大きい石",
-     "小さい石"
-    ],
-    "jawab": 1,
-    "bahas": "Teks menyebut まるい石を見ました (Melihat batu bulat).",
+    "bahas": "Di akhir teks disebutkan '心は満足です' yang berarti hatinya puas.",
     "t_furi": ""
    }
   ]
