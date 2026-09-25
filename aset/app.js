@@ -632,6 +632,8 @@ function pasangNavBawah() {
         bar.id = "navBawah";
         bar.className = "nav-bawah";
         document.body.appendChild(bar);
+    } else if (bar.querySelector(".nb-item")) {
+        return bar;      // sudah dibangun → JANGAN bongkar ulang (biar pil penanda bisa meluncur, bukan lahir dari nol)
     }
     const tombol = [];
     nav.querySelectorAll("button.tab-btn").forEach(function (b) {
@@ -642,16 +644,37 @@ function pasangNavBawah() {
         teks = teks.replace(/^[\u3040-\u30ff\u4e00-\u9fff]+\s*/, "").trim() || teks;   // buang kanji di depan (mis. "漢字 Kanji" -> "Kanji")
         tombol.push({ kunci: kunci, teks: teks });
     });
-    bar.innerHTML = tombol.map(function (t) {
-        return '<button type="button" class="nb-item" data-tab="' + t.kunci + '">' +
+    bar.innerHTML = '<span class="nb-pil" aria-hidden="true"></span>' + tombol.map(function (t, i) {
+        return '<button type="button" class="nb-item" style="--i:' + i + '" data-tab="' + t.kunci + '">' +
                '<span class="nb-kanji">' + (IKON_NAV[t.kunci] || "・") + "</span>" +
                '<span class="nb-teks">' + escapeHtml(t.teks) + "</span>" +
                "</button>";
     }).join("");
     bar.querySelectorAll(".nb-item").forEach(function (el) {
-        el.addEventListener("click", function () { switchTab(el.dataset.tab); });
+        el.addEventListener("click", function (e) {
+            const kotak = el.getBoundingClientRect();
+            const riak = document.createElement("span");
+            riak.className = "nb-ombak";
+            riak.style.left = (e.clientX - kotak.left) + "px";
+            riak.style.top = (e.clientY - kotak.top) + "px";
+            el.appendChild(riak);
+            riak.addEventListener("animationend", function () { riak.remove(); });
+            switchTab(el.dataset.tab);
+        });
     });
     return bar;
+}
+
+/* Pindahkan pil penanda ke posisi tab yang sedang aktif (animasinya di CSS). */
+function pindahPilNav() {
+    const bar = document.getElementById("navBawah");
+    if (!bar) return;
+    const pil = bar.querySelector(".nb-pil");
+    if (!pil) return;
+    const aktif = bar.querySelector(".nb-item.aktif");
+    if (!aktif) { pil.style.setProperty("--w", "0px"); return; }
+    pil.style.setProperty("--x", aktif.offsetLeft + "px");
+    pil.style.setProperty("--w", aktif.offsetWidth + "px");
 }
 function perbaruiNavBawah(tabName) {
     const bar = document.getElementById("navBawah");
@@ -659,6 +682,13 @@ function perbaruiNavBawah(tabName) {
     bar.querySelectorAll(".nb-item").forEach(function (el) {
         el.classList.toggle("aktif", el.dataset.tab === tabName);
     });
+    pindahPilNav();
+    const aktif = bar.querySelector(".nb-item.aktif");
+    if (aktif) {                       // putar ulang animasi pantulan tiap kali tabnya berpindah
+        aktif.classList.remove("pop");
+        void aktif.offsetWidth;
+        aktif.classList.add("pop");
+    }
     const kali = document.getElementById("tombolKalender");
     if (kali) kali.style.display = (tabName === "calendar") ? "none" : "flex";
 }
@@ -734,18 +764,77 @@ if (typeof matchMedia === "function") {
     else if (mqAksi.addListener) mqAksi.addListener(pasangMenuAksi);
 }
 window.perbaruiNavBawah = perbaruiNavBawah;
+window.pindahPilNav = pindahPilNav;
+if (!window.__navUbahUkuran) {
+    window.__navUbahUkuran = 1;
+    window.addEventListener("resize", function () { pindahPilNav(); });
+    window.addEventListener("orientationchange", function () { setTimeout(pindahPilNav, 250); });
+}
 window.pasangNavBawah = pasangNavBawah;
 window.pasangTombolKalender = pasangTombolKalender;
 
+/* ====== POPUP KONFIRMASI KELUAR BELAJAR ======
+   Menggantikan confirm() bawaan browser dengan popup sendiri (#customStudyExitModal).
+   Kalau markupnya tidak ada (halaman lain), otomatis balik ke confirm() supaya tidak rusak. */
+let lewatiTanyaKeluar = false;          // penanda: sudah dijawab "ya", jangan tanya dua kali
+function tanyaKeluarBelajar(panggilBalik) {
+    const modal = document.getElementById("customStudyExitModal");
+    const batal = document.getElementById("cancelStudyExitBtn");
+    const keluar = document.getElementById("confirmStudyExitBtn");
+    if (!modal || !batal || !keluar) {
+        panggilBalik(confirm("Mau kemana? Masih banyak kosakatanya nih, yakin mau ditinggal?"));
+        return;
+    }
+    if (modal.dataset.sibuk === "1") return;      // sedang ditanya → jangan dobel
+    modal.dataset.sibuk = "1";
+    modal.style.display = "flex";
+    void modal.offsetWidth;                        // paksa reflow dulu biar animasi masuknya jalan
+    modal.classList.add("buka");
+
+    // pendengar dilepas sendiri saat ditutup — kalau tidak, pendengar lama bisa "mencuri"
+    // jawaban popup berikutnya (mis. tombol Batal dari popup sebelumnya yang masih menempel)
+    const bersihkan = function () {
+        batal.removeEventListener("click", pilihBatal);
+        keluar.removeEventListener("click", pilihKeluar);
+        modal.removeEventListener("click", klikLatar);
+        document.removeEventListener("keydown", tekanTombol);
+    };
+    const tutup = function (jawaban) {
+        if (modal.dataset.sibuk !== "1") return;   // sudah ditutup sebelumnya → abaikan
+        delete modal.dataset.sibuk;
+        bersihkan();
+        modal.classList.remove("buka");
+        const beres = function () {
+            if (modal.classList.contains("buka")) return;   // sudah dibuka lagi → jangan sembunyikan
+            modal.style.display = "none";
+            modal.removeEventListener("transitionend", beres);
+        };
+        modal.addEventListener("transitionend", beres);
+        setTimeout(beres, 340);                    // jaring pengaman kalau transisi dimatikan
+        panggilBalik(jawaban);
+    };
+    const pilihBatal = function (e) { e.preventDefault(); tutup(false); };
+    const pilihKeluar = function (e) { e.preventDefault(); tutup(true); };
+    const klikLatar = function (e) { if (e.target === modal) tutup(false); };
+    const tekanTombol = function (e) { if (e.key === "Escape") { e.preventDefault(); tutup(false); } };
+    batal.addEventListener("click", pilihBatal);
+    keluar.addEventListener("click", pilihKeluar);
+    modal.addEventListener("click", klikLatar);
+    document.addEventListener("keydown", tekanTombol);
+    try { batal.focus({ preventScroll: true }); } catch (e) {}
+}
+window.tanyaKeluarBelajar = tanyaKeluarBelajar;
+
 function switchTab(tabName) {
     // Cek apakah sesi belajar sedang aktif (learningArea terbuka)
-    if (learningArea.style.display === 'block' && cardQueue.length > 0) {
-        let konfirmasi = confirm("Mau kemana? Masih banyak kosakatanya nih, yakin mau ditinggal?");
-        if (!konfirmasi) {
-            return; // Batalkan perpindahan tab jika user pilih Batal
-        }
-        // Jika user tetap ingin keluar, matikan timer sesi
-        stopTimer();
+    if (learningArea.style.display === 'block' && cardQueue.length > 0 && !lewatiTanyaKeluar) {
+        tanyaKeluarBelajar(function (ya) {
+            if (!ya) return;                       // Batalkan perpindahan tab jika user pilih Batal
+            stopTimer();                           // Jika user tetap ingin keluar, matikan timer sesi
+            lewatiTanyaKeluar = true;
+            try { switchTab(tabName); } finally { lewatiTanyaKeluar = false; }
+        });
+        return;
     }
 
     const tabs = {
@@ -1139,13 +1228,61 @@ function populateDirectStudyDropdown() {
         const opt = document.createElement('option');
         opt.value = dayNum;
         
+        const jumlahKata = allData.filter(i => i.day === dayNum).length;
         if (dayNum <= maxUnlocked) {
-            opt.textContent = `Hari ke-${dayNum} (${allData.filter(i => i.day === dayNum).length} Kosakata)`;
+            // tanda di pilihan: sudah beres semua sesinya, atau ini hari yang sedang berjalan
+            let tanda = "";
+            try {
+                const semuaBeres = ["pagi", "siang", "malam"].every(s => isSessionCompleted(dayNum, s));
+                tanda = semuaBeres ? " · ✅ beres" : (dayNum === maxUnlocked ? " · ▶ hari ini" : "");
+            } catch (e) {}
+            opt.textContent = `Hari ke-${dayNum} (${jumlahKata} Kosakata)${tanda}`;
         } else {
             opt.textContent = `🔒 Hari ke-${dayNum} (Terkunci - Buka besok jam 05:00)`;
             opt.disabled = true;
         }
         selectElement.appendChild(opt);
+    });
+}
+
+/* ====== JUDUL MENU SESI (#studySessionMenuTitle) ======
+   Bukan cuma teks polos: ada penanda hari (第 N 日), judul, jumlah kosakata + kemajuan sesi. */
+function tulisJudulSesi(dayNum) {
+    const el = document.getElementById("studySessionMenuTitle");
+    if (!el) return;
+    const hari = Number(dayNum) || 1;
+    let kata = 0;
+    try {
+        if (typeof allData !== "undefined" && Array.isArray(allData)) {
+            kata = allData.filter(function (it) { return Number(it.day) === hari; }).length;
+        }
+    } catch (e) {}
+    let beres = 0;
+    try {
+        beres = ["pagi", "siang", "malam"].filter(function (s) { return isSessionCompleted(hari, s); }).length;
+    } catch (e) {}
+    const rincian = [];
+    if (kata) rincian.push(kata + " kosakata");
+    rincian.push(beres + " dari 3 sesi selesai");
+    el.innerHTML = '<span class="ss-hari">第 ' + hari + " 日</span>" +
+                   '<span class="ss-utama">Sesi Belajar Hari ke-' + hari + "</span>" +
+                   '<span class="ss-rincian">' + rincian.join(" · ") + "</span>";
+    el.classList.toggle("ss-beres", beres === 3);
+    el.classList.remove("ss-masuk");     // putar ulang animasi masuknya tiap menu dibuka
+    void el.offsetWidth;
+    el.classList.add("ss-masuk");
+}
+window.tulisJudulSesi = tulisJudulSesi;
+
+/* Pilihan hari (.study-select): beri "denyut" tiap kali hari diganti — sekali pasang untuk semua halaman. */
+if (!window.__pilihanHariSiap) {
+    window.__pilihanHariSiap = 1;
+    document.addEventListener("change", function (e) {
+        const sel = e.target && e.target.closest ? e.target.closest("select.study-select") : null;
+        if (!sel) return;
+        sel.classList.remove("pilih");
+        void sel.offsetWidth;
+        sel.classList.add("pilih");
     });
 }
 
@@ -1161,7 +1298,7 @@ function openStudySessions() {
 
     document.getElementById('studySelectionCard').style.display = 'none';
     document.getElementById('studySessionMenu').style.display = 'block';
-    document.getElementById('studySessionMenuTitle').textContent = `📚 Sesi Belajar Hari ke-${currentActiveDay}`;
+    tulisJudulSesi(currentActiveDay);
 
     updateStudySessionButtonsState(currentActiveDay);
     renderDayVocabList(currentActiveDay);
@@ -1251,6 +1388,7 @@ function updateStudySessionButtonsState(dayNum) {
 
     tandaHariSelesai(dayNum, pagiDone && siangDone && malamDone);
     renderTugasHari(dayNum);
+    tulisJudulSesi(dayNum);
 }
 
 /* Tanda "hari ini sudah selesai" di tab Belajar — tampil kalau KETIGA sesi hari itu beres.
@@ -1302,11 +1440,13 @@ function startStudySession(sessionName, dayNum) {
 
 function backToStudySessionsMenu() {
     // Tambahkan konfirmasi jika user klik tombol kembali saat sesi flashcard masih berjalan
-    if (cardQueue.length > 0) {
-        let konfirmasi = confirm("Mau kemana? Masih banyak kosakatanya nih, yakin mau ditinggal?");
-        if (!konfirmasi) {
-            return; // Batal kembali jika user pilih Batal
-        }
+    if (cardQueue.length > 0 && !lewatiTanyaKeluar) {
+        tanyaKeluarBelajar(function (ya) {
+            if (!ya) return;                       // Batal kembali jika user pilih Batal
+            lewatiTanyaKeluar = true;
+            try { backToStudySessionsMenu(); } finally { lewatiTanyaKeluar = false; }
+        });
+        return;
     }
 
     stopTimer();
