@@ -969,6 +969,32 @@ function daftarPolaHari(dayNum) {
     return [...set];
 }
 
+/* Berapa HARI yang masih menggantung (sesi / bunpou / dokkai) sampai hari yang sudah kebuka.
+   Ini yang bikin kartu tugas bisa bilang "ada N hari ... belum selesai". */
+function hitungHariTertinggal() {
+    const hasil = { sesi: 0, bunpou: 0, dokkai: 0, sampaiHari: 0 };
+    let maks = 1;
+    // pakai aturan yang sama dengan tab Dokkai/Belajar: N3Unlock (per akun) kalau ada, kalau tidak aturan lama
+    try {
+        maks = (window.N3Unlock && typeof window.N3Unlock.maksHari === "function")
+            ? window.N3Unlock.maksHari() : getMaxUnlockedDay();
+    } catch (e) { try { maks = getMaxUnlockedDay(); } catch (e2) {} }
+    hasil.sampaiHari = maks;
+    const dibuka = bunpouDibuka();
+    let hariDokkai = [];
+    try { if (typeof window.hariDokkaiAda === "function") hariDokkai = window.hariDokkaiAda() || []; } catch (e) {}
+    for (let d = 1; d <= maks; d++) {
+        try {
+            const tigaBeres = ["pagi", "siang", "malam"].every(function (s) { return isSessionCompleted(d, s); });
+            if (!tigaBeres) hasil.sesi++;
+        } catch (e) {}
+        const pola = daftarPolaHari(d);
+        if (pola.length && pola.filter(function (p) { return dibuka[p]; }).length < pola.length) hasil.bunpou++;
+        if (hariDokkai.indexOf(d) >= 0 && !dokkaiSelesai(d)) hasil.dokkai++;
+    }
+    return hasil;
+}
+
 function dokkaiSelesai(dayNum) {
     try {
         const h = JSON.parse(localStorage.getItem("n3_dokkai_hasil") || "{}") || {};
@@ -976,8 +1002,11 @@ function dokkaiSelesai(dayNum) {
     } catch (e) { return false; }
 }
 
+let hariTerakhirTugas = 1;      // supaya kartu bisa disegarkan tanpa harus tahu hari aktifnya
 function renderTugasHari(dayNum) {
     const kalender = document.getElementById("calendarSection");
+    const sisa = hitungHariTertinggal();
+    if (dayNum) hariTerakhirTugas = dayNum;
     if (!kalender || !dayNum) return;
     let kotak = document.getElementById("tugasHariBox");
     if (!kotak) {
@@ -996,18 +1025,26 @@ function renderTugasHari(dayNum) {
     const elJlpt = document.getElementById("jlptCountdown");
     const sisaHari = elJlpt ? String(elJlpt.textContent || "").trim() : "";
 
+    // hitungan "ada N hari ..." untuk seluruh hari yang sudah kebuka sampai hari ini
+    const antre = function (jumlah, kalauAda, kalauBeres) {
+        return jumlah > 0 ? "⚠ Ada " + jumlah + " hari " + kalauAda : "✓ Semua hari " + kalauBeres;
+    };
     const kartu = [
         { ikon: "📚", judul: "Sesi Pagi · Siang · Malam",
           sub: sesiBeres.length === 3 ? "Ketiga sesi sudah selesai" :
                (sesiBeres.length ? sesiBeres.length + " dari 3 sesi sudah selesai" : "Belum ada sesi yang dikerjakan"),
+          sisa: antre(sisa.sesi, "sesinya belum selesai", "sesinya sudah beres"), sisaAda: sisa.sesi > 0,
           beres: sesiBeres.length === 3 },
         { ikon: "📐", judul: "Bunpou hari ini",
           sub: !pola.length ? "Belum ada bunpou untuk hari ini" :
                (polaBeres.length === pola.length ? "Semua pola sudah dibaca" :
                 polaBeres.length + " dari " + pola.length + " pola sudah dibaca — belum selesai dibaca"),
+          sisa: antre(sisa.bunpou, "bunpou-nya belum dibaca", "bunpou-nya sudah dibaca"), sisaAda: sisa.bunpou > 0,
           beres: pola.length > 0 && polaBeres.length === pola.length },
         { ikon: "📖", judul: "Dokkai hari ini",
-          sub: dk ? "Sudah dikerjakan" : "Masih belum dikerjakan", beres: dk },
+          sub: dk ? "Sudah dikerjakan" : "Masih belum dikerjakan",
+          sisa: antre(sisa.dokkai, "dokkainya belum dikerjakan", "dokkainya sudah dikerjakan"), sisaAda: sisa.dokkai > 0,
+          beres: dk },
         { ikon: "🌸", judul: "Semangat ya buat lulus Ujian JLPT-nya!",
           sub: sisaHari ? "Sisa " + sisaHari + " hari menuju ujian — pelan-pelan aja, yang penting rutin" :
                           "Pelan-pelan aja, yang penting rutin", semangat: true }
@@ -1017,14 +1054,16 @@ function renderTugasHari(dayNum) {
         const kelas = k.semangat ? "tugas semangat" : (k.beres ? "tugas beres" : "tugas belum");
         const tanda = k.semangat ? "🎌" : (k.beres ? "✓" : "!");
         const label = k.semangat ? "Motivasi" : (k.judul.split(" ")[0] === "Sesi" ? "Sesi" : (k.judul.split(" ")[0] === "Bunpou" ? "Bunpou" : "Dokkai"));
+        const barisSisa = k.sisa ? '<span class="tugas-sisa' + (k.sisaAda ? " ada" : "") + '">' + k.sisa + "</span>" : "";
         return '<div class="' + kelas + '" role="status">' +
                '<span class="tugas-label">' + label + "</span>" +
                '<span class="tugas-ikon" aria-hidden="true">' + k.ikon + "</span>" +
-               '<span class="tugas-teks"><b>' + k.judul + "</b><span>" + k.sub + "</span></span>" +
+               '<span class="tugas-teks"><b>' + k.judul + "</b><span>" + k.sub + "</span>" + barisSisa + "</span>" +
                '<span class="tugas-tanda" aria-hidden="true">' + tanda + "</span></div>";
     }).join("");
 }
 window.renderTugasHari = renderTugasHari;
+window.segarkanTugasHari = function () { renderTugasHari(hariTerakhirTugas); };
 
 /* Strip hari (versi HP) — deretan tanggal bisa digeser, hari ini kotak penuh.
    Mengikuti contoh リズ: nama hari kecil di atas, angka besar di bawah, panah » di ujung. */
