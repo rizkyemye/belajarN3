@@ -80,7 +80,7 @@
             <span class="hero-ikon">✍️</span>
             <div style="min-width:0">
                 <div class="hero-judul">Kana &amp; Kanji</div>
-                <div class="hero-sapaan">Hafalkan pakai kartu, tulis pakai jari (kana 142 huruf + kanji 824)</div>
+                <div class="hero-sapaan">Hafalkan pakai kartu, tulis pakai jari — kana + kanji sesuai tingkatmu</div>
                 <div class="hero-pesan">Pilih <b>🃏 Kartu</b> untuk hafalan, <b>✍️ Tulis</b> untuk latihan goresan ♪</div>
             </div>
         </div>
@@ -154,19 +154,18 @@
     "use strict";
     const HIRA = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ".split("");
     const KANJI = "中主予係倒備共内切力功加努化単味囲基増変失安定実容対将少張影待得心必想意慣慮成戦択挑敗明期本束来検標気決況済減満準状現理由画発的目相真確礎簡約納経絡緊締習表複要見解計討認説談足通連遠選配関際集雑雰面響験争件任企会価保信借入典出判利制協原収合品営因報場契存徴情態手技投損支料断方書条果査格業模機段消特申界登益研税究競策管範組結給続織者術製規記証評調請責貯費資金針録開限階頼事交人住候党全再則助危反台告和回国地境外天害家察展平府律拠挙捕援政故文材染民汚治法注源災然犯球環生産用社罪罰自被裁警護逮違避防険難電震風体健分労勇医夢希師康復患感望栄疲病症療看眠睡神笑精薬長顔養不大学宿徒才授教校留知科績義育能試課論講識部題乗光到刻動口名土延往思急換旅時景案泊片物着移窓符色行観転遅運道館修値割員商好店引提流質返作充削効受密導接操新更率秘純索設送除障上下仕休僚先司同履後採日昇有歴残職議輩退進個冷印厳固性悲慎我所極楽正温直短積素胆親誠象重静頑魅喜妬嫉寂怒恥悔懐泣絶誇謝驚付務問域寄度権献祉票福立貢仮宇宙工未析構造伝公写創劇及史批持映普演統美芸賞鑑音具取団宅室寝屋布干廊応快房掃整暖暮根沿洗活濯熱狭玄畳落賃越近適間騒卓噌器堂弁当惣旬油漬濃炒煮菜蒸郷醤食香鮮一古在売小幣座庫払括振数札次沢浪稼第算節紙蓄財買贅込過釣銭領伴免券勤号客席改横歩混渋滞荷許距路踏車輸速達離駅凍吹四圧夕妻季寒差恐晴暑曇梅水波洪湿溶濡猛稲紅葉雨雪雷霜勢吸呼姿射救欲疫痛皮筋肉肥肩脈腰膚血診身院頭骨仲優別友夫婚婦尊尽恋悩惚愛敬焼白絆縁誤途世働児叱娘子守居息抗担春母父甘祖祝褒話誕負赤丁冗句寧打拶挨沈渉潔翻聞言訳語辞遣黙刷噂宣広強掲放番編聴視訂誌読載園山岩岸巣恵昆木林枯森植殖海渡湖滅滝漠火獣珍砂種繁草虫谷野類飼餌鳥久勝北審憩点監督練訓趣鍛図巡念撮泉港眺程空訪跡迷遺七俳儀初卒参太寺式拝月浴盆祈祭継花衣詣踊飾鼓乱処前善困惑慌慢探替省苦邪順魔剣可叶向就志悟憧抱指描揮独覚諦乏互傾役徐斉昧曖深激背著豊貴哀悪握扱暗以位依偉委異維隠永衛鋭央王穏何暇歌菓嘩介怪絵穫刈勘勧完含奇嬉紀宜去京供叫仰曲僅区偶刑型喧嫌幸考克今伺使刺士始姉止詞似釈周宗秀十瞬女奨粧常伸臣星石占線双奏層測他多代叩奪置致停抵哲吐等二匂博半版般否服便補包宝冒吠妹万妙命勿夜厄唯裕余与様陽陸了両令列劣飴易為飲右雲泳英鉛塩奥押黄億夏壊灰皆角掛滑噛乾官漢眼机帰汽起喫牛魚橋興鏡局銀九隅靴君兄形軽迎建懸犬絹元戸五午御厚郊降高黒左最歳細坂咲昨皿三傘散市枝死私糸歯字耳舎捨若弱酒首拾秋終舟週柔緒召承招章紹丈嬢触辛尋凄盛声西青昔折千浅早痩走蔵贈族村袋貸脱棚誰弾男池茶昼駐朝町低庭弟泥鉄貼田塗都冬島東盗湯灯答筒糖逃届豚南賑乳猫年倍薄箱八髪煩飯晩彼比非飛鼻筆百瓶怖舞封沸並閉米壁辺勉亡坊帽忘忙棒貿僕磨毎漫無鳴綿毛戻門遊郵揺曜洋卵覧裏涼緑輪隣例礼零呂六腕".split("");
-    /* kanji per tingkat = kanji yang muncul di MATERI tingkat itu (kumulatif).
-       N5 = materi N5 · N4 = N5+N4 · N3 = semua (N5+N4+N3). */
+    /* KANJI_LV = cadangan kalau ../aset/kanji.json belum termuat; angka sebenarnya datang dari kanji.json. */
     const KANJI_LV = { "N5": "中切味安少待意明本来気理画目真締習要見計足遠関雑会借入出利手料方書果業機段消登結者金開階頼事交人住全危台国地外天家文汚生社自警違難電風体分医疲病薬長大学宿徒授教校留知部題乗動口名土旅時物着窓符色行転遅道館好店引質返作新除上下仕休先同後日有冷所楽温短親重静問度立構公写持映音取室寝屋布廊掃暖洗濯熱狭玄近間堂弁当菜食一古売小座庫次紙財買勤号横歩荷車速達駅吹四夕寒差晴暑曇水紅葉雨雪勢吸呼欲痛肉院頭友夫婚白働子居春母父甘話誕赤聞言語辞広強番誌読園山木海渡火砂野鳥北点練図撮空七初太月花前困邪向覚背悪暗何暇歌菓絵去供嫌今使始姉止十女多置二半服便妹万夜両飴易飲右泳英鉛塩奥押黄夏灰皆角官漢眼机帰起喫牛魚橋鏡局銀九靴兄軽建犬元戸五午御厚降高黒左歳細咲昨皿三傘散死私歯字耳若弱酒秋終週緒章丈辛声西青千早走蔵族村貸脱棚誰弾男池茶昼朝町低庭弟鉄貼冬東答筒糖豚南賑乳猫年薄箱八煩飯晩飛鼻筆百瓶封並閉辺勉帽忘忙磨毎無鳴門遊郵曜洋卵涼緑隣零呂六", "N4": "中予係倒備内切力化単味増変失安定対将少待心必意慣慮戦敗明本束来気決済準理由画発目相真確簡約経絡締習表複要見計説談足通連遠選配関際集雑験争会借入典出利原合品因報場存手技投支料方書果業機段消特申界登研究競組結続者術規記調金開階頼事交人住全則危反台回国地外天家察展律捕政故文民汚治法注生産用社自警護違険難電震風体分医夢復疲病看眠神笑薬長不大学宿徒授教校留知科義育試課講部題乗光動口名土思急換旅時景案泊片物着移窓符色行転遅運道館割員好店引質返作受新送除障上下仕休先同後日有歴残議輩退進冷厳性悲所楽正温直短親重静喜寂怒恥泣謝驚付務問寄度立工構伝公写史持映普美音具取団宅室寝屋布廊房掃暖暮洗活濯熱狭玄畳落越近適間騒噌堂弁当漬菜食一古売小座庫払数次節紙財買込過釣勤号客席横歩荷踏車輸速達駅吹四夕妻季寒差晴暑曇水紅葉雨雪勢吸呼射欲痛肉血院頭優別友夫婚婦焼白途世働娘子守居息春母父甘祖祝話誕負赤丁寧打翻聞言訳語辞広強放番誌読園山岸木林森植海渡湖火珍砂草虫野鳥久勝北点練趣図念撮港空訪七初卒参太寺拝月祈祭花踊飾前困探替苦邪向指覚役深背悪暗以何暇歌菓介絵去供嫌考今使始姉止似周十女常星石線多代置致等二半服便包妹万命夜両飴易為飲右雲泳英鉛塩奥押黄億夏壊灰皆角掛滑噛乾官漢眼机帰汽起喫牛魚橋興鏡局銀九隅靴君兄形軽迎建懸犬絹元戸五午御厚郊降高黒左最歳細坂咲昨皿三傘散市枝死私糸歯字耳舎捨若弱酒首拾秋終舟週柔緒召承招章紹丈嬢触辛尋凄盛声西青昔折千浅早痩走蔵贈族村袋貸脱棚誰弾男池茶昼駐朝町低庭弟泥鉄貼田塗都冬島東盗湯灯答筒糖逃届豚南賑乳猫年倍薄箱八髪煩飯晩彼比非飛鼻筆百瓶怖舞封沸並閉米壁辺勉亡坊帽忘忙棒貿僕磨毎漫無鳴綿毛戻門遊郵揺曜洋卵覧裏涼緑輪隣例礼零呂六腕", "N3": "" };
     let tingkat = (function () {
         const q = new URLSearchParams(location.search).get("level");
         return String(q || localStorage.getItem("n3_tulis_level") || localStorage.getItem("n3_level") || "N3").toUpperCase();
     })();
     if (!KANJI_LV[tingkat]) tingkat = "N3";
-    const BATAS_LV = { "N5": [5], "N4": [5, 4], "N3": [5, 4, 3] };
+    const BATAS_LV = { "N5": [5], "N4": [4], "N3": [3] };   // HANYA tingkat itu sendiri (bukan kumulatif)
     function tingkatKanji(it) { return Number((it || {}).jlpt) || 3; }
     function kanjiDariJson() {
         if (!semuaKanji) return null;                      // belum termuat → pakai daftar lama
-        const batas = BATAS_LV[tingkat] || [5, 4, 3];
+        const batas = BATAS_LV[tingkat] || [3];
         return Object.keys(semuaKanji).filter(function (k) {
             const it = semuaKanji[k] || {};
             if (batas.indexOf(tingkatKanji(it)) === -1) return false;
@@ -181,13 +180,19 @@
     }
     /* daftar hari (dari data yang sama dengan tab Kanji) + pemilihnya */
     function hariKanji() {
-        const batas = BATAS_LV[tingkat] || [5, 4, 3];
+        const batas = BATAS_LV[tingkat] || [3];
         const set = new Set();
         Object.keys(semuaKanji || {}).forEach(function (k) {
             const it = semuaKanji[k] || {};
             if (batas.indexOf(tingkatKanji(it)) !== -1) (it.hari || []).forEach(function (h) { if (h > 0) set.add(Number(h)); });
         });
         return Array.from(set).sort(function (a, b) { return a - b; });
+    }
+    function jumlahKanjiTingkat(lv) {
+        const batas = BATAS_LV[lv] || [3];
+        return Object.keys(semuaKanji || {}).filter(function (k) {
+            return batas.indexOf(tingkatKanji(semuaKanji[k])) !== -1;
+        }).length;
     }
     function pasangPilihHari() {
         const induk = document.getElementById("twTingkat");
@@ -210,13 +215,12 @@
             kini = 0;
             gambarPanduan(); gambarDaftar(); siapkanDeck();
         };
-        /* label tingkat disesuaikan dengan jumlah kanji yang benar-benar dimuat (sama seperti tab Kanji) */
+        /* label tingkat + kalimat di banner disesuaikan dengan jumlah kanji yang benar-benar dimuat */
         document.querySelectorAll("#twTingkat button[data-lv]").forEach(function (b) {
-            const n = Object.keys(semuaKanji).filter(function (k) {
-                return BATAS_LV[b.dataset.lv].indexOf(tingkatKanji(semuaKanji[k])) !== -1;
-            }).length;
+            const n = jumlahKanjiTingkat(b.dataset.lv);
             if (n) b.textContent = b.dataset.lv + " · " + n + " kanji";
         });
+        // (tulisan banner dibuat tetap — tanpa angka, biar tidak pernah basi)
     }
     const KATA = HIRA.map(function (c) { return String.fromCharCode(c.charCodeAt(0) + 0x60); });
     let data = null, mode = "hira", kini = 0, sudah = {};
@@ -530,6 +534,8 @@
     tandaiTingkat();
     tandaiTingkat();
     ukuranKanvas();
+    const alatUrl = new URLSearchParams(location.search).get("alat");      // ?alat=tulis → langsung buka latihan tulis
+    if (alatUrl === "tulis") { const bt = document.querySelector('.tw-alat button[data-alat="tulis"]'); if (bt) bt.click(); }
     const mUrl = new URLSearchParams(location.search).get("mode");
     if (mUrl === "kanji") { const bk = document.querySelector('.tw-mode button[data-mode="kanji"]'); if (bk) bk.click(); }
 })();
