@@ -1066,7 +1066,7 @@ function daftarPolaHari(dayNum) {
 /* Berapa HARI yang masih menggantung (sesi / bunpou / dokkai) sampai hari yang sudah kebuka.
    Ini yang bikin kartu tugas bisa bilang "ada N hari ... belum selesai". */
 function hitungHariTertinggal() {
-    const hasil = { sesi: 0, bunpou: 0, dokkai: 0, sampaiHari: 0 };
+    const hasil = { sesi: 0, bunpou: 0, dokkai: 0, kuis: 0, sampaiHari: 0 };
     let maks = 1;
     // pakai aturan yang sama dengan tab Dokkai/Belajar: N3Unlock (per akun) kalau ada, kalau tidak aturan lama
     try {
@@ -1085,8 +1085,17 @@ function hitungHariTertinggal() {
         const pola = daftarPolaHari(d);
         if (pola.length && pola.filter(function (p) { return dibuka[p]; }).length < pola.length) hasil.bunpou++;
         if (hariDokkai.indexOf(d) >= 0 && !dokkaiSelesai(d)) hasil.dokkai++;
+        if (!kuisSelesaiAkhir(d)) hasil.kuis++;
     }
     return hasil;
+}
+
+/* Kuis harian dianggap selesai kalau harinya ada di completed_quiz_days (ditulis halaman Kuis). */
+function kuisSelesaiAkhir(dayNum) {
+    try {
+        const daftar = JSON.parse(localStorage.getItem("completed_quiz_days") || "[]") || [];
+        return daftar.map(Number).indexOf(Number(dayNum)) !== -1;
+    } catch (e) { return false; }
 }
 
 function dokkaiSelesai(dayNum) {
@@ -1116,12 +1125,13 @@ function renderTugasHari(dayNum) {
     const dibuka = bunpouDibuka();
     const polaBeres = pola.filter(function (p) { return dibuka[p]; });
     const dk = dokkaiSelesai(dayNum);
+    const kuisBeres = kuisSelesaiAkhir(dayNum);
     const elJlpt = document.getElementById("jlptCountdown");
     const sisaHari = elJlpt ? String(elJlpt.textContent || "").trim() : "";
 
     // hitungan "ada N hari ..." untuk seluruh hari yang sudah kebuka sampai hari ini
     const antre = function (jumlah, kalauAda, kalauBeres) {
-        return jumlah > 0 ? "⚠ Ada " + jumlah + " hari " + kalauAda : "✓ Semua hari " + kalauBeres;
+        return jumlah > 0 ? "⚠ Masih ada " + jumlah + " hari yang " + kalauAda : "✓ Semua hari " + kalauBeres;
     };
     const kartu = [
         { ikon: "📚", judul: "Sesi Pagi · Siang · Malam",
@@ -1139,15 +1149,25 @@ function renderTugasHari(dayNum) {
           sub: dk ? "Sudah dikerjakan" : "Masih belum dikerjakan",
           sisa: antre(sisa.dokkai, "dokkainya belum dikerjakan", "dokkainya sudah dikerjakan"), sisaAda: sisa.dokkai > 0,
           beres: dk },
+        { ikon: "📝", judul: "Kuis harian",
+          sub: kuisBeres ? "Sudah dikerjakan" : "Masih belum dikerjakan",
+          sisa: antre(sisa.kuis, "kuisnya belum dikerjakan", "kuisnya sudah dikerjakan"), sisaAda: sisa.kuis > 0,
+          beres: kuisBeres },
         { ikon: "🌸", judul: "Semangat ya buat lulus Ujian JLPT-nya!",
           sub: sisaHari ? "Sisa " + sisaHari + " hari menuju ujian — pelan-pelan aja, yang penting rutin" :
                           "Pelan-pelan aja, yang penting rutin", semangat: true }
     ];
 
-    kotak.innerHTML = kartu.map(function (k) {
+    const hariIniBeres = (sesiBeres.length === 3) && (pola.length > 0 ? polaBeres.length === pola.length : true) && dk && kuisBeres;
+    const bannerSelesai = hariIniBeres
+        ? '<div class="tugas-selesai" role="status">✓ Hari ini sudah selesai! <small>Semua tugas hari ke-' + dayNum +
+          " beres — istirahat dulu, besok lanjut ✨</small></div>"
+        : "";
+    kotak.innerHTML = bannerSelesai + kartu.map(function (k) {
         const kelas = k.semangat ? "tugas semangat" : (k.beres ? "tugas beres" : "tugas belum");
         const tanda = k.semangat ? "🎌" : (k.beres ? "✓" : "!");
-        const label = k.semangat ? "Motivasi" : (k.judul.split(" ")[0] === "Sesi" ? "Sesi" : (k.judul.split(" ")[0] === "Bunpou" ? "Bunpou" : "Dokkai"));
+        const kata1 = k.judul.split(" ")[0];
+        const label = k.semangat ? "Motivasi" : (kata1 === "Sesi" ? "Sesi" : (kata1 === "Bunpou" ? "Bunpou" : (kata1 === "Kuis" ? "Kuis" : "Dokkai")));
         const barisSisa = k.sisa ? '<span class="tugas-sisa' + (k.sisaAda ? " ada" : "") + '">' + k.sisa + "</span>" : "";
         return '<div class="' + kelas + '" role="status">' +
                '<span class="tugas-label">' + label + "</span>" +
