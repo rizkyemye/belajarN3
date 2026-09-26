@@ -19,19 +19,22 @@
 | --- | --- |
 | 🌸 **Banner & sapaan** | sapaan otomatis sesuai waktu (おはよう / こんにちは / こんばんは) + pesan harian; nama diambil dari halaman *Mulai dari sini* |
 | 📅 **Kalender** | hari konsisten (streak), jumlah hari belajar bulan ini, total jam, target 20 jam, hitung mundur ke JLPT (6 Desember 2026) |
+| 🗓️ **Strip hari & kartu tugas** | strip 7 hari yang bisa digeser (di HP) + **5 kartu tugas** hari ini: Sesi · Bunpou · Dokkai · **Kuis** · Motivasi; yang belum selesai berlatar merah, yang selesai hijau + centang ✓, dan kalau semua beres muncul **“✓ Hari ini sudah selesai!”**. Tiap kartu juga bilang *“masih ada N hari yang … belum dikerjakan”* |
 | 🎯 **Level terpisah** | waktu daftar wajib pilih **N5 / N4 / N3** — masing-masing punya halamannya sendiri (`n5.html` · `n4.html` · `index.html`), tersimpan di akun, dan tidak ada fitur ganti-ganti level |
-| ✍️ **Latihan kana** *(khusus halaman N5)* | `tulis.html` — **(a) 🃏 Kartu hafalan**: 71 kana (46 dasar + dakuten) hiragana & katakana, ketuk untuk membalik, ada 🔁 Belum ingat / ✅ Sudah ingat + penghitung hafal; **(b) ✍️ Latihan tulis**: tulis pakai jari dengan panduan **urutan goresan** (KanjiVG), tombol *Cara tulis* (animasi), 🔊 dengar |
+| ✍️ **Tulis (kana & kanji)** | `tulis.html` — **(a) 🃏 Kartu hafalan kana** (khusus N5): 71 kana hiragana & katakana, ketuk untuk membalik, 🔁 Belum ingat / ✅ Sudah ingat + penghitung hafal; **(b) ✍️ Latihan tulis**: tulis pakai jari dengan panduan **urutan goresan** (KanjiVG), tombol *Cara tulis* (animasi), 🔊 dengar |
+| 🈳 **Tulis Kanji per tingkat** | kanji yang muncul **sesuai tingkat akun** (N5 168 · N4 220 · N3 437 kanji), ada **pemilih “Hari belajar”** supaya sama dengan tab 漢字 Kanji hari itu, lengkap **音読み / 訓読み / arti + kosakata terkait** |
 | 📖 **Belajar** | **1.384 kartu** dari 38 hari materi (31 hari tema harian + **Hari 32–38: set kosakata ujian N3, 50 kata per hari**) — kosakata + contoh kalimat **berfurigana**, 3 sesi per hari, tombol nilai *Belum ingat / Sudah ingat*, timer belajar otomatis |
 | 🔁 **Jadwal ulang (spaced repetition)** | tiap kata punya tingkat ulangan sendiri: **besok → 3 → 7 → 14 → 30 → 60 → 120 hari**. Benar & cepat = naik tingkat, benar tapi lambat = tingkatnya tetap, salah = mulai dari besok lagi |
 | ⚡ **Aturan 3 detik** | kata yang dijawab **lebih dari 3 detik** (walau jawabannya benar) otomatis masuk Review Kosakata — ambangnya bisa diganti dari 3 / 5 / 8 / 15 / … / 60 detik |
 | 📐 **Bunpou** | **119 pola tata bahasa** N3 — tiap pola ada **rumus sambung**, arti, contoh kalimat + terjemahan, bisa dicari & difilter per hari |
 | 🎓 **Kuiz Bunpou** | **310 soal** tata bahasa (10 soal per hari, 31 hari) — isian kalimat, arti pola, dan arah balik |
-| 🈶 **漢字 Kanji** | **824 kanji** — bacaan **音読み (onyomi)**, **訓読み (kunyomi)**, arti Bahasa Indonesia, jumlah goresan, level JLPT, dan contoh kata dari materi sendiri |
+| 🈶 **漢字 Kanji** | **1.197 kanji** (N5 168 · N4 220 · N3 437) — bacaan **音読み (onyomi)**, **訓読み (kunyomi)**, arti Bahasa Indonesia, jumlah goresan, level JLPT, dan **kosakata terkait** (mis. 中 → 集中, 中古) |
 | 📝 **Kuis** | 13 soal pilihan ganda per hari (kanji→hiragana, hiragana→kanji, bunpou), timer per soal |
 | 🔁 **Review Kosakata** | kata yang **pernah salah** atau **jawabnya lebih dari 3 detik** otomatis masuk daftar ulang — cuma dari hari yang kuisnya sudah selesai; kartunya menampilkan *⚡ rata-rata waktu jawab* |
 | 🔊 **Dengar pengucapan** | tombol 🔊 di kartu & soal — membaca dengan suara Jepang (Web Speech API, kecepatan 0.85×) |
 | 📈 **EXP & level** | EXP dihitung dari jam belajar + hari selesai + jawaban benar, dengan animasi **+1 XP** dan **LEVEL UP**; 7 tingkat (初心者 → 見習い → 学習者 → 中級者 → 上級者 → 達人) |
 | 📊 **Dashboard** | login aman, total jam, akurasi kuis, level, papan peringkat antar pengguna |
+| 📱 **Tampilan HP & desktop dipisah** | HP: strip hari, tab bawah dengan 漢字/読/動, tombol alat melayang (⋯), kartu tugas gaya iOS · Desktop: rail alat di kiri, satu baris tab dengan pil meluncur |
 | 🌱 **Mulai dari sini** | halaman perkenalan: isi nama → pilih target harian → tes kecil 10 soal → mulai Hari 1 |
 | 📖 **Cara pakai & kredit** | panduan 5 langkah, sumber data & lisensi, keterangan data pribadi |
 | 🔑 **Lupa sandi mandiri** | tiap akun dapat **kode pemulihan** — kalau lupa sandi tinggal pakai kode itu, tanpa email |
@@ -39,6 +42,19 @@
 **Aturan buka materi:** hari ke-1 dimulai di **tanggal kamu mulai** — 1 hari = 1 materi baru. Materi lama tetap bisa dibuka kapan saja, dan ada tombol *Tampilkan semua* kalau mau mengintip ke depan.
 
 Semua jalan di HP **dan desktop**: tampilan responsif (satu kolom di HP, banyak kolom di layar lebar), data belajar tersimpan di server (bisa dibuka dari HP mana pun), dan ada antrean offline kalau internet sempat putus.
+
+---
+
+## 🆕 Yang baru (26 September 2026)
+
+- 🗓️ **Strip hari** di HP: 7 tanggal bisa digeser, angka besar, plus **menit belajar per hari** (25m · 1j 5m) dan bilah kemajuan — animasi masuk berjenjang, hari ini berdenyut
+- ✅ **Kartu tugas hari ini**: Sesi · Bunpou · Dokkai · **Kuis** · Motivasi — selesai = hijau + centang, belum = merah, dan kalau semua beres muncul **“✓ Hari ini sudah selesai!”**
+- 🧮 **Hitungan tunggakan** per kartu: *“masih ada N hari yang sesinya / bunpou-nya / dokkainya / kuisnya belum …”* (dihitung dari seluruh hari yang sudah terbuka)
+- 🈳 **Tulis Kanji per tingkat**: kanji mengikuti tingkat akun (N5 tampil hiragana + katakana + kanji · N4 · N3), ada **pemilih “Hari belajar”** supaya selaras dengan tab 漢字, dan setiap kanji menampilkan **kosakata terkait**
+- 📱 **Tampilan dipisah tegas**: HP = strip hari + tab bawah (ikon 学 文 漢 読 動) + menu alat melayang (⋯) · Desktop = rail alat di kiri + bar tab dengan pil meluncur, header diringkas
+- 🦶 **Kaki halaman baru**: `⚡ BelajarN3` · info sumber data · tautan *Cara pakai & kredit* (rata dengan konten)
+- 🐛 Perbaikan: kartu tugas kadang tidak muncul kalau langsung buka tab Kalender; panel menu melayang sempat nyangkut; pil tab bawah tidak bisa meluncur; popup “mau keluar?” muncul dua kali
+- 🈶 Jumlah kanji di halaman kredit & README diperbaiki (824 → **1.197**), dan sumber **kosakata terkait** (JMdict) ditulis jelas
 
 ---
 
@@ -59,8 +75,11 @@ Semua jalan di HP **dan desktop**: tampilan responsif (satu kolom di HP, banyak 
 ## 🈶 Soal furigana & data kanji
 
 - **Furigana** di kalimat contoh dibuat otomatis pakai [SudachiPy](https://github.com/WorksApplications/SudachiPy) (analisis morfologi Jepang), lalu disimpan di field `furi` pada `data.json` dalam bentuk markup `<ruby>` — jadi `back` tetap bersih tanpa HTML.
-- **Data kanji** (bacaan 音読み/訓読み, goresan, level JLPT) diambil dari dataset terbuka [kanji-data](https://github.com/davidluzgouveia/kanji-data) (**lisensi MIT**, bersumber dari KANJIDIC). Artinya sudah diterjemahkan ke Bahasa Indonesia.
-- **Kosakata, contoh kalimat, pola bunpou, dan bacaan dokkai** disusun sendiri untuk latihan pribadi.
+- **Data kanji** (bacaan 音読み/訓読み, arti, jumlah goresan) diambil dari dataset terbuka [kanji-data](https://github.com/davidluzgouveia/kanji-data) (**lisensi MIT**, bersumber dari **KANJIDIC2** — EDRDG). Artinya sudah diterjemahkan ke Bahasa Indonesia.
+- **Tingkat tiap kanji** (N5/N4/N3) mengikuti daftar [OpenJLPT](https://github.com/evanclan/OpenJLPT) (**CC BY-SA 4.0**); **pembagian “hari”** materi disusun sendiri.
+- **Kosakata terkait** tiap kanji (mis. 中 → 集中, 中古) diambil dari **JMdict** (EDRDG, **CC BY-SA 4.0**) — kata yang memuat kanji itu — lalu artinya diterjemahkan sendiri.
+- **Urutan goresan** kana & kanji dari **KanjiVG** oleh Ulrich Apel (**CC BY-SA 3.0**).
+- **Kosakata, contoh kalimat, pola bunpou, dan bacaan dokkai** disusun sendiri untuk latihan pribadi (kalimat contoh sebagian memakai [Tatoeba](https://tatoeba.org) — CC BY 2.0 FR).
 - Rinciannya juga ada di halaman **[Cara pakai & kredit](https://rizkyemye.github.io/belajarN3/kredit.html)**.
 
 ---
@@ -97,7 +116,11 @@ review.html           Review Kosakata + jadwal ulang
 dashboard.html        dashboard: statistik, level, papan peringkat, input nilai lama
 style.css             seluruh tampilan lama (responsif)
 data.json             1.384 kartu N3 (front/back + furigana + hari)
-kanji.json            824 kanji (bacaan on/kun + arti + contoh kata)
+kanji.json            1.197 kanji (bacaan on/kun + arti + kosakata terkait + hari & tingkat)
+kanji-svg.json        urutan goresan kanji (KanjiVG, CC BY-SA 3.0)
+data-n4.json          kosakata & materi N4 (948 entri) · data-n5.json (1.013 entri)
+dokkai-n3/n4/n5.json  bacaan + soal per tingkat · bunpou-note.json catatan bunpou
+tulis.html            latihan tulis kana & kanji (kartu hafalan + urutan goresan)
 bunpou_rumus.json     119 pola tata bahasa
 bunpou_quiz.json      310 soal bunpou (10 soal × 31 hari)
 dokkai.json           bacaan + soal pemahaman
@@ -153,9 +176,10 @@ Supaya fitur login & penyimpanan progres jalan, siapkan Supabase:
 - [ ] 2.000 kosakata (sekarang 1.384 — termasuk set ujian N3 Hari 32–38)
 - [ ] latihan 聴解 (mendengar) penuh — sekarang baru pengucapan per kata
 - [ ] mode gelap
-- [x] latihan tulis hiragana & katakana (KanjiVG) — berikutnya: urutan goresan kanji
+- [x] latihan tulis hiragana & katakana + **kanji** (KanjiVG) — sekarang per tingkat, ada pemilih hari
 - [ ] export/import progres belajar
-- [x] level N5 & N4 (kosakata + kuis) — tahap berikutnya: bunpou/kanji/dokkai per level
+- [x] level N5 & N4 (kosakata + kuis) — **bunpou/kanji/dokkai per level sudah jalan**
+- [ ] simulasi ujian JLPT (dijadwalkan H-60 sebelum 6 Desember 2026)
 
 ---
 
