@@ -62,6 +62,14 @@
     .kf-reset { background: none; border: 0; color: #6366f1; font-size: .78rem; text-decoration: underline;
         cursor: pointer; font-family: inherit; padding: 4px; }
     .tw-kredit { font-size: .75rem; color: #94a3b8; text-align: center; margin: 16px 0 0; }
+    /* pemilih hari belajar (kanji) — satu baris penuh, sejajar tombol tingkat */
+    #twHariWrap { display: flex; align-items: center; gap: 8px; width: 100%; margin-top: 8px; }
+    #twHariWrap label { flex: 0 0 auto; }
+    #twHariWrap select#twHari { flex: 1 1 auto; max-width: none; width: auto; }
+    @media (max-width: 700px) {
+        #twHariWrap { flex-wrap: wrap; }
+        #twHariWrap select#twHari { flex: 1 1 100%; }
+    }
 </style>
 </head>
 <body>
@@ -154,9 +162,65 @@
         return String(q || localStorage.getItem("n3_tulis_level") || localStorage.getItem("n3_level") || "N3").toUpperCase();
     })();
     if (!KANJI_LV[tingkat]) tingkat = "N3";
-    function daftarKanji() { return KANJI_LV[tingkat] ? KANJI_LV[tingkat].split("") : KANJI; }
+    const BATAS_LV = { "N5": [5], "N4": [5, 4], "N3": [5, 4, 3] };
+    function tingkatKanji(it) { return Number((it || {}).jlpt) || 3; }
+    function kanjiDariJson() {
+        if (!semuaKanji) return null;                      // belum termuat → pakai daftar lama
+        const batas = BATAS_LV[tingkat] || [5, 4, 3];
+        return Object.keys(semuaKanji).filter(function (k) {
+            const it = semuaKanji[k] || {};
+            if (batas.indexOf(tingkatKanji(it)) === -1) return false;
+            if (hariPilih && (it.hari || []).indexOf(hariPilih) === -1) return false;    // selaras dgn tab Kanji
+            return true;
+        });
+    }
+    function daftarKanji() {
+        const dariJson = kanjiDariJson();
+        if (dariJson && dariJson.length) return dariJson;
+        return KANJI_LV[tingkat] ? KANJI_LV[tingkat].split("") : KANJI;
+    }
+    /* daftar hari (dari data yang sama dengan tab Kanji) + pemilihnya */
+    function hariKanji() {
+        const batas = BATAS_LV[tingkat] || [5, 4, 3];
+        const set = new Set();
+        Object.keys(semuaKanji || {}).forEach(function (k) {
+            const it = semuaKanji[k] || {};
+            if (batas.indexOf(tingkatKanji(it)) !== -1) (it.hari || []).forEach(function (h) { if (h > 0) set.add(Number(h)); });
+        });
+        return Array.from(set).sort(function (a, b) { return a - b; });
+    }
+    function pasangPilihHari() {
+        const induk = document.getElementById("twTingkat");
+        if (!induk || !semuaKanji) return;
+        let wrap = document.getElementById("twHariWrap");
+        if (!wrap) {
+            wrap = document.createElement("div");
+            wrap.id = "twHariWrap";
+            wrap.innerHTML = '<label for="twHari" style="font-size:.8rem;font-weight:700;color:#64748b;align-self:center">Hari belajar:</label>' +
+                '<select id="twHari" class="study-select" style="max-width:210px"></select>';
+            induk.parentNode.insertBefore(wrap, induk.nextSibling);   // baris sendiri di bawah tombol tingkat
+        }
+        const sel = document.getElementById("twHari");
+        const daftar = hariKanji();
+        sel.innerHTML = '<option value="0">Semua hari (' + daftar.length + " hari)</option>" +
+            daftar.map(function (x) { return '<option value="' + x + '">Hari ke-' + x + "</option>"; }).join("");
+        sel.value = String(hariPilih || 0);
+        sel.onchange = function () {           // pilih hari → daftar kanji ikut hari itu (sama seperti tab Kanji)
+            hariPilih = Number(sel.value) || 0;
+            kini = 0;
+            gambarPanduan(); gambarDaftar(); siapkanDeck();
+        };
+        /* label tingkat disesuaikan dengan jumlah kanji yang benar-benar dimuat (sama seperti tab Kanji) */
+        document.querySelectorAll("#twTingkat button[data-lv]").forEach(function (b) {
+            const n = Object.keys(semuaKanji).filter(function (k) {
+                return BATAS_LV[b.dataset.lv].indexOf(tingkatKanji(semuaKanji[k])) !== -1;
+            }).length;
+            if (n) b.textContent = b.dataset.lv + " · " + n + " kanji";
+        });
+    }
     const KATA = HIRA.map(function (c) { return String.fromCharCode(c.charCodeAt(0) + 0x60); });
     let data = null, mode = "hira", kini = 0, sudah = {};
+    let semuaKanji = null, hariPilih = 0;   // ../aset/kanji.json = sumber yang sama dengan tab Kanji
 
     const elKanvas = document.getElementById("twKanvas");
     const elPanduan = document.getElementById("twPanduan");
@@ -239,11 +303,16 @@
         const kotak = document.getElementById("twInfo");
         if (kotak) {
             if (mode === "kanji") {
+                const j = (semuaKanji && semuaKanji[k]) ? semuaKanji[k] : null;
                 const info = contoh[k] || {};
+                const on = j && (j.on || []).length ? j.on.join("・") : info.on;
+                const kun = j && (j.kun || []).length ? j.kun.join("・") : info.kun;
+                const arti = j && (j.arti || []).length ? j.arti.join(" / ") : info.artiKata;
+                const kata = j ? (j.kata || []).map(function (x) { return { w: x.kata, a: x.arti }; }) : (info.kata || []);
                 kotak.style.display = "";
-                kotak.innerHTML = barisInfo("音読み", info.on) + barisInfo("訓読み", info.kun)
-                    + barisInfo("arti", info.artiKata)
-                    + (info.kata || []).map(function (x) {
+                kotak.innerHTML = barisInfo("音読み", on) + barisInfo("訓読み", kun)
+                    + barisInfo("arti", arti)
+                    + kata.map(function (x) {
                         return barisInfo("kosakata", "<b>" + x.w + "</b> — " + x.a);
                     }).join("");
             } else { kotak.style.display = "none"; }
@@ -291,9 +360,9 @@
     }
     document.querySelectorAll("#twTingkat button").forEach(function (b) {
         b.addEventListener("click", function () {
-            tingkat = b.dataset.lv; kini = 0;
+            tingkat = b.dataset.lv; kini = 0; hariPilih = 0;
             try { localStorage.setItem("n3_tulis_level", tingkat); } catch (e) {}
-            tandaiTingkat(); gambarPanduan(); gambarDaftar(); siapkanDeck();
+            tandaiTingkat(); pasangPilihHari(); gambarPanduan(); gambarDaftar(); siapkanDeck();
         });
     });
 
@@ -442,11 +511,13 @@
         if (dataKanji) return Promise.resolve();
         return Promise.all([
             fetch("../aset/kanji-svg.json").then(function (r) { return r.json(); }),
-            fetch("../aset/kanji-contoh.json").then(function (r) { return r.json(); })
+            fetch("../aset/kanji-contoh.json").then(function (r) { return r.json(); }),
+            fetch("../aset/kanji.json").then(function (r) { return r.json(); })
         ]).then(function (g) {
             data = Object.assign(data || {}, g[0]);
             contoh = Object.assign(contoh || {}, g[1]);
-            dataKanji = true; gambarPanduan(); gambarDaftar(); siapkanDeck();
+            semuaKanji = g[2] || null;
+            dataKanji = true; gambarPanduan(); gambarDaftar(); pasangPilihHari(); siapkanDeck();
         }).catch(function () { elHuruf.innerHTML = "⚠️<small>gagal memuat kanji-svg.json</small>"; });
     }
     fetch("../aset/kana-svg.json").then(function (r) { return r.json(); }).then(function (d) {
