@@ -1864,3 +1864,278 @@ function pasangPopupBunpou() {
     });
 }
 
+
+
+/* =========================================================================
+   ALAT BELAJAR BARU (28 Sep 2026) — リズ
+   · Utang Review   : berapa kata yang menunggu diulang (data N3SRS)
+   · Kotak P3K      : kata milikmu yang paling sering salah
+   · Latihan Kilat  : 10 soal acak, 2 menit
+   · Tertahan di Hari N : kenapa progres macet
+   · Mode gelap     : tombol 🌙 (disimpan di localStorage, tanpa kedip)
+   ========================================================================= */
+
+function srsStat() {
+    try { return (window.N3SRS && N3SRS.statistik) ? (N3SRS.statistik() || null) : null; } catch (e) { return null; }
+}
+
+function maksHariAlat() {
+    try {
+        if (window.N3Unlock && typeof window.N3Unlock.maksHari === "function") return window.N3Unlock.maksHari();
+    } catch (e) {}
+    try { return getMaxUnlockedDay(); } catch (e) { return 1; }
+}
+
+/* ---------- kenapa progres macet? ---------- */
+function cariTertahan() {
+    const maks = maksHariAlat();
+    for (let d = 1; d <= maks; d++) {
+        const sesi = ["pagi", "siang", "malam"].filter(function (s) { return isSessionCompleted(d, s); }).length;
+        if (sesi < 3) return { hari: d, sebab: "sesi " + (sesi + 1) + " dari 3 belum selesai" };
+        const pola = daftarPolaHari(d), dibuka = bunpouDibuka();
+        const beres = pola.filter(function (p) { return dibuka[p]; }).length;
+        if (pola.length && beres < pola.length) return { hari: d, sebab: "bunpou belum dibaca (" + beres + "/" + pola.length + ")" };
+        let adaDokkai = [];
+        try { adaDokkai = (typeof window.hariDokkaiAda === "function") ? (window.hariDokkaiAda() || []) : []; } catch (e) {}
+        if (adaDokkai.indexOf(d) >= 0 && !dokkaiSelesai(d)) return { hari: d, sebab: "dokkai belum dikerjakan" };
+        if (!kuisSelesaiAkhir(d)) return { hari: d, sebab: "kuis harian belum dikerjakan" };
+    }
+    return null;
+}
+
+/* ---------- kartu alat di tab Belajar ---------- */
+function renderKotakAlat() {
+    const induk = document.getElementById("studySelectionCard");
+    if (!induk || !induk.parentElement) return;
+    let kotak = document.getElementById("kotakAlat");
+    if (!kotak) {
+        kotak = document.createElement("div");
+        kotak.id = "kotakAlat";
+        kotak.className = "kotak-alat";
+        induk.parentElement.insertBefore(kotak, induk);
+    }
+    const st = srsStat();
+    const jatuh = st ? (Number(st.jatuhTempo) || 0) : 0;
+    const p3k = (window.N3SRS && N3SRS.palingSalah) ? (N3SRS.palingSalah(3) || []) : [];
+    const tahan = cariTertahan();
+    const daftarP3k = p3k.map(function (x) { return x.kata; }).join(" · ");
+
+    kotak.innerHTML =
+        '<div class="ka-baris">' +
+          '<button type="button" class="ka-kartu" id="kaUtang">' +
+            '<span class="ka-ikon">🧾</span>' +
+            '<b>Utang Review</b>' +
+            '<span class="ka-angka' + (jatuh ? " ada" : "") + '">' + jatuh + '</span>' +
+            '<small>' + (jatuh ? jatuh + " kata menunggu diulang" : "Bersih ✓ tidak ada tunggakan") + '</small>' +
+          '</button>' +
+          '<button type="button" class="ka-kartu" id="kaP3k">' +
+            '<span class="ka-ikon">🩹</span>' +
+            '<b>Kotak P3K</b>' +
+            '<span class="ka-angka' + (p3k.length ? " ada" : "") + '">' + p3k.length + '</span>' +
+            '<small>' + (p3k.length ? daftarP3k : "Belum ada kata langganan salah ✓") + '</small>' +
+          '</button>' +
+          '<button type="button" class="ka-kartu" id="kaKilat">' +
+            '<span class="ka-ikon">⚡</span>' +
+            '<b>Latihan Kilat</b>' +
+            '<span class="ka-angka">10</span>' +
+            '<small>10 soal acak · 2 menit</small>' +
+          '</button>' +
+        '</div>' +
+        (tahan
+            ? '<div class="ka-tahan">⛔ <b>Tertahan di Hari ' + tahan.hari + '</b> — ' + tahan.sebab +
+              ' <button type="button" id="kaKeHari">buka hari ' + tahan.hari + '</button></div>'
+            : '<div class="ka-tahan beres">✓ Tidak ada yang tertahan — semua hari yang terbuka sudah tuntas</div>');
+
+    const btnUtang = document.getElementById("kaUtang");
+    if (btnUtang) btnUtang.onclick = function () { location.href = "../fitur/review.html"; };
+    const btnP3k = document.getElementById("kaP3k");
+    if (btnP3k) btnP3k.onclick = function () { mulaiKilat(true); };
+    const btnKilat = document.getElementById("kaKilat");
+    if (btnKilat) btnKilat.onclick = function () { mulaiKilat(false); };
+    const btnHari = document.getElementById("kaKeHari");
+    if (btnHari && tahan) btnHari.onclick = function () {
+        const sel = document.getElementById("directDaySelect");
+        if (sel) { sel.value = String(tahan.hari); onDayDropdownChange(); openStudySessions(); }
+    };
+}
+window.renderKotakAlat = renderKotakAlat;
+
+/* ---------- Latihan Kilat: 10 soal acak, 2 menit ---------- */
+let kilat = null;
+
+function kataKilat(dariP3K) {
+    const maks = maksHariAlat();
+    if (dariP3K && window.N3SRS && N3SRS.palingSalah) {
+        const daftar = N3SRS.palingSalah(12) || [];
+        const ketemu = daftar.map(function (x) {
+            return allData.filter(function (d) { return d.front === x.kata; })[0];
+        }).filter(Boolean);
+        if (ketemu.length >= 4) return ketemu.slice(0, 10);
+    }
+    const pool = allData.filter(function (d) {
+        return !isBunpouItem(d) && Number(d.day) <= maks && d.front && d.back;
+    });
+    /* acak sederhana */
+    for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+    }
+    return pool.slice(0, 10);
+}
+
+function artiSingkat(item) {
+    try { return bersihkan(getCleanBack(item.back)).split("(")[0].trim() || bersihkan(item.back); }
+    catch (e) { return String(item.back || ""); }
+}
+
+function mulaiKilat(dariP3K) {
+    const daftar = kataKilat(!!dariP3K);
+    if (daftar.length < 4) { alert("Datanya belum cukup buat latihan kilat."); return; }
+    kilat = { daftar: daftar, idx: 0, benar: 0, sisa: 120, kunci: null };
+    let panggung = document.getElementById("kilatPanggung");
+    if (!panggung) {
+        panggung = document.createElement("div");
+        panggung.id = "kilatPanggung";
+        panggung.className = "kilat-panggung";
+        document.body.appendChild(panggung);
+    }
+    panggung.style.display = "flex";
+    gambarKilat();
+    clearInterval(kilat.kunci);
+    kilat.kunci = setInterval(function () {
+        kilat.sisa--;
+        const jam = document.getElementById("kilatWaktu");
+        if (jam) jam.textContent = Math.floor(kilat.sisa / 60) + ":" + String(kilat.sisa % 60).padStart(2, "0");
+        if (kilat.sisa <= 0) tutupKilat(true);
+    }, 1000);
+}
+window.mulaiKilat = mulaiKilat;
+
+function gambarKilat() {
+    const panggung = document.getElementById("kilatPanggung");
+    if (!panggung || !kilat) return;
+    if (kilat.idx >= kilat.daftar.length) { tutupKilat(false); return; }
+    const soal = kilat.daftar[kilat.idx];
+    const benar = artiSingkat(soal);
+    const salah = allData.filter(function (d) { return !isBunpouItem(d) && artiSingkat(d) !== benar; });
+    const pilihan = [benar];
+    while (pilihan.length < 4 && salah.length) {
+        const p = salah[Math.floor(Math.random() * salah.length)];
+        const a = artiSingkat(p);
+        if (pilihan.indexOf(a) === -1) pilihan.push(a);
+    }
+    for (let i = pilihan.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const t = pilihan[i]; pilihan[i] = pilihan[j]; pilihan[j] = t;
+    }
+    panggung.innerHTML =
+        '<div class="kilat-kartu">' +
+          '<div class="kilat-kepala">' +
+            '<span>⚡ <b>' + (kilat.idx + 1) + '/' + kilat.daftar.length + '</b> · benar ' + kilat.benar + '</span>' +
+            '<span id="kilatWaktu">' + Math.floor(kilat.sisa / 60) + ":" + String(kilat.sisa % 60).padStart(2, "0") + '</span>' +
+            '<button type="button" id="kilatTutup">✕</button>' +
+          '</div>' +
+          '<div class="kilat-soal">' + (soal.kata_kanji || soal.front) + '</div>' +
+          '<div class="kilat-pilih">' +
+            pilihan.map(function (a) {
+                return '<button type="button" data-arti="' + escapeHtml(a) + '">' + escapeHtml(a) + '</button>';
+            }).join("") +
+          '</div>' +
+          '<div class="kilat-balas" id="kilatBalas"></div>' +
+        '</div>';
+    document.getElementById("kilatTutup").onclick = function () { tutupKilat(false); };
+    panggung.querySelectorAll(".kilat-pilih button").forEach(function (b) {
+        b.onclick = function () { jawabKilat(b, b.dataset.arti === benar, soal); };
+    });
+}
+
+function jawabKilat(tombol, tepat, soal) {
+    const balas = document.getElementById("kilatBalas");
+    const panggung = document.getElementById("kilatPanggung");
+    panggung.querySelectorAll(".kilat-pilih button").forEach(function (b) { b.disabled = true; });
+    tombol.classList.add(tepat ? "tepat" : "salah");
+    if (tepat) kilat.benar++;
+    if (balas) balas.innerHTML = (tepat ? "✓ tepat" : "✗ yang benar: <b>" + escapeHtml(artiSingkat(soal)) + "</b>");
+    try {
+        if (window.N3 && N3.catatKata) N3.catatKata(soal.front, Number(soal.day) || 1, !!tepat, 2, 20);
+    } catch (e) {}
+    setTimeout(function () { kilat.idx++; gambarKilat(); }, tepat ? 550 : 1100);
+}
+
+function tutupKilat(waktuHabis) {
+    const panggung = document.getElementById("kilatPanggung");
+    if (!panggung || !kilat) return;
+    clearInterval(kilat.kunci);
+    const total = kilat.idx + (waktuHabis ? 0 : 0);
+    const nilai = Math.round((kilat.benar / Math.max(1, kilat.daftar.length)) * 100);
+    panggung.innerHTML =
+        '<div class="kilat-kartu">' +
+          '<div class="kilat-hasil">' +
+            '<b>' + kilat.benar + ' / ' + kilat.daftar.length + '</b>' +
+            '<span>' + (waktuHabis ? "⏰ waktu habis · " : "") + 'skor ' + nilai + '%</span>' +
+            '<small>' + (nilai >= 80 ? "Mantap ✓" : nilai >= 50 ? "Lumayan — ulang sekali lagi ✓" : "Masih perlu dibaca ulang ✓") + '</small>' +
+          '</div>' +
+          '<div class="kilat-tombol">' +
+            '<button type="button" id="kilatUlang">🔁 Ulang</button>' +
+            '<button type="button" id="kilatSelesai">Selesai</button>' +
+          '</div>' +
+        '</div>';
+    const ulang = document.getElementById("kilatUlang");
+    if (ulang) ulang.onclick = function () { mulaiKilat(false); };
+    const selesai = document.getElementById("kilatSelesai");
+    if (selesai) selesai.onclick = function () {
+        panggung.style.display = "none";
+        renderKotakAlat();
+    };
+}
+
+/* ---------- mode gelap ---------- */
+function temaKini() {
+    try { return localStorage.getItem("n3_tema") === "gelap" ? "gelap" : "terang"; } catch (e) { return "terang"; }
+}
+
+function pasangTema(warna) {
+    const pilih = warna || temaKini();
+    document.documentElement.classList.toggle("gelap", pilih === "gelap");
+    try { localStorage.setItem("n3_tema", pilih); } catch (e) {}
+    const b = document.getElementById("tombolTema");
+    if (b) b.textContent = pilih === "gelap" ? "☀️" : "🌙";
+}
+
+function pasangTombolTema() {
+    const baris = document.querySelector(".hero-baris");
+    if (!baris || document.getElementById("tombolTema")) return;
+    const b = document.createElement("button");
+    b.id = "tombolTema";
+    b.type = "button";
+    b.className = "tombol-tema";
+    b.setAttribute("aria-label", "Ganti mode terang / gelap");
+    b.textContent = temaKini() === "gelap" ? "☀️" : "🌙";
+    b.onclick = function () { pasangTema(temaKini() === "gelap" ? "terang" : "gelap"); };
+    baris.appendChild(b);
+}
+
+/* ---------- pasang semuanya ---------- */
+(function pasangAlatBaru() {
+    function jalan() {
+        pasangTema();
+        pasangTombolTema();
+        renderKotakAlat();
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", jalan);
+    else jalan();
+    /* tab Belajar dibuka → segarkan angkanya */
+    const asli = window.switchTab;
+    if (typeof asli === "function" && !asli.__alatBaru) {
+        const bungkus = function (nama) {
+            const hasil = asli.apply(this, arguments);
+            try { if (String(nama) === "study") renderKotakAlat(); } catch (e) {}
+            return hasil;
+        };
+        bungkus.__alatBaru = true;
+        window.switchTab = bungkus;
+    }
+    document.addEventListener("visibilitychange", function () {
+        if (!document.hidden) { try { renderKotakAlat(); } catch (e) {} }
+    });
+})();
