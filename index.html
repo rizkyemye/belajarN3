@@ -3,210 +3,207 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BelajarN3 — Belajar JLPT N5-N3</title>
+<meta name="theme-color" content="#080c1c">
+<title>月夜 — BelajarN3</title>
 <style>
-  :root{
-    --indigo:#4F46E5; --indigo-d:#3730A3; --indigo-l:#818CF8; --green:#16A34A;
-    --bg:#EEF2FF; --fg:#312E81; --muted:#475569; --card:#fff; --border:#C7D2FE;
-    --shadow:0 1px 2px rgba(49,46,129,.06), 0 8px 24px rgba(49,46,129,.08);
-  }
+  :root{--malam:#080c1c;--malam2:#111a3d;--bulan:#f7f5ff;--emas:#ffd79a;
+        --neon:#7dd3fc;--pink:#f472b6;--teks:#e8ecff;--lembut:#a9b2d9;--garis:rgba(255,255,255,.12)}
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--fg);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans JP",sans-serif;
-    line-height:1.6;-webkit-font-smoothing:antialiased}
-  a{color:inherit}
-  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
-  .nav{position:sticky;top:0;z-index:10;background:rgba(238,242,255,.86);backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--border)}
-  .nav .in{display:flex;align-items:center;gap:16px;height:66px}
-  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.06rem;letter-spacing:-.01em}
-  .logo i{width:32px;height:32px;border-radius:9px;background:var(--indigo);color:#fff;display:grid;place-items:center;
-    font-style:normal;font-size:15px;font-weight:800}
-  .nav .sp{flex:1}
-  .nav a.l{font-size:.92rem;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:8px}
-  .nav a.l:hover{background:#fff;color:var(--indigo-d)}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;
-    border-radius:11px;font-weight:700;font-size:.95rem;text-decoration:none;cursor:pointer;border:1px solid transparent;
-    transition:transform .16s ease-out, box-shadow .16s ease-out, background .16s ease-out}
-  .btn:focus-visible{outline:3px solid var(--indigo);outline-offset:2px}
-  .btn-p{background:var(--indigo);color:#fff;box-shadow:0 6px 16px rgba(79,70,229,.28)}
-  .btn-p:hover{background:var(--indigo-d);transform:translateY(-1px)}
-  .btn-g{background:var(--green);color:#fff;box-shadow:0 6px 16px rgba(22,163,74,.24)}
-  .btn-g:hover{transform:translateY(-1px)}
-  .btn-w{background:#fff;color:var(--indigo-d);border-color:var(--border)}
-  .btn-w:hover{border-color:var(--indigo-l)}
+  body{margin:0;background:var(--malam);color:var(--teks);line-height:1.6;-webkit-font-smoothing:antialiased;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans JP",sans-serif}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;
+    font-weight:800;font-size:.95rem;border:1px solid transparent;cursor:pointer;transition:transform .16s ease,box-shadow .16s ease}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-utama{background:linear-gradient(135deg,#fff 0%,var(--emas) 100%);color:#1a1430;box-shadow:0 12px 30px rgba(255,215,154,.28)}
+  .btn-garis{background:rgba(255,255,255,.06);border-color:var(--garis);color:#fff;backdrop-filter:blur(8px)}
+  .btn-neon{background:linear-gradient(135deg,var(--pink),#8b5cf6);color:#fff;box-shadow:0 12px 30px rgba(244,114,182,.34)}
 
-  .hero{padding:76px 0 64px}
-  .hero .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
-  .tag{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);
-    color:var(--indigo-d);font-size:.8rem;font-weight:700;padding:7px 13px;border-radius:999px}
-  h1{font-size:2.9rem;line-height:1.12;letter-spacing:-.03em;margin:20px 0 16px}
-  h1 em{font-style:normal;color:var(--indigo);position:relative}
-  h1 em::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:9px;background:rgba(129,140,248,.28);
-    border-radius:4px;z-index:-1}
-  .lead{font-size:1.08rem;color:var(--muted);max-width:46ch;margin:0 0 28px}
-  .cta{display:flex;gap:12px;flex-wrap:wrap}
-  .mini{display:flex;gap:22px;margin-top:30px;flex-wrap:wrap}
-  .mini div b{display:block;font-size:1.25rem;letter-spacing:-.02em}
-  .mini div span{font-size:.82rem;color:var(--muted);font-weight:600}
+  /* ---- panggung 100vh ---- */
+  .panggung{position:relative;min-height:100svh;overflow:hidden;display:flex;align-items:center}
+  .langit{position:absolute;inset:0;
+    background:
+      radial-gradient(1.6px 1.6px at 12% 18%, #fff 40%, transparent 41%),
+      radial-gradient(1.4px 1.4px at 28% 9%, #cfe0ff 40%, transparent 41%),
+      radial-gradient(1.8px 1.8px at 63% 14%, #fff 40%, transparent 41%),
+      radial-gradient(1.3px 1.3px at 81% 26%, #ffe9c6 40%, transparent 41%),
+      radial-gradient(1.5px 1.5px at 45% 30%, #fff 40%, transparent 41%),
+      radial-gradient(1.2px 1.2px at 92% 11%, #fff 40%, transparent 41%),
+      linear-gradient(180deg,#050818 0%,#0c1330 46%,#1a1740 100%);
+    z-index:0}
+  .bulan{position:absolute;right:8%;top:12%;width:172px;height:172px;border-radius:50%;
+    background:radial-gradient(circle at 38% 34%,#ffffff 0 58%,#e7dcff 100%);
+    box-shadow:0 0 90px 26px rgba(199,190,255,.34);z-index:1}
+  .bulan::after{content:"";position:absolute;left:26%;top:52%;width:34px;height:34px;border-radius:50%;
+    background:rgba(180,170,225,.35)}
+  .lentera{position:absolute;z-index:2;width:40px;height:60px;border-radius:16px 16px 8px 8px;
+    background:linear-gradient(180deg,#ff9ecb,#c81e6f);box-shadow:0 0 32px rgba(244,114,182,.65)}
+  .lentera.biru{background:linear-gradient(180deg,#a5f3fc,#0284c7);box-shadow:0 0 30px rgba(125,211,252,.6)}
+  .lentera::before{content:"";position:absolute;left:50%;top:-26px;width:1px;height:26px;background:rgba(255,255,255,.35)}
+  .gunung{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:min(1180px,150vw);z-index:1}
+  .kabut{position:absolute;left:0;right:0;bottom:0;height:120px;z-index:2;
+    background:linear-gradient(180deg,transparent,rgba(8,12,28,.72) 70%,var(--malam) 100%)}
+  .konten-panggung{position:relative;z-index:3;width:100%;padding:110px 0 90px}
+  nav.atas{position:absolute;top:0;left:0;right:0;z-index:5}
+  nav.atas .in{display:flex;align-items:center;gap:14px;height:74px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-.01em}
+  .logo i{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--pink),#8b5cf6);
+    display:grid;place-items:center;font-style:normal;font-size:15px;font-weight:900;color:#fff}
+  nav.atas .sp{flex:1}
+  nav.atas a.l{font-size:.92rem;font-weight:700;color:var(--lembut);padding:8px 11px;border-radius:999px}
+  nav.atas a.l:hover{background:rgba(255,255,255,.08);color:#fff}
+  .tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);border:1px solid var(--garis);
+    padding:8px 15px;border-radius:999px;font-size:.8rem;font-weight:700;color:#ffd9ef}
+  h1{font-size:clamp(2.3rem,5.6vw,4.15rem);line-height:1.06;letter-spacing:-.035em;margin:20px 0 18px;max-width:19ch;color:#fff}
+  h1 span{background:linear-gradient(120deg,#ffd79a,#f472b6 55%,#7dd3fc);-webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent}
+  .lead{color:var(--lembut);font-size:1.06rem;max-width:52ch;margin:0 0 26px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .mini{display:flex;gap:30px;flex-wrap:wrap;margin-top:34px}
+  .mini div b{display:block;font-size:1.5rem;letter-spacing:-.02em;color:#fff}
+  .mini div span{font-size:.8rem;color:var(--lembut);font-weight:700}
+  .panah{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:4;color:var(--lembut);font-size:1.5rem;
+    animation:naik-turun 2.2s ease-in-out infinite}
+  @keyframes naik-turun{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,10px)}}
 
-  .mock{background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
-  .mock .bar{display:flex;align-items:center;gap:6px;padding:11px 14px;background:#F8FAFF;border-bottom:1px solid var(--border)}
-  .mock .dot{width:9px;height:9px;border-radius:50%;background:#DDE3F8}
-  .mock .url{margin-left:8px;font-size:.72rem;color:var(--muted);background:#fff;border:1px solid var(--border);
-    border-radius:7px;padding:3px 10px}
-  .mock .body{padding:18px}
-  .mock .hdr{background:linear-gradient(135deg,#4F46E5,#7C3AED);border-radius:14px;padding:16px;color:#fff}
-  .mock .hdr b{font-size:1rem;display:block}
-  .mock .hdr p{margin:2px 0 12px;font-size:.76rem;opacity:.85}
-  .mock .strip{display:flex;gap:5px}
-  .mock .strip i{flex:1;height:26px;border-radius:8px;background:rgba(255,255,255,.55)}
-  .mock .strip i.on{background:#fff}
-  .mock .strip i.now{background:#F8B2B2}
-  .mock .row{display:flex;align-items:center;gap:10px;padding:11px 12px;border:1px solid var(--border);border-radius:12px;margin-top:9px}
-  .mock .row .n{font-weight:800;font-size:.95rem}
-  .mock .row .r{font-size:.74rem;color:var(--muted)}
-  .mock .row .p{margin-left:auto;font-size:.72rem;font-weight:800;color:var(--indigo)}
-  .mock .pills{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
-  .mock .pills span{font-size:.7rem;font-weight:700;padding:4px 9px;border-radius:999px;background:#EEF2FF;color:var(--indigo-d)}
+  /* ---- pita kata berjalan ---- */
+  .pita{background:linear-gradient(90deg,#c81e6f,#7c3aed 50%,#0284c7);color:#fff;overflow:hidden;padding:13px 0;
+    font-weight:800;letter-spacing:.06em;white-space:nowrap}
+  .pita .jalan{display:inline-block;animation:geser 26s linear infinite}
+  .pita span{padding:0 18px;opacity:.95}
+  .pita b{color:#ffe9a8}
+  @keyframes geser{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-  section{padding:66px 0}
-  .kick{font-size:.82rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--indigo)}
-  h2{font-size:2.05rem;letter-spacing:-.025em;margin:10px 0 12px;line-height:1.2}
-  .sub{color:var(--muted);max-width:58ch;margin:0}
-  .feat{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
-  .card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
-  .card .ic{width:42px;height:42px;border-radius:12px;background:#EEF2FF;color:var(--indigo-d);display:grid;place-items:center;
-    font-size:1.15rem;font-weight:800;margin-bottom:14px}
-  .card h3{margin:0 0 6px;font-size:1.06rem;letter-spacing:-.01em}
-  .card p{margin:0;font-size:.92rem;color:var(--muted)}
-  .card .big{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;color:var(--indigo-d);margin:2px 0 4px}
-  .band{background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-  .band .in{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;padding:40px 0}
-  .band b{display:block;font-size:2rem;letter-spacing:-.03em;color:var(--indigo-d)}
-  .band span{font-size:.86rem;color:var(--muted);font-weight:600}
-  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px;counter-reset:s}
-  .step{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
-  .step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;
-    background:var(--indigo);color:#fff;font-weight:800;font-size:.92rem;margin-bottom:12px}
-  .step h3{margin:0 0 6px;font-size:1rem}
-  .step p{margin:0;font-size:.9rem;color:var(--muted)}
-  .close{background:linear-gradient(135deg,#4F46E5,#7C3AED);border-radius:22px;padding:44px;color:#fff;margin:20px 0 66px;
-    box-shadow:0 18px 44px rgba(79,70,229,.28)}
-  .close h2{color:#fff;margin-top:0}
-  .close p{color:rgba(255,255,255,.88);max-width:52ch}
-  .foot{border-top:1px solid var(--border);padding:26px 0 40px;color:var(--muted);font-size:.86rem}
-  .foot .in{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+  section{padding:72px 0}
+  .kicker{font-size:.8rem;font-weight:900;letter-spacing:.28em;text-transform:uppercase;color:var(--neon)}
+  h2{font-size:clamp(1.6rem,3vw,2.3rem);letter-spacing:-.028em;margin:10px 0 12px;color:#fff}
+  .sub{color:var(--lembut);max-width:60ch;margin:0}
+  .angka{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:38px}
+  .angka div{background:rgba(255,255,255,.055);border:1px solid var(--garis);border-radius:20px;padding:24px}
+  .angka b{display:block;font-size:2.2rem;letter-spacing:-.03em;color:#fff}
+  .angka span{font-size:.84rem;color:var(--lembut);font-weight:700}
+  .kotak{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+  .kartu{background:rgba(255,255,255,.05);border:1px solid var(--garis);border-radius:20px;padding:24px}
+  .kartu .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:1.3rem;font-weight:800;
+    background:linear-gradient(135deg,rgba(244,114,182,.28),rgba(125,211,252,.24));color:#fff;margin-bottom:14px}
+  .kartu h3{margin:0 0 6px;font-size:1.05rem;color:#fff}
+  .kartu p{margin:0;color:var(--lembut);font-size:.92rem}
+  .langkah{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:38px}
+  .langkah div{background:rgba(255,255,255,.05);border:1px solid var(--garis);border-radius:20px;padding:24px;position:relative}
+  .langkah i{font-style:normal;font-size:2.4rem;font-weight:800;color:rgba(255,255,255,.28);display:block;margin-bottom:6px}
+  .langkah h3{margin:0 0 6px;font-size:1.02rem;color:#fff}
+  .langkah p{margin:0;color:var(--lembut);font-size:.9rem}
+  .tutup{background:linear-gradient(135deg,#fff8ef,#ffe7f4 60%,#e8f4ff);color:#251c37;border-radius:26px;padding:44px;
+    margin:12px 0 64px;box-shadow:0 26px 60px rgba(0,0,0,.4)}
+  .tutup h2{color:#251c37;margin-top:0}
+  .tutup p{color:#4c4362;max-width:54ch}
+  footer{border-top:1px solid var(--garis);padding:26px 0 44px;color:var(--lembut);font-size:.86rem}
+  footer .in{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
   @media (max-width:900px){
-    .hero .grid{grid-template-columns:1fr;gap:34px}
-    h1{font-size:2.15rem}
-    .feat,.steps{grid-template-columns:1fr}
-    .band .in{grid-template-columns:repeat(2,1fr);gap:26px}
-    .close{padding:30px;border-radius:18px}
+    .angka,.kotak,.langkah{grid-template-columns:1fr 1fr}
+    .bulan{width:110px;height:110px;top:16%}
+    .panggung{min-height:92svh}
+    .konten-panggung{padding:120px 0 70px}
+    h1{max-width:none}
   }
-  /* HP: baris nav boleh melipat, kalau tidak ia meluber keluar layar (bikin bisa digeser ke samping) */
-  @media (max-width:720px){
-    .nav{position:static}
-    .nav .in{flex-wrap:wrap;height:auto;padding:12px 0;gap:6px 10px}
+  @media (max-width:640px){
+    nav.atas .in{flex-wrap:wrap;height:auto;padding:12px 0;gap:4px 8px}
     .logo{width:100%}
-    .nav .sp{display:none}
-    .nav a.l{font-size:.86rem;padding:6px 8px}
-    .nav .btn{min-height:40px;padding:0 16px;font-size:.88rem;margin-left:auto}
-    .wrap{padding:0 18px}
-    h1{font-size:1.95rem}
-    .lead{font-size:1rem}
+    nav.atas .sp{display:none}
+    nav.atas a.l{font-size:.84rem;padding:6px 8px}
+    .angka,.kotak,.langkah{grid-template-columns:1fr}
     .cta .btn{width:100%}
-    .close{padding:24px;border-radius:16px}
-    section{padding:48px 0}
-    .hero{padding:28px 0 44px}
-    h2{font-size:1.65rem}
-  }
-  @media (max-width:400px){
-    h1{font-size:1.75rem}
-    .mini{gap:14px}
-    .mock .body{padding:14px}
+    .bulan{width:86px;height:86px;right:6%;top:9%}
+    .lentera{transform:scale(.72);transform-origin:top center}
+    h1{font-size:2.05rem}
   }
 </style>
 </head>
 <body>
 
-<nav class="nav"><div class="wrap in">
-  <div class="logo"><i>N3</i> BelajarN3
-  <a class="btn btn-p" href="fitur/login.html">Masuk</a></div>
-</div></nav>
+<div class="panggung">
+  <div class="langit" aria-hidden="true"></div>
+  <div class="bulan" aria-hidden="true"></div>
+  <div class="lentera" style="left:6%;top:14%" aria-hidden="true"></div>
+  <div class="lentera biru" style="left:14%;top:22%" aria-hidden="true"></div>
+  <div class="lentera" style="left:88%;top:30%" aria-hidden="true"></div>
+  <svg class="gunung" viewBox="0 0 1200 300" aria-hidden="true">
+    <path d="M0 300 L430 60 Q600 -18 770 60 L1200 300 Z" fill="#252c63"/>
+    <path d="M430 60 Q600 -18 770 60 L720 96 Q600 40 480 96 Z" fill="#dfe4ff" opacity=".9"/>
+  </svg>
+  <div class="kabut" aria-hidden="true"></div>
 
-<header class="hero"><div class="wrap grid">
-  <div>
-    <span class="tag">JLPT N5 · N4 · N3 — gratis, tanpa iklan</span>
-    <h1>Belajar Jepang <em>10 menit</em> sehari, sampai lulus JLPT.</h1>
+  <nav class="atas"><div class="wrap in">
+    <div class="logo"><i>N3</i> BelajarN3</div>
+    <div class="sp"></div>
+    <a class="l" href="n3/">N3</a><a class="l" href="n4/">N4</a><a class="l" href="n5/">N5</a><a class="l" href="fitur/quiz.html">Kuis</a>
+    <a class="btn btn-garis" href="fitur/login.html">Masuk</a>
+  </div></nav>
+
+  <div class="konten-panggung"><div class="wrap">
+    <span class="tag">🌙 JLPT N5 · N4 · N3 — gratis, tanpa iklan</span>
+    <h1>Belajar Jepang <span>10 menit</span> sehari, sampai lulus JLPT.</h1>
     <p class="lead">3.141 kosakata berfurigana, 19 bentuk kata kerja, 184 rumus bunpou, dan kuis harian yang menyesuaikan kelemahanmu. Satu web, jalan di HP maupun desktop.</p>
     <div class="cta">
-      <a class="btn btn-g" href="fitur/login.html">Mulai belajar sekarang</a>
-      <a class="btn btn-w" href="fitur/login.html">Mulai dari N5</a>
+      <a class="btn btn-utama" href="n3/">Mulai belajar sekarang</a>
+      <a class="btn btn-garis" href="n5/">Mulai dari N5</a>
     </div>
     <div class="mini">
       <div><b>3.141</b><span>kosakata + bacaan</span></div>
       <div><b>330</b><span>kata kerja</span></div>
       <div><b>184</b><span>rumus bunpou</span></div>
     </div>
-  </div>
-  <div class="mock" aria-hidden="true">
-    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">rizkyemye.github.io/belajarN3</span></div>
-    <div class="body">
-      <div class="hdr">
-        <b>JLPT N3 Master</b><p>Kamis, 24 September</p>
-        <div class="strip"><i class="on"></i><i class="on"></i><i class="on"></i><i class="now"></i><i></i><i></i><i></i></div>
-      </div>
-      <div class="row"><span class="n">相談</span><span class="r">そうだん · berkonsultasi</span><span class="p">hari 15</span></div>
-      <div class="row"><span class="n">約束</span><span class="r">やくそく · janji</span><span class="p">hari 15</span></div>
-      <div class="row"><span class="n">信頼</span><span class="r">しんらい · kepercayaan</span><span class="p">baru</span></div>
-      <div class="pills"><span>ます</span><span>て形</span><span>ない形</span><span>可能形</span><span>受身形</span><span>+14</span></div>
-    </div>
-  </div>
-</div></header>
+  </div></div>
+  <div class="panah" aria-hidden="true">↓</div>
+</div>
 
-<div class="band"><div class="wrap in">
-  <div><b>1.020</b><span>materi N5</span></div>
-  <div><b>921</b><span>materi N4</span></div>
-  <div><b>1.384</b><span>materi N3</span></div>
-  <div><b>24</b><span>bacaan + soal</span></div>
+<div class="pita" aria-hidden="true"><div class="jalan">
+  <span>日本語 <b>·</b></span><span>漢字 <b>·</b></span><span>文法 <b>·</b></span><span>読解 <b>·</b></span><span>単語 <b>·</b></span><span>動詞 <b>·</b></span><span>聴解 <b>·</b></span><span>復習 <b>·</b></span>
+  <span>日本語 <b>·</b></span><span>漢字 <b>·</b></span><span>文法 <b>·</b></span><span>読解 <b>·</b></span><span>単語 <b>·</b></span><span>動詞 <b>·</b></span><span>聴解 <b>·</b></span><span>復習 <b>·</b></span>
 </div></div>
 
 <section><div class="wrap">
-  <span class="kick">Yang kamu dapat</span>
-  <h2>Dibuat dari kebutuhannya sendiri, bukan template.</h2>
+  <span class="kicker">Isi materi</span>
+  <h2>Dari N5 sampai N3, sudah dibagi per hari.</h2>
   <p class="sub">Semua materi bertahap N5 ke N3, lengkap dengan arti Bahasa Indonesia dan bacaan hiragana di setiap kata.</p>
-  <div class="feat">
-    <div class="card"><div class="ic">語</div><h3>Kosakata + furigana</h3><p>3.141 kata dengan bacaan hiragana, arti Indonesia, dan contoh kalimat. Tombol 漢字／かな untuk latihan mandiri.</p></div>
-    <div class="card"><div class="ic">動</div><h3>19 bentuk kata kerja</h3><p>330 kata kerja dibagi 3 golongan. Setiap bentuk ada rumus, cara mengubah, dan contoh memakai hiragana.</p></div>
-    <div class="card"><div class="ic">文</div><h3>184 rumus bunpou</h3><p>Dari partikel N5 sampai pola N3. Klik kartunya, muncul pola, arti, dan contoh kalimat + terjemahan.</p></div>
-    <div class="card"><div class="ic">読</div><h3>Dokkai + kuis harian</h3><p>Bacaan bertingkat dan kuis 13 soal tiap hari dari kosakata hari itu. Salah pun tetap dicatat untuk diulang.</p></div>
-    <div class="card"><div class="ic">記</div><h3>Kalender & beruntun</h3><p>Menit belajar tercatat otomatis. Lihat hari mana yang bolong, jaga beruntunnya tetap menyala.</p></div>
-    <div class="card"><div class="ic">合</div><h3>Akun & sinkron</h3><p>Tanpa akun pun jalan. Kalau masuk, progresmu tersimpan dan bisa dibuka lagi dari HP lain.</p></div>
+  <div class="angka">
+    <div><b>1.020</b><span>materi N5</span></div>
+    <div><b>921</b><span>materi N4</span></div>
+    <div><b>1.384</b><span>materi N3</span></div>
+    <div><b>24</b><span>bacaan + soal</span></div>
+  </div>
+  <div class="kotak">
+    <div class="kartu"><div class="ic">語</div><h3>Kosakata + furigana</h3><p>3.141 kata dengan bacaan hiragana, arti Indonesia, dan contoh kalimat. Tombol 漢字／かな untuk latihan mandiri.</p></div>
+    <div class="kartu"><div class="ic">動</div><h3>19 bentuk kata kerja</h3><p>330 kata kerja dibagi 3 golongan. Setiap bentuk ada rumus, cara mengubah, dan contoh memakai hiragana.</p></div>
+    <div class="kartu"><div class="ic">文</div><h3>184 rumus bunpou</h3><p>Dari partikel N5 sampai pola N3. Klik kartunya, muncul pola, arti, dan contoh kalimat + terjemahan.</p></div>
+    <div class="kartu"><div class="ic">読</div><h3>Dokkai + kuis harian</h3><p>Bacaan bertingkat dan kuis 13 soal tiap hari dari kosakata hari itu. Salah pun tetap dicatat untuk diulang.</p></div>
+    <div class="kartu"><div class="ic">記</div><h3>Kalender & beruntun</h3><p>Menit belajar tercatat otomatis. Lihat hari mana yang bolong, jaga beruntunnya tetap menyala.</p></div>
+    <div class="kartu"><div class="ic">合</div><h3>Akun & sinkron</h3><p>Tanpa akun pun jalan. Kalau masuk, progresmu tersimpan dan bisa dibuka lagi dari HP lain.</p></div>
   </div>
 </div></section>
 
-<section><div class="wrap">
-  <span class="kick">Cara pakai</span>
+<section style="padding-top:0"><div class="wrap">
+  <span class="kicker">Cara pakai</span>
   <h2>Tiga langkah, selesai.</h2>
-  <div class="steps">
-    <div class="step"><h3>Pilih levelmu</h3><p>N5 kalau baru mulai, N4 kalau sudah kenal kana, N3 kalau mengejar ujian.</p></div>
-    <div class="step"><h3>Belajar per hari</h3><p>50 kata sehari, sudah dibagi rapi. Baca keras, tutup artinya, coba ingat sendiri.</p></div>
-    <div class="step"><h3>Kuis & review</h3><p>Kuis jam 17.00 dan review otomatis untuk kata yang sering kamu lewatkan.</p></div>
+  <div class="langkah">
+    <div><i>一</i><h3>Pilih levelmu</h3><p>N5 kalau baru mulai, N4 kalau sudah kenal kana, N3 kalau mengejar ujian.</p></div>
+    <div><i>二</i><h3>Belajar per hari</h3><p>50 kata sehari, sudah dibagi rapi. Baca keras, tutup artinya, coba ingat sendiri.</p></div>
+    <div><i>三</i><h3>Kuis & review</h3><p>Kuis jam 17.00 dan review otomatis untuk kata yang sering kamu lewatkan.</p></div>
   </div>
 </div></section>
 
-<div class="wrap"><div class="close">
+<div class="wrap"><div class="tutup">
   <h2>Mulai hari ini, tanpa bayar apa pun.</h2>
   <p>Buka webnya, pilih level, langsung belajar. Progresmu tersimpan di HP-mu sendiri.</p>
   <div class="cta" style="margin-top:22px">
-    <a class="btn btn-g" href="fitur/login.html">Buka BelajarN3</a>
-    <a class="btn btn-w" href="fitur/login.html">Masuk dengan akun</a>
+    <a class="btn btn-neon" href="n3/">Buka BelajarN3</a>
+    <a class="btn btn-garis" style="border-color:rgba(37,28,55,.25);color:#251c37;background:transparent" href="fitur/login.html">Masuk dengan akun</a>
   </div>
 </div></div>
 
-<footer class="foot"><div class="wrap in">
-  <b>BelajarN3</b><span>· Materi Japan Foundation tidak disalin. Soal dibuat sendiri.</span>
+<footer><div class="wrap in">
+  <b style="color:#fff">BelajarN3</b><span>· Materi Japan Foundation tidak disalin. Soal dibuat sendiri.</span>
   <span style="margin-left:auto">Dibuat oleh リズ</span>
 </div></footer>
 
