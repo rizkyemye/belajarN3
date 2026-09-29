@@ -164,7 +164,12 @@
         lupaSandi: lupaSandi,
 
         // halaman lain bisa: await N3.tungguSiap()
-        tungguSiap: function () { return janjiSiap; },
+        // Halaman lain: await N3.tungguSiap(). Diberi batas waktu supaya halaman TIDAK menggantung
+        // kalau jaringan/server lambat atau tidak terjangkau.
+        tungguSiap: function (ms) {
+            const batas = (Number(ms) > 0) ? Number(ms) : 6000;   // ponytail: 6 detik; naikkan kalau server memang lambat
+            return Promise.race([janjiSiap, new Promise(function (r) { setTimeout(function () { r(false); }, batas); })]);
+        },
         // kirim ulang data yang sempat gagal (dipakai juga oleh dashboard)
         cekAntrean: function () { return kirimAntrean(); },
         jumlahAntrean: function () { return bacaPending().length; },
