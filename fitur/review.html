@@ -36,7 +36,7 @@
         .rv-card h2 { font-size: 1rem; }
     }
 </style>
-    <link rel="stylesheet" href="../aset/tema-baru.css?v=1">
+    <link rel="stylesheet" href="../aset/tema-baru.css?v=26">
 </head>
 <body>
 <div class="app-container">
@@ -121,7 +121,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="../aset/supabase-config.js"></script>
-<script src="../aset/n3-auth.js?v=10"></script>
+<script src="../aset/n3-auth.js?v=14"></script>
 <script src="../aset/level.js"></script>
 <script src="../aset/n3-srs.js"></script>
 <script>
@@ -349,12 +349,29 @@ document.getElementById("rvAmbang").addEventListener("change", function () {
     if (window.N3 && N3.aktif) {
         try {
             await N3.tungguSiap();
-            if (!N3.pengguna) { alert("Masuk dulu ya di halaman utama〜"); window.location.href = "../"; return; }
+            if (!N3.pengguna) {
+                // dulu: alert() + pindah paksa — alert memblokir halaman (bisa diam sampai ditutup).
+                // Sekarang: keterangan di dalam halaman + tombol, tanpa dialog yang mengunci.
+                const kotak = document.createElement("div");
+                kotak.style.cssText = "max-width:520px;margin:26px auto;padding:20px;border-radius:16px;background:#fff;"
+                    + "border:1px solid #e6e8f4;box-shadow:0 10px 26px rgba(27,32,53,.09);text-align:center;"
+                    + "font:600 15px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#312e81";
+                kotak.innerHTML = "Belum masuk ✓ Progres review disimpan di akunmu.<br>"
+                    + "<a href='../fitur/login.html' style='display:inline-block;margin:14px 6px 0;padding:11px 20px;"
+                    + "border-radius:11px;background:#4f46e5;color:#fff;text-decoration:none;font-weight:800'>Masuk sekarang</a>"
+                    + "<a href='../n3/' style='display:inline-block;margin:14px 6px 0;padding:11px 20px;border-radius:11px;"
+                    + "border:1px solid #c7d2fe;color:#312e81;text-decoration:none;font-weight:800'>Kembali belajar</a>";
+                const wadah = document.getElementById("rvDaftar");
+                if (wadah) { wadah.innerHTML = ""; wadah.appendChild(kotak); }
+                else { document.body.appendChild(kotak); }     // JANGAN timpa seluruh body: menu ikut hilang
+                return;
+            }
             await N3.muatKata();
         } catch (e) {}
     }
     perbaruiRingkasan();
 })();
 </script>
+<script src="../aset/nav-statis.js?v=1"></script>
 </body>
 </html>
