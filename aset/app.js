@@ -2139,3 +2139,23 @@ function pasangTombolTema() {
         if (!document.hidden) { try { renderKotakAlat(); } catch (e) {} }
     });
 })();
+
+
+/* =========================================================================
+   TAB DARI ALAMAT (28 Sep 2026)
+   Supaya menu statis di halaman lain bisa membuka tab tertentu:
+   ../n3/#study · ../n3/#kanji · ../n3/#dokkai · ../n3/#bunpou · ../n3/#calendar
+   ========================================================================= */
+(function bukaTabDariAlamat() {
+    const SAH = ["calendar", "study", "bunpou", "dokkai", "kanji", "doushi"];
+    function jalan() {
+        const t = String(location.hash || "").replace(/^#/, "").split("?")[0];
+        if (SAH.indexOf(t) === -1) return;
+        try { if (typeof window.switchTab === "function") window.switchTab(t); } catch (e) {}
+    }
+    let cuba = 0;
+    function cobaNanti() { cuba++; jalan(); if (cuba < 6) setTimeout(cobaNanti, 500); }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", cobaNanti);
+    else setTimeout(cobaNanti, 300);
+    window.addEventListener("hashchange", jalan);
+})();
