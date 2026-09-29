@@ -318,8 +318,11 @@ function loadQuizQuestion() {
 
     const cleanCorrectAnswer = getCleanBack(currentQuestion.back);
 
+    // Pengecoh WAJIB dari kosakata saja. Dulu ikut menarik seluruh ../aset/data.json termasuk
+    // 129 item bunpou (jenis 'bunpou'), jadi pilihan jawaban bisa berisi arti pola tata
+    // bahasa seperti "Tentang / Mengenai" — bukan arti kosakata.
     const wrongChoices = allQuizData
-        .filter(item => item.back !== currentQuestion.back)
+        .filter(item => item.jenis !== "bunpou" && item.back !== currentQuestion.back)
         .map(item => getCleanBack(item.back));
     
     const uniqueWrongChoices = [...new Set(wrongChoices)];
