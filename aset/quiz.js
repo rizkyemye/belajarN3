@@ -119,6 +119,12 @@ function getCleanBack(rawText) {
 
 // --- SISTEM UNLOCK HARIAN (MULAI TANGGAL 5) ---
 function getMaxUnlockedDay() {
+    /* Sama seperti di app.js: aturan sebenarnya ada di N3Unlock (per akun, dan kini
+       juga dari data akun di server). Dulu halaman kuis punya salinan aturan lama
+       sendiri, jadi ikut nge-lock ke Hari 1 walau materi sudah sampai Hari 24. */
+    try {
+        if (window.N3Unlock && typeof window.N3Unlock.maksHari === "function") return window.N3Unlock.maksHari();
+    } catch (e) {}
     const now = new Date();
     const dateNum = now.getDate();
     if (dateNum < 5) return 1;
@@ -149,8 +155,15 @@ function populateQuizDayDropdown() {
         const opt = document.createElement('option');
         opt.value = dayNum;
         
-        if (dayNum > getMaxUnlockedDay()) {
-            opt.textContent = `🔒 Hari ke-${dayNum} (Terkunci)`;
+        if (dayNum > maxUnlocked) {
+            let kapan = "";
+            try {
+                const selisih = Math.max(1, dayNum - maxUnlocked);
+                const d2 = new Date(); d2.setDate(d2.getDate() + selisih);
+                const bln = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+                kapan = " — buka " + d2.getDate() + " " + bln[d2.getMonth()];
+            } catch (e) {}
+            opt.textContent = `🔒 Hari ke-${dayNum}${kapan || " (Terkunci)"}`;
             opt.disabled = true;
         } else if (completedDays.includes(dayNum)) {
             opt.textContent = `✅ Hari ke-${dayNum} (${actualCount} Kosakata) - Selesai`;
@@ -165,6 +178,8 @@ function populateQuizDayDropdown() {
 }
 
 // --- TIMER KONTROL ---
+window.populateQuizDayDropdown = populateQuizDayDropdown;   // dibangun ulang setelah data akun turun
+
 function startQuizTimer() {
     quizSecondsElapsed = 0;
     if (quizTimerInterval) clearInterval(quizTimerInterval);
