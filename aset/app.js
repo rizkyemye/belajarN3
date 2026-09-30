@@ -1219,6 +1219,7 @@ function renderStripHari() {
     if (aktif && aktif.scrollIntoView) { try { aktif.scrollIntoView({ block: "nearest", inline: "center" }); } catch (e) {} }
 }
 window.renderStripHari = renderStripHari;
+window.populateDirectStudyDropdown = populateDirectStudyDropdown;   // dipanggil ulang setelah data akun turun
 
 function renderCalendar() {
     pulihkanDataKalender();
@@ -1358,6 +1359,13 @@ function hariTerbukaUntukMateri(h) {
 }
 
 function getMaxUnlockedDay() {
+    /* Aturan sebenarnya ada di N3Unlock (per akun + tanggal mulai, dan kini juga dari data akun).
+       Fungsi lama ini dipakai di beberapa tempat (pemilih hari, halaman kuis) — jadi
+       dibetulkan di SINI sekali, semua pemakainya ikut benar. Kalau N3Unlock tidak ada,
+       baru pakai aturan lama di bawah. */
+    try {
+        if (window.N3Unlock && typeof window.N3Unlock.maksHari === "function") return window.N3Unlock.maksHari();
+    } catch (e) {}
     const now = new Date();
     const dateNum = now.getDate();
     
@@ -1391,7 +1399,14 @@ function populateDirectStudyDropdown() {
             } catch (e) {}
             opt.textContent = `Hari ke-${dayNum} (${jumlahKata} Kosakata)${tanda}`;
         } else {
-            opt.textContent = `🔒 Hari ke-${dayNum} (Terkunci - Buka besok jam 05:00)`;
+            let kapan = "";
+            try {
+                const selisih = Math.max(1, dayNum - maxUnlocked);
+                const d2 = new Date(); d2.setDate(d2.getDate() + selisih);
+                const bln = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+                kapan = " — buka " + d2.getDate() + " " + bln[d2.getMonth()];
+            } catch (e) {}
+            opt.textContent = `🔒 Hari ke-${dayNum} (${jumlahKata} Kosakata)${kapan || " - terkunci"}`;
             opt.disabled = true;
         }
         selectElement.appendChild(opt);
@@ -2158,4 +2173,92 @@ function pasangTombolTema() {
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", cobaNanti);
     else setTimeout(cobaNanti, 300);
     window.addEventListener("hashchange", jalan);
+})();
+
+
+/* =========================================================================
+   LENCANA IKON APLIKASI (28 Sep 2026)
+   Angka kecil di ikon "BelajarN3" yang sudah dipasang di layar utama:
+   berapa kata yang menunggu diulang. Android ✓ dan iPhone (iOS 16.4+) ✓.
+   Kalau API-nya tidak ada (browser lama), dilewati saja — tidak error.
+   ========================================================================= */
+(function pasangLencana() {
+    function perbarui() {
+        try {
+            if (!navigator.setAppBadge) return;
+            const st = (window.N3SRS && N3SRS.statistik) ? N3SRS.statistik() : null;
+            const n = st ? (Number(st.jatuhTempo) || 0) : 0;
+            if (n > 0) { navigator.setAppBadge(n).catch(function () {}); }
+            else if (navigator.clearAppBadge) { navigator.clearAppBadge().catch(function () {}); }
+        } catch (e) {}
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", perbarui);
+    else perbarui();
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) perbarui(); });
+    setInterval(perbarui, 60000);
+})();
+
+
+/* =========================================================================
+   PEMILIH GAYA TAMPILAN (29 Sep 2026)
+   Flat = bawaan (menyatu di tema-baru.css) · Minimalis · Brutal
+   Berkas gaya dimuat SETELAH ../aset/tema-baru.css supaya menimpa dengan aman.
+   Pilihan disimpan di localStorage (n3_gaya).
+   ========================================================================= */
+(function pasangGayaTampilan() {
+    const GAYA = [
+        { k: "flat",    teks: "Flat (bawaan)", berkas: "" },
+        { k: "minimal", teks: "Minimalis",     berkas: "gaya-minimal" + ".css" },
+        { k: "brutal",  teks: "Brutal",        berkas: "gaya-brutal" + ".css" }
+    ];
+    function folderAset() {
+        const s = document.querySelector('script[src*="../aset/app.js"]');
+        return s ? String(s.getAttribute("src")).replace(/app\.js.*$/, "") : "../aset/";
+    }
+    function kini() { try { return localStorage.getItem("n3_gaya") || "flat"; } catch (e) { return "flat"; } }
+    function pasang() {
+        document.querySelectorAll("link[data-gaya]").forEach(function (el) { el.remove(); });
+        const pilih = GAYA.filter(function (x) { return x.k === kini(); })[0];
+        if (!pilih || !pilih.berkas) return;
+        const l = document.createElement("link");
+        l.rel = "stylesheet"; l.setAttribute("data-gaya", pilih.k);
+        l.href = folderAset() + pilih.berkas;
+        document.head.appendChild(l);
+    }
+    function bukaPanel() {
+        let p = document.getElementById("panelGaya");
+        if (!p) {
+            p = document.createElement("div");
+            p.id = "panelGaya";
+            p.style.cssText = "position:fixed;left:12px;right:12px;bottom:12px;z-index:9998;max-width:460px;margin:0 auto;"
+                + "background:var(--kartu,#fff);color:var(--teks,#111);border:2px solid var(--garis,#ddd);border-radius:12px;padding:12px";
+            document.body.appendChild(p);
+        }
+        p.innerHTML = '<div style="font-weight:800;margin-bottom:8px">Gaya tampilan</div>'
+            + GAYA.map(function (g) {
+                const aktif = kini() === g.k;
+                return '<button type="button" data-g="' + g.k + '" style="display:block;width:100%;text-align:left;margin:6px 0;padding:12px;'
+                    + 'border:2px solid var(--garis,#ddd);border-radius:10px;font:inherit;font-weight:700;cursor:pointer;'
+                    + 'background:' + (aktif ? "var(--utama,#4f46e5)" : "transparent") + ';color:' + (aktif ? "#fff" : "inherit") + '">'
+                    + (aktif ? "✓ " : "") + g.teks + "</button>";
+            }).join("")
+            + '<button type="button" id="tutupGaya" style="margin-top:8px;padding:10px;width:100%;border:0;background:transparent;font:inherit;opacity:.7;cursor:pointer">tutup</button>';
+        p.querySelectorAll("button[data-g]").forEach(function (b) {
+            b.onclick = function () { try { localStorage.setItem("n3_gaya", b.dataset.g); } catch (e) {} pasang(); bukaPanel(); };
+        });
+        document.getElementById("tutupGaya").onclick = function () { p.remove(); };
+    }
+    function tombol() {
+        const baris = document.querySelector(".hero-baris");
+        if (!baris || document.getElementById("tombolGaya")) return;
+        const b = document.createElement("button");
+        b.id = "tombolGaya"; b.type = "button"; b.className = "tombol-tema";
+        b.setAttribute("aria-label", "Ganti gaya tampilan");
+        b.textContent = "🎨";
+        b.onclick = bukaPanel;
+        baris.appendChild(b);
+    }
+    function mulai() { pasang(); tombol(); }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mulai);
+    else mulai();
 })();
