@@ -293,6 +293,20 @@
                     if (r.selesai) localStorage.setItem(kunciSesi(pengguna.username, r.day_no, r.session), "true");
                 });
             }
+            /* Hari terjauh menurut AKUN (bukan cuma HP/browser ini).
+               Ini yang bikin kuncian hari tidak reset kalau dibuka dari tempat lain. */
+            let maksAkun = 0;
+            (ses.data || []).forEach(function (r) { const d = Number(r.day_no) || 0; if (d > maksAkun) maksAkun = d; });
+            (prg.data || []).forEach(function (r) { const d = Number(r.day_no) || 0; if (d > maksAkun) maksAkun = d; });
+            if (maksAkun > 0) {
+                try {
+                    const u = String(pengguna.username || "").toLowerCase();
+                    if (u) localStorage.setItem("n3_hari_akun_" + u, String(maksAkun));
+                    localStorage.setItem("n3_hari_akun", String(maksAkun));
+                    localStorage.setItem("n3_tanggal_mulai_akun", "1");
+                } catch (e) {}
+            }
+
             segarkanTampilan();
         } catch (e) { console.warn("Sinkron data gagal:", e); }
     }
