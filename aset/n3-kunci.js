@@ -55,6 +55,15 @@
         try { return Number(localStorage.getItem(kunciMaks())) || 0; } catch (e) { return 0; }
     }
 
+    /* hari terjauh menurut AKUN (diisi oleh ../aset/n3-auth.js saat sinkron data) */
+    function bacaAkun() {
+        try {
+            const u = (penggunaAktif() || "").toLowerCase();
+            const a = u ? localStorage.getItem("n3_hari_akun_" + u) : null;
+            return Number(a || localStorage.getItem("n3_hari_akun")) || 0;
+        } catch (e) { return 0; }
+    }
+
     function simpanMaks(n) {
         try { if (n > bacaMaks()) localStorage.setItem(kunciMaks(), String(n)); } catch (e) {}
     }
@@ -121,7 +130,7 @@
            hari yang sudah pernah terbuka tetap terbuka. Dulu di tanggal 1–4 materi bisa
            ke-lock balik ke Hari 1 — itu yang terjadi 1 Oktober 2026. */
         const hari = hariKe(tanggalMulai() || new Date());
-        const hasil = Math.max(hari, bacaMaks());
+        const hasil = Math.max(hari, bacaMaks(), bacaAkun());   // tanggal mulai · ingatan HP · data AKUN
         simpanMaks(hasil);
         return hasil;
     }
