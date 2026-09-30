@@ -13,6 +13,7 @@
 
     const KUNCI_SEMUA = "n3_buka_semua";        // "1" = jangan dikunci (lihat semua)
     const KUNCI_MULAI = "n3_tanggal_mulai";     // "YYYY-MM-DD" milik akun/browser ini
+    const KUNCI_MAKS = "n3_hari_maks";          // hari tertinggi yang PERNAH terbuka (biar tidak pernah mundur)
     const SEHARI = 24 * 60 * 60 * 1000;
 
     /* ---------- tanggal mulai ---------- */
@@ -43,6 +44,19 @@
             return (u && localStorage.getItem(KUNCI_MULAI + "_" + u)) ||
                 localStorage.getItem(KUNCI_MULAI) || null;
         } catch (e) { return null; }
+    }
+
+    function kunciMaks() {
+        const u = penggunaAktif();
+        return u ? KUNCI_MAKS + "_" + u : KUNCI_MAKS;
+    }
+
+    function bacaMaks() {
+        try { return Number(localStorage.getItem(kunciMaks())) || 0; } catch (e) { return 0; }
+    }
+
+    function simpanMaks(n) {
+        try { if (n > bacaMaks()) localStorage.setItem(kunciMaks(), String(n)); } catch (e) {}
     }
 
     function tanggalMulai() {
@@ -103,7 +117,13 @@
             mulai = bacaMulai();
         }
 
-        return hariKe(tanggalMulai() || new Date());
+        /* Jangan pernah mundur: kalau aplikasi lupa tanggal mulai (atau buka di browser lain),
+           hari yang sudah pernah terbuka tetap terbuka. Dulu di tanggal 1–4 materi bisa
+           ke-lock balik ke Hari 1 — itu yang terjadi 1 Oktober 2026. */
+        const hari = hariKe(tanggalMulai() || new Date());
+        const hasil = Math.max(hari, bacaMaks());
+        simpanMaks(hasil);
+        return hasil;
     }
 
     function lihatSemua() {
@@ -134,7 +154,10 @@
             ".kunci-catatan button{margin-left:auto;background:#f59e0b;color:#fff;border:0;" +
             "border-radius:8px;padding:7px 12px;font-size:.8rem;font-weight:700;cursor:pointer;min-height:34px}" +
             ".kunci-catatan.buka button{background:#2563eb}" +
-            ".kunci-catatan button:active{transform:scale(.97)}";
+            ".kunci-catatan button:active{transform:scale(.97)}" +
+            ".kunci-catatan .kunci-tombol{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}" +
+            ".kunci-catatan .kunci-tgl{background:#fff;color:#78350f;border:1px solid #fcd34d}" +
+            ".kunci-catatan.buka .kunci-tgl{background:#fff;color:#1e3a8a;border-color:#93c5fd}";
         (document.head || document.documentElement).appendChild(s);
     }
 
@@ -168,9 +191,23 @@
                 (mulai ? " (mulai " + tanggalIndah(mulai) + ")" : "") + ".";
         }
         div.innerHTML = "<span>" + pesan + "</span>" +
-            '<button type="button">' + (lihatSemua() ? "Kunci lagi" : "Tampilkan semua") + "</button>";
-        div.querySelector("button").addEventListener("click", function () {
+            '<span class="kunci-tombol">' +
+            '<button type="button" class="kunci-utama">' + (lihatSemua() ? "Kunci lagi" : "Tampilkan semua") + "</button>" +
+            '<button type="button" class="kunci-tgl" title="Kalau progres kelihatan balik ke Hari 1">Atur tanggal</button>' +
+            "</span>";
+        div.querySelector(".kunci-utama").addEventListener("click", function () {
             setLihatSemua(!lihatSemua());
+            if (typeof onUbah === "function") onUbah();
+        });
+        // pulihkan "tanggal mulai" (mis. sesudah dibuka di browser lain atau ke-lock ke Hari 1)
+        div.querySelector(".kunci-tgl").addEventListener("click", function () {
+            const sekarang = jadikanTeks(new Date());
+            const jawab = window.prompt("Tanggal mulai belajar (YYYY-MM-DD):\nContoh: 2026-09-11 → hari ini otomatis jadi Hari 21.", sekarang);
+            if (!jawab) return;
+            const bersih = String(jawab).trim();
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(bersih)) { window.alert("Formatnya harus YYYY-MM-DD, contoh 2026-09-11"); return; }
+            setTanggalMulai(bersih);
+            simpanMaks(hariKe(ubahKeTanggal(bersih)));   // ikut naikkan batas yang diingat
             if (typeof onUbah === "function") onUbah();
         });
         return div;
