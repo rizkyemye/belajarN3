@@ -170,6 +170,32 @@
 
     window.tambahKanji = function () { batas += 60; tampilkanDaftar(); };
 
+    /* Jatah kanji harian (kanji-harian.json): N3 = 20/hari, N4 = 15, N5 = 10.
+       Kalau berkasnya ada, `hari` tiap kanji diganti jatah harian yang rata —
+       jadi chip "Hari N" menampilkan tepat 20 kanji, bukan tumpang tindih 136.
+       Kalau tidak ada, tetap pakai `hari` asli (selaras kosakata). */
+    function pakaiJatahHarian() {
+        return fetch("../aset/kanji-harian.json")
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (d) {
+                /* LV itu ANGKA: 5 / 4 / 0 (0 = halaman N3). Kunci di ../aset/kanji-harian.json
+                   berupa teks "N3"/"N4"/"N5", jadi harus diterjemahkan dulu. */
+                const t = d && (d["N" + (LV || 3)] || d[String(LV)]);
+                if (!t || !t.hari) return;
+                const peta = {};
+                Object.keys(t.hari).forEach(function (nomor) {
+                    t.hari[nomor].forEach(function (ch) { peta[ch] = Number(nomor); });
+                });
+                semuaKanji.forEach(function (k) {
+                    /* Hanya tingkat halaman ini yang punya jatah harian. Kanji tingkat lain
+                       dikosongkan harinya supaya chip "Hari N" tetap tepat 20 kanji —
+                       mereka tetap ada di "Semua" dan lewat pencarian. */
+                    k.hari = peta[k.kanji] ? [peta[k.kanji]] : [];
+                });
+            })
+            .catch(function () {});
+    }
+
     window.initKanjiUI = function () {
         if (sudahMuat) { pasangKontrol(); tampilkanDaftar(); return; }
         sudahMuat = true;
@@ -177,6 +203,9 @@
             .then(function (r) { return r.ok ? r.json() : {}; })
             .then(function (json) {
                 semuaKanji = Object.keys(json || {}).map(function (k) { return json[k]; });
+                return pakaiJatahHarian();
+            })
+            .then(function () {
                 pasangKontrol();
                 bikinChip();
                 tampilkanDaftar();
