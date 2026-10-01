@@ -319,6 +319,7 @@
                kalau tidak, dia masih menampilkan kuncian lama (Hari 1) */
             if (typeof window.populateDirectStudyDropdown === "function") window.populateDirectStudyDropdown();
             if (typeof window.populateQuizDayDropdown === "function") window.populateQuizDayDropdown();
+            if (typeof window.isiPilihanHariBunpou === "function") window.isiPilihanHariBunpou();
             if (typeof window.updateProfileDisplay === "function") window.updateProfileDisplay();
         } catch (e) {}
     }
