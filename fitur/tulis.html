@@ -194,6 +194,46 @@
             return batas.indexOf(tingkatKanji(semuaKanji[k])) !== -1;
         }).length;
     }
+    /* ---- Sinkron dengan tab Kanji: jatah harian dari ../aset/kanji-harian.json ----
+       N3 = 20 kanji/hari, N4 = 15, N5 = 10. `hari` asli (selaras kosakata) tetap
+       disimpan di hariAsli supaya bisa dikembalikan kalau berkas jatahnya kosong. */
+    let petaJatah = null;
+    function simpanHariAsli() {
+        Object.keys(semuaKanji || {}).forEach(function (k) {
+            const it = semuaKanji[k];
+            if (it && !it.hariAsli) it.hariAsli = (it.hari || []).slice();
+        });
+    }
+    function terapkanJatah() {
+        if (!semuaKanji) return;
+        simpanHariAsli();
+        const batas = BATAS_LV[tingkat] || [3];
+        Object.keys(semuaKanji).forEach(function (k) {
+            const it = semuaKanji[k];
+            if (!it || batas.indexOf(tingkatKanji(it)) === -1) return;      // bukan tingkat ini → biarkan
+            /* Kalau berkas jatahnya ada: kanji tingkat ini yang tidak punya jatah harian
+               (mis. 18 entri tanpa data JLPT) dikosongkan harinya — supaya daftar hari
+               tetap 1..21 seperti tab Kanji. Kalau berkasnya belum ada, pakai hari asli. */
+            it.hari = petaJatah ? (petaJatah[it.kanji] ? [petaJatah[it.kanji]] : []) : (it.hariAsli || []).slice();
+        });
+    }
+    function muatJatahHarian() {
+        return fetch("../aset/kanji-harian.json")
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (d) {
+                const t = d && (d[tingkat] || d[String(tingkat)]);
+                petaJatah = null;
+                if (t && t.hari) {
+                    petaJatah = {};
+                    Object.keys(t.hari).forEach(function (n) {
+                        t.hari[n].forEach(function (ch) { petaJatah[ch] = Number(n); });
+                    });
+                }
+                terapkanJatah();
+            })
+            .catch(function () { terapkanJatah(); });
+    }
+
     function pasangPilihHari() {
         const induk = document.getElementById("twTingkat");
         if (!induk || !semuaKanji) return;
@@ -366,7 +406,10 @@
         b.addEventListener("click", function () {
             tingkat = b.dataset.lv; kini = 0; hariPilih = 0;
             try { localStorage.setItem("n3_tulis_level", tingkat); } catch (e) {}
-            tandaiTingkat(); pasangPilihHari(); gambarPanduan(); gambarDaftar(); siapkanDeck();
+            tandaiTingkat(); gambarPanduan();
+            muatJatahHarian().then(function () {          // ganti tingkat → jatah harian tingkat itu
+                pasangPilihHari(); gambarDaftar(); siapkanDeck();
+            });
         });
     });
 
@@ -521,7 +564,11 @@
             data = Object.assign(data || {}, g[0]);
             contoh = Object.assign(contoh || {}, g[1]);
             semuaKanji = g[2] || null;
-            dataKanji = true; gambarPanduan(); gambarDaftar(); pasangPilihHari(); siapkanDeck();
+            dataKanji = true;
+            // pakai jatah harian yang sama dengan tab Kanji, baru gambar
+            muatJatahHarian().then(function () {
+                gambarPanduan(); gambarDaftar(); pasangPilihHari(); siapkanDeck();
+            });
         }).catch(function () { elHuruf.innerHTML = "⚠️<small>gagal memuat kanji-svg.json</small>"; });
     }
     fetch("../aset/kana-svg.json").then(function (r) { return r.json(); }).then(function (d) {
