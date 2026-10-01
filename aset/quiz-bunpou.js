@@ -99,6 +99,12 @@
     }
 
     function maksHari() {
+        /* Sama seperti ../aset/app.js & quiz.js: aturan sebenarnya ada di N3Unlock
+           (tanggal mulai per akun, dan kini juga hari terjauh dari data akun).
+           Salinan aturan lama di sini bikin halaman ini selalu terkunci ke Hari 1. */
+        try {
+            if (window.N3Unlock && typeof window.N3Unlock.maksHari === "function") return window.N3Unlock.maksHari();
+        } catch (e) {}
         const tgl = new Date().getDate();
         return tgl < 5 ? 1 : tgl - 4;
     }
@@ -144,7 +150,14 @@
             o.value = d;
             const n = bankSoal[String(d)].length;
             if (d > maks) {
-                o.textContent = "🔒 Hari ke-" + d + " (Terkunci)";
+                let kapan = "";
+                try {
+                    const selisih = Math.max(1, d - maks);
+                    const d2 = new Date(); d2.setDate(d2.getDate() + selisih);
+                    const bln = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+                    kapan = " — buka " + d2.getDate() + " " + bln[d2.getMonth()];
+                } catch (e) {}
+                o.textContent = "🔒 Hari ke-" + d + kapan;
                 o.disabled = true;
             } else if (selesai.indexOf(d) !== -1) {
                 o.textContent = "✅ Hari ke-" + d + " (" + n + " soal) - Selesai";
@@ -156,6 +169,8 @@
         const bisa = hari.filter(function (d) { return d <= maks; });
         if (bisa.length) sel.value = bisa[bisa.length - 1];
     }
+
+    window.isiPilihanHariBunpou = isiPilihanHari;   // dipanggil ulang setelah data akun turun
 
     function startBunpouQuiz() {
         const sel = document.getElementById("bunpouDaySelect");
