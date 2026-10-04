@@ -97,19 +97,33 @@
 
     // aturan lama (hari ke-1 = tanggal 5) — hanya dipakai sekali untuk akun lama
     function maksHariLama() {
-        const tgl = new Date().getDate();
+        const tgl = sekarangEfektif().getDate();
         return tgl < 5 ? 1 : tgl - 4;
     }
 
     function hariKe(mulai) {
         const dasar = new Date(mulai.getFullYear(), mulai.getMonth(), mulai.getDate());
-        const kini = new Date();
+        const kini = sekarangEfektif();
         const kiniDasar = new Date(kini.getFullYear(), kini.getMonth(), kini.getDate());
         const selisih = Math.floor((kiniDasar - dasar) / SEHARI);
         return Math.max(1, selisih + 1);
     }
 
-    function maksHari() {
+    /* ===== KUNCIAN HARI AKTIF, tapi ganti hari jam 05:00 (permintaan リズ, 4 Okt 2026) =====
+       Materi tetap kebuka 1 per hari — hanya saja "hari baru" mulai jam 5 pagi,
+       bukan jam 00:00. Jadi jam 1 dini hari masih dihitung hari kemarin.
+       Set KUNCI_HARI = false kalau mau semua materi kebuka sekaligus. */
+    const KUNCI_HARI = true;
+    const JAM_GANTI_HARI = 5;                  // jam 5 pagi = hari baru
+
+    function sekarangEfektif() {
+        const d = new Date();
+        d.setHours(d.getHours() - JAM_GANTI_HARI);   // 04:59 → masih dianggap hari sebelumnya
+        return d;
+    }
+
+    /* Hari progres (buat tulisan "Hari N" di layar) — tidak ada hubungannya dengan kuncian. */
+    function hariIni() {
         let mulai = bacaMulai();
 
         if (!mulai) {
@@ -121,7 +135,7 @@
                 setTanggalMulai(jadikanTeks(d));
             } else {
                 // pengunjung baru: mulai dari Hari 1 hari ini
-                setTanggalMulai(jadikanTeks(new Date()));
+                setTanggalMulai(jadikanTeks(sekarangEfektif()));
             }
             mulai = bacaMulai();
         }
@@ -133,6 +147,12 @@
         const hasil = Math.max(hari, bacaMaks(), bacaAkun());   // tanggal mulai · ingatan HP · data AKUN
         simpanMaks(hasil);
         return hasil;
+    }
+
+    /* Batas hari yang boleh dibuka. Mode bebas → semua (9999).
+       Semua aturan kuncian lama tetap ada di hariIni() di atas kalau nanti diaktifkan lagi. */
+    function maksHari() {
+        return KUNCI_HARI ? hariIni() : 9999;
     }
 
     function lihatSemua() {
@@ -183,6 +203,7 @@
      * @returns {HTMLElement|null}
      */
     function catatan(hariTerkunciAwal, jmlTerkunci, onUbah) {
+        if (!KUNCI_HARI) return null;      // mode bebas: tidak ada catatan kuncian sama sekali
         pasangGaya();
         if (!jmlTerkunci && !lihatSemua()) return null;
 
@@ -231,7 +252,9 @@
         // tambahan untuk halaman "Mulai dari sini" & dashboard
         tanggalMulai: tanggalMulai,
         setTanggalMulai: setTanggalMulai,
-        hariKe: function () { return maksHari(); },
+        hariKe: function () { return hariIni(); },
+        jamGantiHari: function () { return JAM_GANTI_HARI; },
+        kunciAktif: function () { return KUNCI_HARI; },     // hari progres buat tulisan "Hari N"
         tanggalIndah: tanggalIndah
     };
 })();
