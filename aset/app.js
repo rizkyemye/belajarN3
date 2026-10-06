@@ -1404,7 +1404,7 @@ function populateDirectStudyDropdown() {
                 const selisih = Math.max(1, dayNum - maxUnlocked);
                 const d2 = new Date(); d2.setDate(d2.getDate() + selisih);
                 const bln = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
-                kapan = " — buka " + d2.getDate() + " " + bln[d2.getMonth()];
+                kapan = " — buka " + d2.getDate() + " " + bln[d2.getMonth()] + " 05:00";
             } catch (e) {}
             opt.textContent = `🔒 Hari ke-${dayNum} (${jumlahKata} Kosakata)${kapan || " - terkunci"}`;
             opt.disabled = true;

@@ -101,8 +101,8 @@
         return tgl < 5 ? 1 : tgl - 4;
     }
 
-    function hariKe(mulai) {
-        const dasar = new Date(mulai.getFullYear(), mulai.getMonth(), mulai.getDate());
+    function hariKe() {
+        const dasar = new Date(HARI_1[0], HARI_1[1], HARI_1[2]);
         const kini = sekarangEfektif();
         const kiniDasar = new Date(kini.getFullYear(), kini.getMonth(), kini.getDate());
         const selisih = Math.floor((kiniDasar - dasar) / SEHARI);
@@ -115,6 +115,11 @@
        Set KUNCI_HARI = false kalau mau semua materi kebuka sekaligus. */
     const KUNCI_HARI = true;
     const JAM_GANTI_HARI = 5;                  // jam 5 pagi = hari baru
+
+    /* Hari 1 = 10 Sep 2026. Angka hari di sini SAMA dengan yang dipakai
+       cron WhatsApp/Notion (Hari 22 = 1 Okt, Hari 27 = 6 Okt) — biar materi
+       yang masuk WhatsApp pagi itu memang yang kebuka di web. */
+    const HARI_1 = [2026, 8, 10];              // bulan 0-based: 8 = September
 
     function sekarangEfektif() {
         const d = new Date();
@@ -143,7 +148,7 @@
         /* Jangan pernah mundur: kalau aplikasi lupa tanggal mulai (atau buka di browser lain),
            hari yang sudah pernah terbuka tetap terbuka. Dulu di tanggal 1–4 materi bisa
            ke-lock balik ke Hari 1 — itu yang terjadi 1 Oktober 2026. */
-        const hari = hariKe(tanggalMulai() || new Date());
+        const hari = hariKe();
         const hasil = Math.max(hari, bacaMaks(), bacaAkun());   // tanggal mulai · ingatan HP · data AKUN
         simpanMaks(hasil);
         return hasil;
@@ -254,6 +259,13 @@
         setTanggalMulai: setTanggalMulai,
         hariKe: function () { return hariIni(); },
         jamGantiHari: function () { return JAM_GANTI_HARI; },
+        /* Kapan Hari ke-n kebuka (objek Date) — untuk tulisan "buka 7 Okt 05:00". */
+        tanggalBuka: function (n) {
+            const d = new Date(HARI_1[0], HARI_1[1], HARI_1[2]);
+            d.setDate(d.getDate() + (n - 1));
+            return d;
+        },
+        jamBuka: function () { return JAM_GANTI_HARI; },
         kunciAktif: function () { return KUNCI_HARI; },     // hari progres buat tulisan "Hari N"
         tanggalIndah: tanggalIndah
     };
