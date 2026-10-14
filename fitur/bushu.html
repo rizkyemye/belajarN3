@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0417">
+<title>Flashcard Bushu (部首) — Radikal Kanji</title>
+<style>
+:root{--bg:#08040f;--panel:#1a1130;--garis:#33224f;--teks:#f7f4ff;--lembut:#a99cc7;--ungu:#a855f7;--pink:#ec4899}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--teks);font-family:'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif;
+  min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:16px 14px 28px;
+  background-image:radial-gradient(60% 45% at 20% 0%,rgba(168,85,247,.28),transparent 62%),radial-gradient(45% 40% at 85% 6%,rgba(236,72,153,.2),transparent 62%);
+  background-attachment:fixed}
+h1{font-size:19px;margin:6px 0 2px;text-align:center}
+.sub{color:var(--lembut);font-size:12.5px;margin:0 0 14px;text-align:center}
+.bar{display:flex;gap:8px;width:100%;max-width:520px;justify-content:space-between;align-items:center;margin-bottom:10px}
+.pil{background:rgba(255,255,255,.06);border:1px solid var(--garis);border-radius:999px;padding:7px 13px;font-size:12.5px;color:var(--teks)}
+button{font:inherit;cursor:pointer}
+.kartu{width:100%;max-width:520px;min-height:60svh;border-radius:26px;border:1px solid rgba(168,85,247,.32);
+  background:linear-gradient(180deg,#1b1136,#120a24);box-shadow:0 0 0 1px rgba(168,85,247,.18),0 26px 60px -26px rgba(168,85,247,.6);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:26px 20px;text-align:center;gap:6px}
+.huruf{font-size:104px;line-height:1.05;font-weight:800}
+.nama{font-size:23px;font-weight:800;letter-spacing:.5px}
+.romaji{color:var(--lembut);font-size:13px;margin-top:-2px}
+.pos{font-size:12px;color:#c084fc;background:rgba(168,85,247,.16);border:1px solid rgba(168,85,247,.35);
+  border-radius:999px;padding:5px 12px;margin-top:12px}
+.petunjuk{color:var(--lembut);font-size:12.5px;margin-top:14px}
+.arti{font-size:20px;font-weight:700;margin-top:6px;color:#fff}
+.contoh{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.contoh span{background:rgba(255,255,255,.055);border:1px solid var(--garis);border-radius:12px;padding:8px 11px;font-size:13.5px}
+.nav{display:flex;gap:10px;width:100%;max-width:520px;margin-top:14px}
+.nav button{flex:1;padding:15px;border-radius:16px;border:1px solid var(--garis);background:rgba(255,255,255,.05);
+  color:var(--teks);font-weight:700;font-size:15px}
+.nav .utama{background:linear-gradient(135deg,var(--ungu),var(--pink));border:0;box-shadow:0 10px 30px -12px rgba(168,85,247,.95)}
+.nav button:active{transform:scale(.98)}
+.judul-kecil{color:var(--lembut);font-size:11px;letter-spacing:1.4px;text-transform:uppercase;margin-top:20px}
+.daftar{width:100%;max-width:520px;margin-top:8px;display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:8px}
+.daftar button{background:rgba(255,255,255,.05);border:1px solid var(--garis);border-radius:12px;padding:10px 4px;color:var(--teks)}
+.daftar button b{display:block;font-size:26px}
+.daftar button span{display:block;font-size:10px;color:var(--lembut);margin-top:2px}
+.daftar button.aktif{border-color:var(--ungu);box-shadow:0 0 0 1px rgba(168,85,247,.5)}
+</style>
+</head>
+<body>
+<h1>部首 Flashcard</h1>
+<p class="sub">Radikal kanji (bushu) — tap kartunya buat lihat artinya</p>
+
+<div class="bar">
+  <span class="pil" id="hitung">1 / 1</span>
+  <span style="display:flex;gap:8px">
+    <button class="pil" id="acak">🔀 Acak</button>
+    <button class="pil" id="ulang">↺ Mulai ulang</button>
+  </span>
+</div>
+
+<div class="kartu" id="kartu"></div>
+
+<div class="nav">
+  <button id="mundur">⏮ Sebelumnya</button>
+  <button class="utama" id="putar">Buka jawaban</button>
+  <button id="maju">Berikutnya ⏭</button>
+</div>
+
+<div class="judul-kecil">Semua bushu (tap buat lompat)</div>
+<div class="daftar" id="daftar"></div>
+
+<script>
+const DATA = [["氵", "さんずい", "sanzui", "Air / cairan", "Sebelah kiri (へん)", ["池 いけ (kolam)", "沼 ぬま (rawa)", "海 うみ (laut)", "滝 たき (air terjun)", "湖 みずうみ (danau)", "酒 さけ (sake)"]], ["木", "きへん", "kihen", "Pohon / kayu", "Sebelah kiri (へん)", ["白樺 しらかば (birch)", "林 はやし (hutan kecil)", "校 こう (sekolah)", "机 つくえ (meja)"]], ["言", "ごんべん", "gonben", "Kata / bicara", "Sebelah kiri (へん)", ["説明 せつめい (penjelasan)", "講義 こうぎ (kuliah)", "会話 かいわ (percakapan)", "語 ご (bahasa)"]], ["亻", "にんべん", "ninben", "Orang / manusia", "Sebelah kiri (へん)", ["休 やすむ (istirahat)", "体 からだ (badan)", "作 つくる (membuat)", "住 すむ (tinggal)"]], ["忄", "りっしんべん", "risshinben", "Hati / perasaan", "Sebelah kiri (へん)", ["忙 いそがしい (sibuk)", "怖 こわい (takut)", "情 じょう (perasaan)", "悩 なやむ (galau)"]], ["王", "たまへん / おうへん", "tamahen", "Permata / batu mulia", "Sebelah kiri (へん)", ["理 り (logika)", "球 たま (bola)", "現 あらわれる (muncul)"]], ["阝", "こざとへん", "kozatohen", "Bukit / tanah tinggi", "Sebelah kiri (へん)", ["駅 えき (stasiun)", "限 かぎる (batas)", "防 ふせぐ (mencegah)"]], ["辶", "しんにょう", "shinnyou", "Jalan / berjalan", "Bawah-tarik (にょう)", ["道 みち (jalan)", "週 しゅう (minggu)", "進 すすむ (maju)", "遠 とおい (jauh)"]], ["口", "くちへん", "kuchihen", "Mulut", "Sebelah kiri (へん)", ["味 あじ (rasa)", "鳴 なく (berbunyi)"]], ["日", "ひへん", "hihen", "Matahari / hari", "Sebelah kiri (へん)", ["時 とき (waktu)", "明 あかるい (terang)", "曜 よう (hari)"]], ["月", "つきへん", "tsukihen", "Bulan / tubuh", "Sebelah kiri (へん)", ["服 ふく (baju)", "胸 むね (dada)", "期 き (periode)"]], ["女", "おんなへん", "onnahen", "Perempuan", "Sebelah kiri (へん)", ["妹 いもうと (adik pr)", "姉 あね (kakak pr)", "好 すき (suka)"]], ["扌", "てへん", "tehen", "Tangan", "Sebelah kiri (へん)", ["打 うつ (memukul)", "持 もつ (memegang)", "投 なげる (melempar)"]], ["糸", "いとへん", "itohen", "Benang / kain", "Sebelah kiri (へん)", ["紙 かみ (kertas)", "細 ほそい (tipis)", "結 むすぶ (mengikat)"]], ["金", "かねへん", "kanehen", "Logam / uang", "Sebelah kiri (へん)", ["銀 ぎん (perak)", "鉄 てつ (besi)", "針 はり (jarum)"]], ["貝", "かいへん", "kaihen", "Kerang / uang", "Sebelah kiri (へん)", ["買 かう (membeli)", "貸 かす (meminjamkan)", "貯 ためる (menabung)"]], ["車", "くるまへん", "kurumahen", "Kendaraan / roda", "Sebelah kiri (へん)", ["転 ころぶ (jatuh)", "軽 かるい (ringan)", "輪 わ (roda)"]], ["食", "しょくへん", "shokuhen", "Makanan", "Sebelah kiri (へん)", ["飯 めし (nasi)", "飲 のむ (minum)", "館 かん (gedung)"]], ["米", "こめへん", "komehen", "Beras", "Sebelah kiri (へん)", ["粉 こな (tepung)", "糖 とう (gula)", "精 せい (semangat)"]], ["舟", "ふねへん", "funehen", "Perahu", "Sebelah kiri (へん)", ["船 ふね (kapal)", "航 こう (pelayaran)"]], ["刂", "りっとう", "rittou", "Pisau / pedang", "Sebelah kanan (つくり)", ["別 わかれる (berpisah)", "到 いたる (sampai)", "前 まえ (depan)"]], ["力", "ちから", "chikara", "Kekuatan", "Sebelah kanan (つくり)", ["動 うごく (bergerak)", "勉 べん (belajar)", "助 たすける (menolong)"]], ["頁", "おおがい", "oogai", "Kepala / halaman", "Sebelah kanan (つくり)", ["頭 あたま (kepala)", "顔 かお (muka)", "題 だい (judul)"]], ["阝", "おおざと", "oozato", "Kota / desa", "Sebelah kanan (つくり)", ["部 ぶ (bagian)", "都 と (metropolis)", "郵 ゆう (pos)"]], ["艹", "くさかんむり", "kusakanmuri", "Tanaman / rumput", "Atas (かんむり)", ["花 はな (bunga)", "草 くさ (rumput)", "茶 ちゃ (teh)"]], ["宀", "うかんむり", "ukanmuri", "Atap / rumah", "Atas (かんむり)", ["家 いえ (rumah)", "室 しつ (ruangan)", "安 やすい (murah)"]], ["雨", "あめかんむり", "amekanmuri", "Hujan / cuaca", "Atas (かんむり)", ["雪 ゆき (salju)", "雲 くも (awan)", "電 でん (listrik)"]], ["竹", "たけかんむり", "takekanmuri", "Bambu", "Atas (かんむり)", ["答 こたえ (jawaban)", "筆 ふで (kuas)", "笑 わらう (tertawa)"]], ["穴", "あなかんむり", "anakanmuri", "Lubang", "Atas (かんむり)", ["空 そら (langit)", "窓 まど (jendela)", "究 きゅう (riset)"]], ["灬", "れっか / れんが", "rekka", "Api", "Bawah (あし)", ["熊 くま (beruang)", "点 てん (titik)", "熱 あつい (panas)"]], ["心", "こころ", "kokoro", "Hati / perasaan", "Bawah (あし)", ["思 おもう (berpikir)", "想 おもう (membayangkan)", "急 いそぐ (buru-buru)"]], ["皿", "さら", "sara", "Piring / wadah", "Bawah (あし)", ["皿 さら (piring)", "盛 さかん (ramai)"]], ["广", "まだれ", "madare", "Gedung / bangunan", "Tarik (たれ)", ["店 みせ (toko)", "度 ど (derajat)", "病 びょうき (sakit)"]], ["疒", "やまいだれ", "yamai-dare", "Penyakit", "Tarik (たれ)", ["病 やまい (penyakit)", "痛 いたい (sakit)", "疲 つかれる (lelah)"]], ["門", "もんがまえ", "mongamae", "Gerbang", "Bingkai (かまえ)", ["開 あける (membuka)", "閉 しめる (menutup)", "間 あいだ (antara)"]], ["囗", "くにがまえ", "kunigamae", "Kotak / wilayah", "Bingkai (かまえ)", ["国 くに (negara)", "園 えん (taman)", "図 ず (gambar)"]], ["亠", "なべぶた", "nabebuta", "Tutup / atas", "Atas", ["交 こう (bertukar)", "京 きょう (ibukota)", "夜 よる (malam)"]], ["冫", "にすい", "nisui", "Es / dingin", "Sebelah kiri (へん)", ["冷 つめたい (dingin)", "冬 ふゆ (musim dingin)", "氷 こおり (es)"]], ["石", "いしへん", "ishihen", "Batu", "Sebelah kiri (へん)", ["研 とぐ (mengasah)", "砂 すな (pasir)", "破 やぶる (merobek)"]], ["目", "めへん", "mehen", "Mata", "Sebelah kiri (へん)", ["眠 ねむい (ngantuk)", "眼 め (mata)", "睡 ねむる (tidur)"]]];
+let urut = DATA.map((_, i) => i), pos = 0, buka = false;
+const $ = s => document.querySelector(s);
+
+function gambar() {
+  const d = DATA[urut[pos]];
+  if (!buka) {
+    $('#kartu').innerHTML =
+      '<div class="huruf">' + d[0] + '</div>' +
+      '<div class="nama">' + d[1] + '</div>' +
+      '<div class="romaji">' + d[2] + '</div>' +
+      '<div class="pos">' + d[4] + '</div>' +
+      '<div class="petunjuk">tap <b>Buka jawaban</b> buat lihat artinya</div>';
+  } else {
+    $('#kartu').innerHTML =
+      '<div class="huruf" style="font-size:66px">' + d[0] + '</div>' +
+      '<div class="nama">' + d[1] + '</div>' +
+      '<div class="arti">' + d[3] + '</div>' +
+      '<div class="pos">' + d[4] + '</div>' +
+      '<div class="petunjuk" style="margin-top:12px">Contoh kanji:</div>' +
+      '<div class="contoh">' + d[5].map(c => '<span>' + c + '</span>').join('') + '</div>';
+  }
+  $('#hitung').textContent = (pos + 1) + ' / ' + urut.length;
+  $('#putar').textContent = buka ? 'Tutup' : 'Buka jawaban';
+  [...document.querySelectorAll('#daftar button')].forEach((b, i) => b.classList.toggle('aktif', urut[i] === urut[pos]));
+}
+function pindah(n) { pos = (pos + n + urut.length) % urut.length; buka = false; gambar(); }
+$('#maju').onclick = () => pindah(1);
+$('#mundur').onclick = () => pindah(-1);
+$('#putar').onclick = () => { buka = !buka; gambar(); };
+$('#acak').onclick = () => { urut.sort(() => Math.random() - .5); pos = 0; buka = false; gambar(); };
+$('#ulang').onclick = () => { urut = DATA.map((_, i) => i); pos = 0; buka = false; gambar(); };
+addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') pindah(1);
+  if (e.key === 'ArrowLeft') pindah(-1);
+  if (e.key === ' ') { e.preventDefault(); buka = !buka; gambar(); }
+});
+$('#daftar').innerHTML = DATA.map((d, i) => '<button data-i="' + i + '"><b>' + d[0] + '</b><span>' + d[1] + '</span></button>').join('');
+$('#daftar').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  pos = urut.indexOf(Number(b.dataset.i)); buka = true; gambar();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+gambar();
+</script>
+</body>
+</html>
