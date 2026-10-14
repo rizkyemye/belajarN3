@@ -55,7 +55,7 @@
         try { return Number(localStorage.getItem(kunciMaks())) || 0; } catch (e) { return 0; }
     }
 
-    /* hari terjauh menurut AKUN (diisi oleh ../aset/n3-auth.js saat sinkron data) */
+    /* hari terjauh menurut AKUN (diisi oleh n3-auth.js saat sinkron data) */
     function bacaAkun() {
         try {
             const u = (penggunaAktif() || "").toLowerCase();
@@ -84,7 +84,7 @@
 
     function punyaProgresLama() {
         try {
-            if (localStorage.getItem("jlpt_current_user")) return true;
+            // ponytail: penanda 'user lokal' dihapus — progres lama cuma dihitung dari kunci progres asli
             for (let i = 0; i < localStorage.length; i++) {
                 const k = localStorage.key(i) || "";
                 if (k.indexOf("n3_detik_") === 0 || k.indexOf("n3_selesai_") === 0) return true;

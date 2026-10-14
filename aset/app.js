@@ -1,30 +1,14 @@
-// --- SISTEM LOGIN LOKAL / PROFIL ---
+// --- SISTEM LOGIN / PROFIL ---
+// ponytail: login lokal (profil tanpa sandi) sudah DIHAPUS. Sekarang wajib
+// login pakai username + sandi dari database (Supabase).
 let currentUser = localStorage.getItem('jlpt_current_user') || '';
 
-// Fungsi untuk memastikan user sudah memasukkan nama saat pertama buka
 function checkAndInitUser() {
-    // ONLINE: login pakai username + sandi (Supabase) -> gerbang login
-    if (window.N3 && N3.aktif) {
-        const tersimpan = localStorage.getItem('n3_username') || '';
-        if (tersimpan) {
-            currentUser = tersimpan;
-        } else {
-            currentUser = '';
-            if (typeof window.N3TampilkanGerbang === 'function') window.N3TampilkanGerbang(true);
-        }
-        updateProfileDisplay();
-        return;
-    }
-
-    // LOKAL (belum tersambung server): perilaku lama
-    if (!currentUser || currentUser.trim() === '') {
-        let inputName = prompt("Masukkan nama profil kamu untuk mulai belajar:");
-        if (inputName && inputName.trim() !== '') {
-            currentUser = inputName.trim();
-        } else {
-            currentUser = "DefaultUser";
-        }
-        localStorage.setItem('jlpt_current_user', currentUser);
+    const tersimpan = (window.N3 && N3.aktif) ? (localStorage.getItem('n3_username') || '') : '';
+    currentUser = tersimpan;
+    if (!tersimpan) {
+        currentUser = '';
+        if (typeof window.N3TampilkanGerbang === 'function') window.N3TampilkanGerbang(true);
     }
     updateProfileDisplay();
 }
@@ -38,8 +22,11 @@ function switchProfile() {
         }
         return;
     }
-    let inputName = prompt("Masukkan nama profil baru atau ganti profil:", currentUser);
-    if (inputName && inputName.trim() !== '') {
+    // ponytail: dulu di sini bikin profil lokal pakai prompt() -> sekarang wajib login.
+    location.href = 'login.html';
+    return;
+    /* sisa kode di bawah nggak kepakai lagi (dibiarkan biar diff-nya kecil) */
+    if (false) {
         currentUser = inputName.trim();
         localStorage.setItem('jlpt_current_user', currentUser);
         updateProfileDisplay();
@@ -91,7 +78,7 @@ const counter = document.getElementById("counter");
 const timerDisplay = document.getElementById("timerDisplay");
 const resultText = document.getElementById("resultText");
 
-fetch((window.N3BerkasData ? N3BerkasData() : '../aset/data.json?v=10'))
+fetch((window.N3BerkasData ? N3BerkasData() : 'data.json?v=10'))
     .then(response => response.json())
     .then(data => {
         allData = data;
@@ -223,7 +210,7 @@ window.bacaanKata = bacaanKata;
 window.modeKana = modeKana;
 
 function isBunpouItem(item) {
-    // entri tata bahasa di ../aset/data.json selalu diawali tanda gelombang (〜 / ～)
+    // entri tata bahasa di data.json selalu diawali tanda gelombang (〜 / ～)
     if (String(item.jenis || "") === "bunpou") return true;   // entri bunpou baru (N5/N4) belum tentu pakai 〜
     return /^[\u301c\uff5e〜～]/.test(String(item.front || "").trim());
 }
@@ -1962,7 +1949,7 @@ function renderKotakAlat() {
             : '<div class="ka-tahan beres">✓ Tidak ada yang tertahan — semua hari yang terbuka sudah tuntas</div>');
 
     const btnUtang = document.getElementById("kaUtang");
-    if (btnUtang) btnUtang.onclick = function () { location.href = "../fitur/review.html"; };
+    if (btnUtang) btnUtang.onclick = function () { location.href = "review.html"; };
     const btnP3k = document.getElementById("kaP3k");
     if (btnP3k) btnP3k.onclick = function () { mulaiKilat(true); };
     const btnKilat = document.getElementById("kaKilat");
@@ -2202,7 +2189,7 @@ function pasangTombolTema() {
 /* =========================================================================
    PEMILIH GAYA TAMPILAN (29 Sep 2026)
    Flat = bawaan (menyatu di tema-baru.css) · Minimalis · Brutal
-   Berkas gaya dimuat SETELAH ../aset/tema-baru.css supaya menimpa dengan aman.
+   Berkas gaya dimuat SETELAH tema-baru.css supaya menimpa dengan aman.
    Pilihan disimpan di localStorage (n3_gaya).
    ========================================================================= */
 (function pasangGayaTampilan() {
@@ -2212,7 +2199,7 @@ function pasangTombolTema() {
         { k: "brutal",  teks: "Brutal",        berkas: "gaya-brutal" + ".css" }
     ];
     function folderAset() {
-        const s = document.querySelector('script[src*="../aset/app.js"]');
+        const s = document.querySelector('script[src*="app.js"]');
         return s ? String(s.getAttribute("src")).replace(/app\.js.*$/, "") : "../aset/";
     }
     function kini() { try { return localStorage.getItem("n3_gaya") || "flat"; } catch (e) { return "flat"; } }
